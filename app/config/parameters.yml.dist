@@ -1,0 +1,12 @@
+# This file is auto-generated during the composer install
+parameters:
+    db_host1: localhost
+    db_port1: 5432
+    db_name1: germ
+    db_user1: germ
+    db_password1: ~
+    mailer_transport: smtp
+    mailer_host: 127.0.0.1
+    mailer_user: null
+    mailer_password: null
+    secret: ThisTokenIsNotSoSecretChangeIt

@@ -1,0 +1,7 @@
+germ_homepage:
+    path:     /
+    defaults: { _controller: GermBundle:Default:index }
+
+germ_member_list:
+    path:     /member/list
+    defaults: { _controller: GermBundle:Member:list }
