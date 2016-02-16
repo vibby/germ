@@ -1,12 +1,24 @@
-# To get started with security, check out the documentation:
-# http://symfony.com/doc/current/book/security.html
 security:
 
-    # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
+    role_hierarchy:
+        ROLE_SECRETAIRE:    ROLE_DELETE_MEMBER, ROLE_CREATE_MEMBER, ROLE_SEE_MEMBER
+        ROLE_ANCIEN:        ROLE_SEE_MEMBER
+        ROLE_PASTEUR:       ROLE_SEE_MEMBER
+        ROLE_ADMIN:         ROLE_ANCIEN, ROLE_SECRETAIRE
+
+    encoders:
+        Symfony\Component\Security\Core\User\User: plaintext
+
     providers:
         in_memory:
-            memory: ~
-
+            memory:
+                users:
+                    admin:
+                        password: germ
+                        roles: 'ROLE_ADMIN'
+                    secretaire:
+                        password: germ
+                        roles: 'ROLE_SECRETAIRE'
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
         dev:
@@ -15,10 +27,21 @@ security:
 
         main:
             anonymous: ~
-            # activate different ways to authenticate
+            form_login:
+                login_path: /login
+                check_path: /login
+            logout:
+                path: /logout
+                target: /
+#                success_handler: logout_listener
+            remember_me:
+                secret:   '%secret%'
+                lifetime: 604800 # 1 week in seconds
+                path: /
 
-            # http_basic: ~
-            # http://symfony.com/doc/current/book/security.html#a-configuring-how-your-users-will-authenticate
-
-            # form_login: ~
-            # http://symfony.com/doc/current/cookbook/security/form_login_setup.html
+    access_control:
+        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/member/create, roles: ROLE_CREATE_MEMBER }
+        - { path: ^/member/delete, roles: ROLE_DELETE_MEMBER }
+        - { path: ^/member, roles: ROLE_SEE_MEMBER }

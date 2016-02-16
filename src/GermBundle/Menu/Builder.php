@@ -16,6 +16,7 @@ class Builder implements ContainerAwareInterface
 
         $menu->addChild('Accueil', array('route' => 'germ_homepage'));
         $menu->addChild('Membres', array('route' => 'germ_member_list'));
+        $menu->addChild('Déconnexion', array('route' => 'germ_logout'));
 
         // // create another menu item
         // $menu->addChild('Members', array(

@@ -1,0 +1,30 @@
+body,
+html {
+  height: 100%;
+  background-repeat: no-repeat;
+  background-color: #2A3E3B;
+}
+.login {
+  margin-top: 27px;
+}
+.set-logo {
+  background: #fff;
+  color: #ddd;
+  border-radius: 500%;
+  padding: 11px;
+  font-size: 108px;
+  border: solid #ddd 14px;
+}
+.logo {
+  margin-top: 27px;
+  margin-bottom: 54px;
+}
+.well {
+  background: rgba(255, 255, 255, 0.6);
+}
+.last-row {
+  margin-bottom: 0px;
+}
+.checklabel {
+  font-weight: 100;
+}

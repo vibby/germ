@@ -2,6 +2,13 @@ germ_homepage:
     path:     /
     defaults: { _controller: GermBundle:Default:index }
 
+germ_login:
+    path:     /login
+    defaults: { _controller: GermBundle:Security:login }
+
+germ_logout:
+    path:     /logout
+
 germ_member_list:
     path:     /member/list
     defaults: { _controller: GermBundle:Member:list }
