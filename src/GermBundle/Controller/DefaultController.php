@@ -10,4 +10,14 @@ class DefaultController extends Controller
     {
         return $this->render('GermBundle:Default:index.html.twig');
     }
+
+    public function debugAction()
+    {
+    	dump($this->get('pomm')
+            ->getDatabase()
+            ->getConnection()
+            ->getMapFor('GermBundle\Model\Germ\PublicSchema\MemberModel')
+            ->findAll());
+    	die;
+    }
 }

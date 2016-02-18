@@ -16,3 +16,7 @@ _main:
 _pomm:
     resource: "@PommBundle/Resources/config/routing.yml"
     prefix:   /_pomm
+
+_debug:
+    resource: "@GermBundle/Resources/config/routing_dev.yml"
+    prefix:   /_debug

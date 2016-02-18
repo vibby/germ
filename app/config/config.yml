@@ -68,3 +68,10 @@ assetic:
        less:
            node: /usr/bin/nodejs
            ode_paths: [/home/USER/.node_libraries]
+
+fos_user:
+    db_driver: custom
+    firewall_name: main
+    user_class: GermBundle\Entity\MemberEntity
+    service:
+        user_manager: pomm_fos_user_bundle.user_manager

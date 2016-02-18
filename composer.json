@@ -10,6 +10,12 @@
     "autoload-dev": {
         "psr-4": { "Tests\\": "tests/" }
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/vibby/PommFosUserBundle"
+        }
+    ],
     "require": {
         "php": ">=5.5.9",
         "symfony/symfony": "3.*",
@@ -23,7 +29,10 @@
         "mopa/bootstrap-bundle": "~3.0",
         "twbs/bootstrap": "~3.3.0",
         "knplabs/knp-paginator-bundle": "^2.0",
-        "knplabs/knp-menu-bundle": "^2.0"
+        "knplabs/knp-menu-bundle": "^2.0",
+        "robmorgan/phinx": "^0.5",
+        "friendsofsymfony/user-bundle": "dev-master",
+        "vibby/pomm-project-fos-user-bundle": "dev-master"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
@@ -52,6 +61,9 @@
     "config": {
         "platform": {
             "php": "5.5.9"
+        },
+        "github-oauth": {
+            "github.com": "43910c20741eafcdb60c04f9e7910224a07c52a4"
         }
     },
     "extra": {

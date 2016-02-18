@@ -2,12 +2,9 @@ germ_homepage:
     path:     /
     defaults: { _controller: GermBundle:Default:index }
 
-germ_login:
-    path:     /login
-    defaults: { _controller: GermBundle:Security:login }
-
-germ_logout:
-    path:     /logout
+fos_user:
+    prefix:   /access
+    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
 
 germ_member_list:
     path:     /member/list

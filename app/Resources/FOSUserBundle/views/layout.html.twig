@@ -1,0 +1,16 @@
+{% extends 'GermBundle::html.html.twig' %}
+
+{% block head_style %}
+    {{ parent() }}
+    {% stylesheets
+    '@GermBundle/Resources/public/less/security.less'
+     filter='less'
+    %}
+        <link href="{{ asset_url }}" type="text/css" rel="stylesheet" media="screen" />
+    {% endstylesheets %}
+{% endblock %}
+
+{% block content %}
+  {% block fos_user_content %}
+  {% endblock fos_user_content %}
+{% endblock content %}
