@@ -26,16 +26,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     {% block head_script %}
-    {# Overwrite this block to add your own js here, to get them generated into final files
     {% javascripts
         'http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js'
     %}
         <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
-     #}
     {% endblock head_script %}
 
-    <title>{% block title %}Mopa Bootstrap Bundle{% endblock title %}</title>
+    <title>{% block title %}Germ Adventiste Nantes{% endblock title %}</title>
     {% block favicon %}<link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />{% endblock %}
     {% block head_bottom %}
     {% endblock head_bottom %}
@@ -108,15 +106,16 @@
      #}
     {% block foot_script_assetic %}
         {# Please add the javascripts you need in your project
-        {% javascripts
-        '@MopaBootstrapBundle/Resources/public/bootstrap/js/tooltip.js'
-        '@MopaBootstrapBundle/Resources/public/bootstrap/js/*.js'
         '@MopaBootstrapBundle/Resources/public/js/mopabootstrap-collection.js'
         '@MopaBootstrapBundle/Resources/public/js/mopabootstrap-subnav.js'
+        #}
+        {% javascripts
+        '@MopaBootstrapBundle/Resources/public/bootstrap/js/collapse.js'
+        '@MopaBootstrapBundle/Resources/public/bootstrap/js/tooltip.js'
+        '@MopaBootstrapBundle/Resources/public/bootstrap/js/popover.js'
         %}
         <script type="text/javascript" src="{{ asset_url }}"></script>
         {% endjavascripts %}
-        #}
     {% endblock foot_script_assetic %}
 
     <script type="text/javascript">

@@ -1,6 +1,6 @@
 germ_homepage:
     path:     /
-    defaults: { _controller: GermBundle:Default:index }
+    defaults: { _controller: GermBundle:Main:index }
 
 fos_user:
     prefix:   /access
