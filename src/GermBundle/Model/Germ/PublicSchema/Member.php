@@ -14,4 +14,8 @@ use PommProject\ModelManager\Model\FlexibleEntity;
  */
 class Member extends FlexibleEntity
 {
+	public function getName()
+	{
+		return $this->getFirstName() . ' ' . $this->getLastName();
+	}
 }

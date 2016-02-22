@@ -9,3 +9,7 @@ fos_user:
 germ_member_list:
     path:     /member/list
     defaults: { _controller: GermBundle:Member:list }
+
+germ_member_edit:
+    path:     /member/edit/{memberId}
+    defaults: { _controller: GermBundle:Member:edit }
