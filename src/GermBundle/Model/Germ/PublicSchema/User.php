@@ -2,7 +2,7 @@
 
 namespace GermBundle\Model\Germ\PublicSchema;
 
-use Fferriere\PommProjectFosUserBundle\Model\User as BaseUser;
+use Vibby\PommProjectFosUserBundle\Model\User as BaseUser;
 
 /**
  * User

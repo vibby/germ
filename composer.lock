@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "75eb6eafbae281dbee134c64688162f5",
+    "hash": "e050961d8be7edc728610e6ff56e04c7",
     "content-hash": "8e4a0ebef1c959df5621f8df363522aa",
     "packages": [
         {
@@ -1589,25 +1589,32 @@
         },
         {
             "name": "sensio/framework-extra-bundle",
-            "version": "v3.0.12",
+            "version": "v3.0.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/SensioFrameworkExtraBundle.git",
-                "reference": "3e8936fe13aa4086644977d334d8fcd275f50357"
+                "reference": "bf6be511f4f66d368baeb2cab617203d73cccf4e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/SensioFrameworkExtraBundle/zipball/3e8936fe13aa4086644977d334d8fcd275f50357",
-                "reference": "3e8936fe13aa4086644977d334d8fcd275f50357",
+                "url": "https://api.github.com/repos/sensiolabs/SensioFrameworkExtraBundle/zipball/bf6be511f4f66d368baeb2cab617203d73cccf4e",
+                "reference": "bf6be511f4f66d368baeb2cab617203d73cccf4e",
                 "shasum": ""
             },
             "require": {
                 "doctrine/common": "~2.2",
+                "symfony/dependency-injection": "~2.3|~3.0",
                 "symfony/framework-bundle": "~2.3|~3.0"
             },
             "require-dev": {
+                "symfony/browser-kit": "~2.3|~3.0",
+                "symfony/dom-crawler": "~2.3|~3.0",
                 "symfony/expression-language": "~2.4|~3.0",
-                "symfony/security-bundle": "~2.4|~3.0"
+                "symfony/finder": "~2.3|~3.0",
+                "symfony/phpunit-bridge": "~2.7|~3.0",
+                "symfony/security-bundle": "~2.4|~3.0",
+                "symfony/twig-bundle": "~2.3|~3.0",
+                "twig/twig": "~1.11|~2.0"
             },
             "suggest": {
                 "symfony/expression-language": "",
@@ -1640,7 +1647,7 @@
                 "annotations",
                 "controllers"
             ],
-            "time": "2015-12-18 17:39:27"
+            "time": "2016-02-12 08:17:23"
         },
         {
             "name": "sensiolabs/security-checker",
@@ -2453,21 +2460,22 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/vibby/PommFosUserBundle.git",
-                "reference": "e4c4e9a54b0608acde5f986f2a9f4e54d4761211"
+                "reference": "05014078af6317d80beff53a07beb4bddccc19ed"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vibby/PommFosUserBundle/zipball/e4c4e9a54b0608acde5f986f2a9f4e54d4761211",
-                "reference": "e4c4e9a54b0608acde5f986f2a9f4e54d4761211",
+                "url": "https://api.github.com/repos/vibby/PommFosUserBundle/zipball/05014078af6317d80beff53a07beb4bddccc19ed",
+                "reference": "05014078af6317d80beff53a07beb4bddccc19ed",
                 "shasum": ""
             },
             "require": {
+                "friendsofsymfony/user-bundle": "~2.0@dev",
                 "pomm-project/pomm-bundle": "~2.0"
             },
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "Fferriere\\PommProjectFosUserBundle\\": "./src/lib"
+                    "Vibby\\PommProjectFosUserBundle\\": "./src/lib"
                 }
             },
             "license": [
@@ -2475,11 +2483,10 @@
             ],
             "authors": [
                 {
-                    "name": "Florian FERRIERE",
-                    "email": "ferriere.florian@gmail.com"
+                    "name": "vibby"
                 }
             ],
-            "description": "FosUserBundle manager for Pomm",
+            "description": "FosUserBundle manager for Pomm 2.x. From an idea of Fferriere",
             "keywords": [
                 "fos user bundle",
                 "pomm"
@@ -2487,7 +2494,7 @@
             "support": {
                 "source": "https://github.com/vibby/PommFosUserBundle/tree/master"
             },
-            "time": "2016-02-17 20:18:25"
+            "time": "2016-02-22 23:06:08"
         }
     ],
     "packages-dev": [

@@ -21,7 +21,7 @@ class AppKernel extends Kernel
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
             new FOS\UserBundle\FOSUserBundle(),
-            new Fferriere\PommProjectFosUserBundle\PommProjectFosUserBundle(),
+            new Vibby\PommProjectFosUserBundle\PommProjectFosUserBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

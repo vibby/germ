@@ -11,7 +11,7 @@ use PommProject\Foundation\Where;
 use GermBundle\Model\Germ\PublicSchema\AutoStructure\User as UserStructure;
 use GermBundle\Model\Germ\PublicSchema\User;
 
-use Fferriere\PommProjectFosUserBundle\Model\UserModel as BaseUserModel;
+use Vibby\PommProjectFosUserBundle\Model\UserModel as BaseUserModel;
 
 /**
  * UserModel

@@ -72,6 +72,6 @@ assetic:
 fos_user:
     db_driver: custom
     firewall_name: main
-    user_class: GermBundle\Entity\MemberEntity
+    user_class: GermBundle\Model\Germ\PublicSchema\User
     service:
         user_manager: pomm_fos_user_bundle.user_manager
