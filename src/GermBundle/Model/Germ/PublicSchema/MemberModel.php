@@ -34,4 +34,9 @@ class MemberModel extends Model
         $this->structure = new MemberStructure;
         $this->flexible_entity_class = '\GermBundle\Model\Germ\PublicSchema\Member';
     }
+
+    public function generateWhere()
+    {
+        return new Where(null);
+    }
 }
