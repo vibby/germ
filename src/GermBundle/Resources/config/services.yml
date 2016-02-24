@@ -8,7 +8,3 @@ services:
         class: GermBundle\Subscriber\PommSubscriber
         tags:
             - { name: knp_paginator.subscriber }
-
-#    germ.example:
-#        class: GermBundle\Example
-#        arguments: ["@service_id", "plain_value", %parameter%]

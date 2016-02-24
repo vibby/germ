@@ -39,8 +39,8 @@ class Member extends RowStructure
             ->addField('id', 'int4')
             ->addField('user_id', 'int4')
             ->addField('family_id', 'int4')
-            ->addField('first_name', 'varchar')
-            ->addField('last_name', 'varchar')
+            ->addField('firstname', 'varchar')
+            ->addField('lastname', 'varchar')
             ;
     }
 }

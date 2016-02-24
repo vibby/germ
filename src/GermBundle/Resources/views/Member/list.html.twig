@@ -1,14 +1,17 @@
 {% extends 'GermBundle::base.html.twig' %}
 
 {% block content_content %}
+	<a class="btn btn-primary" href="{{ path('germ_member_create') }}">
+		{% trans %}New member{% endtrans %}
+	</a>
 	<table class="table table-striped">
 		<tr>
-			<th>Nom</th>
+			<th>{% trans %}Name{% endtrans %}</th>
 		</tr>
 		{% for member in members %}
 			<tr>
 				<td>
-					<a href="{{ path('germ_member_edit', {'memberId': member.id}) }}" data-toggle="tooltip" data-placement="left" title="Éditer {{ member.name }}">
+					<a href="{{ path('germ_member_edit', {'memberId': member.id}) }}" data-toggle="tooltip" data-placement="left" title="{% trans with {'%name%': member.name} %}Edit %name%{% endtrans %}">
 						{{ member.name }}
 					</a>
 				</td>

@@ -49,10 +49,10 @@ class Members extends AbstractMigration
 
         $this->execute('CREATE TABLE "member" (
             id SERIAL PRIMARY KEY,
-            user_id integer NOT NULL,
+            user_id integer NULL,
             family_id integer NULL,
-            first_name VARCHAR(255) NULL,
-            last_name VARCHAR(255) NOT NULL
+            firstname VARCHAR(255) NULL,
+            lastname VARCHAR(255) NOT NULL
         );');
 
         $this->execute('ALTER TABLE "member" ADD UNIQUE ("user_id");');
@@ -62,6 +62,12 @@ class Members extends AbstractMigration
         $this->execute( <<<SQL
             INSERT INTO "user" ("id", "username", "username_canonical", "email", "email_canonical", "enabled", "salt", "password", "last_login", "locked", "expired", "expires_at", "confirmation_token", "password_requested_at", "roles", "credentials_expired", "credentials_expire_at") VALUES
             (1, 'test', 'test', 'tast@example.com', 'test@example.com', 't',    '', 'test', NULL,   'f',    'f',    NULL,   NULL,   NULL,   '{"ROLE_ADMIN"}',   'f',    NULL);
+SQL
+        );
+
+        $this->execute( <<<SQL
+            INSERT INTO "member" ("firstname", "lastname") VALUES
+            ('Pierre', 'Kephas');
 SQL
         );
 

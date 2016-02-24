@@ -13,3 +13,7 @@ germ_member_list:
 germ_member_edit:
     path:     /member/edit/{memberId}
     defaults: { _controller: GermBundle:Member:edit }
+
+germ_member_create:
+    path:     /member/create
+    defaults: { _controller: GermBundle:Member:create }

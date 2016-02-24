@@ -16,6 +16,6 @@ class Member extends FlexibleEntity
 {
 	public function getName()
 	{
-		return $this->getFirstName() . ' ' . $this->getLastName();
+		return $this->getFirstname() . ' ' . $this->getLastname();
 	}
 }
