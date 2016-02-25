@@ -1,7 +1,7 @@
 
 parameters:
     pomm_fos_user.connection_name: 'germ'
-    pomm_fos_user.user_model_class: GermBundle\Model\Germ\PublicSchema\UserModel
+    pomm_fos_user.user_model_class: GermBundle\Model\Germ\PublicSchema\PersonModel
 
 services:
     germ.pomm.subscriber:

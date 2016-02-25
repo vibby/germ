@@ -14,22 +14,22 @@ class Builder implements ContainerAwareInterface
     {
         $menu = $factory->createItem('root');
 
-        $menu->addChild('Accueil', array('route' => 'germ_homepage'));
-        $menu->addChild('Membres', array('route' => 'germ_member_list'));
-        $menu->addChild('Déconnexion', array('route' => 'fos_user_security_logout'));
+        $menu->addChild('Home', array('route' => 'germ_homepage'));
+        $menu->addChild('Persons', array('route' => 'germ_person_list'));
+        $menu->addChild('Logout', array('route' => 'fos_user_security_logout'));
 
         // // create another menu item
-        // $menu->addChild('Members', array(
-        //     'route' => 'members_list',
+        // $menu->addChild('Persons', array(
+        //     'route' => 'persons_list',
         //     'routeParameters' => array('id' => $blog->getId())
         // ));
         // // you can also add sub level's to your menu's as follows
-        // $menu['Members']->addChild('List members', array(
-        //     'route' => 'members_list',
+        // $menu['Persons']->addChild('List persons', array(
+        //     'route' => 'persons_list',
         // ));
-        // $menu['Members']->addChild('Last member', array(
-        //     'route' => 'members_list',
-        //     'routeParameters' => array('id' => $member->getId())
+        // $menu['Persons']->addChild('Last person', array(
+        //     'route' => 'persons_list',
+        //     'routeParameters' => array('id' => $person->getId())
         // ));
 
         return $menu;

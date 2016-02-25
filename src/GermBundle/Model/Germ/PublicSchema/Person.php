@@ -2,17 +2,17 @@
 
 namespace GermBundle\Model\Germ\PublicSchema;
 
-use PommProject\ModelManager\Model\FlexibleEntity;
+use Vibby\PommProjectFosUserBundle\Model\User;
 
 /**
- * Member
+ * Person
  *
  * Flexible entity for relation
- * public.member
+ * public.person
  *
  * @see FlexibleEntity
  */
-class Member extends FlexibleEntity
+class Person extends User
 {
 	public function getName()
 	{

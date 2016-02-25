@@ -1,8 +1,14 @@
+Home: Accueil
+Persons: Personnes
+Logout: Déconnexion
 firstname: prénom
 lastname: nom
 Firstname: Prénom
 Lastname: Nom
-Save the member: Enregistrer le membre
-New member: Nouveau membre
+Save the person: Enregistrer la personne
+New person: Nouvelle personne
 Name: Nom
 Edit %name%: Éditer %name%
+Person: Personne
+Person updated: Personne enregistrée
+Person created: Personne créé

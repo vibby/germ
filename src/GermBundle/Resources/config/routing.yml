@@ -6,14 +6,14 @@ fos_user:
     prefix:   /access
     resource: "@FOSUserBundle/Resources/config/routing/all.xml"
 
-germ_member_list:
-    path:     /member/list
-    defaults: { _controller: GermBundle:Member:list }
+germ_person_list:
+    path:     /person/list
+    defaults: { _controller: GermBundle:Person:list }
 
-germ_member_edit:
-    path:     /member/edit/{memberId}
-    defaults: { _controller: GermBundle:Member:edit }
+germ_person_edit:
+    path:     /person/edit/{personId}
+    defaults: { _controller: GermBundle:Person:edit }
 
-germ_member_create:
-    path:     /member/create
-    defaults: { _controller: GermBundle:Member:create }
+germ_person_create:
+    path:     /person/create
+    defaults: { _controller: GermBundle:Person:create }

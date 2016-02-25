@@ -1,0 +1,23 @@
+{% extends 'GermBundle::base.html.twig' %}
+
+{% block content_content %}
+	<a class="btn btn-primary" href="{{ path('germ_person_create') }}">
+		{% trans %}New person{% endtrans %}
+	</a>
+	<table class="table table-striped">
+		<tr>
+			<th>{% trans %}Name{% endtrans %}</th>
+		</tr>
+		{% for person in persons %}
+			<tr>
+				<td>
+					<a href="{{ path('germ_person_edit', {'personId': person.id}) }}" data-toggle="tooltip" data-placement="left" title="{% trans with {'%name%': person.name} %}Edit %name%{% endtrans %}">
+						{{ person.name }}
+					</a>
+				</td>
+			</tr>
+		{% endfor %}
+	</table>
+{% endblock %}
+
+

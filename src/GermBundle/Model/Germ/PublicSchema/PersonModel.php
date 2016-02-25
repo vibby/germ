@@ -8,19 +8,19 @@ use PommProject\ModelManager\Model\ModelTrait\WriteQueries;
 
 use PommProject\Foundation\Where;
 
-use GermBundle\Model\Germ\PublicSchema\AutoStructure\User as UserStructure;
-use GermBundle\Model\Germ\PublicSchema\User;
+use GermBundle\Model\Germ\PublicSchema\AutoStructure\Person as PersonStructure;
+use GermBundle\Model\Germ\PublicSchema\Person;
 
-use Vibby\PommProjectFosUserBundle\Model\UserModel as BaseUserModel;
+use Vibby\PommProjectFosUserBundle\Model\UserModel;
 
 /**
- * UserModel
+ * PersonModel
  *
- * Model class for table user.
+ * Model class for table person.
  *
  * @see Model
  */
-class UserModel extends BaseUserModel
+class PersonModel extends UserModel
 {
     use WriteQueries;
 
@@ -33,7 +33,7 @@ class UserModel extends BaseUserModel
      */
     public function __construct()
     {
-        $this->structure = new UserStructure;
-        $this->flexible_entity_class = '\GermBundle\Model\Germ\PublicSchema\User';
+        $this->structure = new PersonStructure;
+        $this->flexible_entity_class = '\GermBundle\Model\Germ\PublicSchema\Person';
     }
 }
