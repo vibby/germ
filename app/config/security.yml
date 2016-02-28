@@ -36,8 +36,8 @@ security:
 
     access_control:
         - { path: ^/access/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/, roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/person/create, roles: ROLE_CREATE_MEMBER }
         - { path: ^/person/delete, roles: ROLE_DELETE_MEMBER }
         - { path: ^/person/edit, roles: ROLE_DELETE_MEMBER }
         - { path: ^/person, roles: ROLE_SEE_MEMBER }
+        - { path: ^/, roles: IS_AUTHENTICATED_FULLY }
