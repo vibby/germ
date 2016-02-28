@@ -20,7 +20,7 @@ use Vibby\PommProjectFosUserBundle\Model\UserModel;
  *
  * @see Model
  */
-class PersonModel extends UserModel
+class PersonModel extends Model
 {
     use WriteQueries;
 

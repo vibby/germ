@@ -13,7 +13,7 @@ use PommProject\ModelManager\Model\RowStructure;
  * Person
  *
  * Structure class for relation public.person.
- *
+ * 
  * Class and fields comments are inspected from table and fields comments.
  * Just add comments in your database and they will appear here.
  * @see http://www.postgresql.org/docs/9.0/static/sql-comment.html
@@ -37,22 +37,7 @@ class Person extends RowStructure
             ->setRelation('public.person')
             ->setPrimaryKey(['id'])
             ->addField('id', 'int4')
-            ->addField('username', 'varchar')
-            ->addField('username_canonical', 'varchar')
-            ->addField('email', 'varchar')
-            ->addField('email_canonical', 'varchar')
-            ->addField('enabled', 'bool')
-            ->addField('salt', 'varchar')
-            ->addField('password', 'varchar')
-            ->addField('last_login', 'timestamp')
-            ->addField('locked', 'bool')
-            ->addField('expired', 'bool')
-            ->addField('expires_at', 'timestamp')
-            ->addField('confirmation_token', 'varchar')
-            ->addField('password_requested_at', 'timestamp')
-            ->addField('roles', 'text[]')
-            ->addField('credentials_expired', 'bool')
-            ->addField('credentials_expire_at', 'timestamp')
+            ->addField('account_id', 'int4')
             ->addField('family_id', 'int4')
             ->addField('firstname', 'varchar')
             ->addField('lastname', 'varchar')

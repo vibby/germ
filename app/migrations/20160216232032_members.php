@@ -27,7 +27,7 @@ class Members extends AbstractMigration
      */
     public function up()
     {
-        $this->execute('CREATE TABLE "person" (
+        $this->execute('CREATE TABLE "account" (
             id SERIAL PRIMARY KEY,
             username VARCHAR(255) NOT NULL,
             username_canonical VARCHAR(255) NOT NULL UNIQUE,
@@ -44,7 +44,11 @@ class Members extends AbstractMigration
             password_requested_at TIMESTAMP WITHOUT TIME ZONE,
             roles TEXT[] NOT NULL,
             credentials_expired BOOLEAN NOT NULL DEFAULT FALSE,
-            credentials_expire_at TIMESTAMP WITHOUT TIME ZONE,
+            credentials_expire_at TIMESTAMP WITHOUT TIME ZONE
+        );');
+        $this->execute('CREATE TABLE "person" (
+            id SERIAL PRIMARY KEY,
+            account_id integer NULL,
             family_id integer NULL,
             firstname VARCHAR(32) NULL,
             lastname VARCHAR(32) NOT NULL,
@@ -53,10 +57,16 @@ class Members extends AbstractMigration
         );');
 
         $this->execute('ALTER TABLE "person" ADD FOREIGN KEY ("family_id") REFERENCES "person" ("id") ON DELETE SET NULL ON UPDATE CASCADE;');
+        $this->execute('ALTER TABLE "person" ADD FOREIGN KEY ("account_id") REFERENCES "account" ("id") ON DELETE SET NULL ON UPDATE CASCADE;');
 
         $this->execute( <<<SQL
-            INSERT INTO "person" ("id", "username", "username_canonical", "email", "email_canonical", "enabled", "salt", "password", "last_login", "locked", "expired", "expires_at", "confirmation_token", "password_requested_at", "roles", "credentials_expired", "credentials_expire_at", firstname, lastname) VALUES
-            (1, 'test', 'test', 'tast@example.com', 'test@example.com', 't',    '', 'ee26b0dd4af7e749aa1a8ee3c10ae9923f618980772e473f8819a5d4940e0db27ac185f8a0e1d5f84f88bc887fd67b143732c304cc5fa9ad8e6f57f50028a8ff', NULL,   'f',    'f',    NULL,   NULL,   NULL,   '{"ROLE_ADMIN"}',   'f',    NULL, 'Pierre', 'Kephas');
+            INSERT INTO "account" ("id", "username", "username_canonical", "email", "email_canonical", "enabled", "salt", "password", "last_login", "locked", "expired", "expires_at", "confirmation_token", "password_requested_at", "roles", "credentials_expired", "credentials_expire_at") VALUES
+            (1, 'test', 'test', 'tast@example.com', 'test@example.com', 't',    '5cmq15n0q0w0go4ogcc0co444ocw4oc', 'LJQRDmbG37bHbZTi0oTH4td8L6mHU7kecPoX2zw8SDwWFpBcT11bQqx+FjOYvfSyP8BdZhwYlUB/kTp1RR31Qg==', NULL,   'f',    'f',    NULL,   NULL,   NULL,   '{"ROLE_ADMIN"}',   'f',    NULL);
+SQL
+        );
+        $this->execute( <<<SQL
+            INSERT INTO "person" (account_id, firstname, lastname) VALUES
+            (1, 'Pierre', 'Kephas');
 SQL
         );
 
@@ -65,6 +75,6 @@ SQL
     public function down()
     {
         $this->execute('DROP TABLE "person";');
-
+        $this->execute('DROP TABLE "account";');
     }
 }
