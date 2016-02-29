@@ -15,7 +15,9 @@ class Builder implements ContainerAwareInterface
         $menu = $factory->createItem('root');
 
         $menu->addChild('Home', array('route' => 'germ_homepage'));
-        $menu->addChild('Persons', array('route' => 'germ_person_list'));
+        if ($this->container->get('security.authorization_checker')->isGranted('ROLE_PERSON_LIST')) {
+            $menu->addChild('Persons', array('route' => 'germ_person_list'));
+        }
         $menu->addChild('Logout', array('route' => 'fos_user_security_logout'));
 
         // // create another menu item

@@ -53,6 +53,7 @@ class Account extends RowStructure
             ->addField('roles', 'text[]')
             ->addField('credentials_expired', 'bool')
             ->addField('credentials_expire_at', 'timestamp')
+            ->addField('person_id', 'int4')
             ;
     }
 }

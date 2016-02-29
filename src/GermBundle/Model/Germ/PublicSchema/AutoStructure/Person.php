@@ -37,11 +37,10 @@ class Person extends RowStructure
             ->setRelation('public.person')
             ->setPrimaryKey(['id'])
             ->addField('id', 'int4')
-            ->addField('account_id', 'int4')
             ->addField('family_id', 'int4')
             ->addField('firstname', 'varchar')
             ->addField('lastname', 'varchar')
-            ->addField('phone', 'varchar')
+            ->addField('phone', 'varchar[]')
             ->addField('address', 'varchar')
             ;
     }

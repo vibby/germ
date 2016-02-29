@@ -1,10 +1,12 @@
 security:
 
     role_hierarchy:
-        ROLE_SECRETAIRE:    ROLE_DELETE_MEMBER, ROLE_CREATE_MEMBER, ROLE_SEE_MEMBER
-        ROLE_ANCIEN:        ROLE_SEE_MEMBER
-        ROLE_PASTEUR:       ROLE_SEE_MEMBER
-        ROLE_ADMIN:         ROLE_ANCIEN, ROLE_SECRETAIRE
+        ROLE_PERSON_READ:  ROLE_PERSON_SEE, ROLE_PERSON_LIST
+        ROLE_PERSON_WRITE: ROLE_PERSON_DELETE, ROLE_PERSON_CREATE, ROLE_PERSON_EDIT
+        ROLE_SECRETARY:    ROLE_PERSON_READ, ROLE_PERSON_WRITE
+        ROLE_ELDER:        ROLE_PERSON_READ
+        ROLE_PASTEUR:      ROLE_PERSON_READ
+        ROLE_ADMIN:        ROLE_ELDER, ROLE_SECRETARY
 
     encoders:
         FOS\UserBundle\Model\UserInterface: sha512
@@ -36,8 +38,8 @@ security:
 
     access_control:
         - { path: ^/access/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/person/create, roles: ROLE_CREATE_MEMBER }
-        - { path: ^/person/delete, roles: ROLE_DELETE_MEMBER }
-        - { path: ^/person/edit, roles: ROLE_DELETE_MEMBER }
-        - { path: ^/person, roles: ROLE_SEE_MEMBER }
+        - { path: ^/person/create, roles: ROLE_PERSON_CREATE }
+        - { path: ^/person/delete, roles: ROLE_PERSON_DELETE }
+        - { path: ^/person/edit, roles: ROLE_PERSON_DELETE }
+        - { path: ^/person, roles: ROLE_PERSON_SEE }
         - { path: ^/, roles: IS_AUTHENTICATED_FULLY }

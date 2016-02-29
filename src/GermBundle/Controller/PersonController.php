@@ -42,6 +42,9 @@ class PersonController extends Controller
         $personModel = $this->get('pomm')['germ']
             ->getModel('GermBundle\Model\Germ\PublicSchema\PersonModel');
         $person = $personModel->findByPK(['id'=>$personId]);
+        if (!$person) {
+            throw $this->createNotFoundException('The person does not exist');
+        }
         $form = $this->buildForm($person);
         $form->handleRequest($request);
 
@@ -56,6 +59,23 @@ class PersonController extends Controller
             'GermBundle:Person:edit.html.twig',
             array(
                 'form' => $form->createView(),
+            )
+        );
+    }
+
+    public function showAction(Request $request, $personId)
+    {
+        $personModel = $this->get('pomm')['germ']
+            ->getModel('GermBundle\Model\Germ\PublicSchema\PersonModel');
+        $person = $personModel->findByPK(['id'=>$personId]);
+        if (!$person) {
+            throw $this->createNotFoundException('The person does not exist');
+        }
+
+        return $this->render(
+            'GermBundle:Person:show.html.twig',
+            array(
+                'person' => $person,
             )
         );
     }

@@ -1,9 +1,11 @@
 {% extends 'GermBundle::base.html.twig' %}
 
 {% block content_content %}
-	<a class="btn btn-primary" href="{{ path('germ_person_create') }}">
-		{% trans %}New person{% endtrans %}
-	</a>
+	{% if is_granted('ROLE_PERSON_CREATE') %}
+		<a class="btn btn-primary" href="{{ path('germ_person_create') }}">
+			{% trans %}New person{% endtrans %}
+		</a>
+	{% endif  %}
 	<table class="table table-striped">
 		<tr>
 			<th>{% trans %}Name{% endtrans %}</th>
@@ -11,9 +13,15 @@
 		{% for person in persons %}
 			<tr>
 				<td>
-					<a href="{{ path('germ_person_edit', {'personId': person.id}) }}" data-toggle="tooltip" data-placement="left" title="{% trans with {'%name%': person.name} %}Edit %name%{% endtrans %}">
+					{% if is_granted('ROLE_PERSON_EDIT') %}
+						<a href="{{ path('germ_person_edit', {'personId': person.id}) }}" data-toggle="tooltip" data-placement="left" title="{% trans with {'%name%': person.name} %}Edit %name%{% endtrans %}">
+					{% elseif is_granted('ROLE_PERSON_SEE') %}
+						<a href="{{ path('germ_person_show', {'personId': person.id}) }}">
+					{% endif %}
 						{{ person.name }}
-					</a>
+					{% if is_granted('ROLE_PERSON_EDIT') or is_granted('ROLE_PERSON_SEE') %}
+						</a>
+					{% endif  %}
 				</td>
 			</tr>
 		{% endfor %}

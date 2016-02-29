@@ -10,6 +10,10 @@ germ_person_list:
     path:     /person/list
     defaults: { _controller: GermBundle:Person:list }
 
+germ_person_show:
+    path:     /person/show/{personId}
+    defaults: { _controller: GermBundle:Person:show }
+
 germ_person_edit:
     path:     /person/edit/{personId}
     defaults: { _controller: GermBundle:Person:edit }
