@@ -52,8 +52,8 @@ class Members extends AbstractMigration
             family_id integer NULL,
             firstname VARCHAR(32) NULL,
             lastname VARCHAR(32) NOT NULL,
-            phone VARCHAR(32) NULL,
-            address VARCHAR(255) NULL
+            phone VARCHAR(32)[] NULL,
+            address HSTORE[] NULL
         );');
 
         $this->execute('ALTER TABLE "person" ADD FOREIGN KEY ("family_id") REFERENCES "person" ("id") ON DELETE SET NULL ON UPDATE CASCADE;');
@@ -61,12 +61,21 @@ class Members extends AbstractMigration
 
         $this->execute( <<<SQL
             INSERT INTO "account" ("id", "username", "username_canonical", "email", "email_canonical", "enabled", "salt", "password", "last_login", "locked", "expired", "expires_at", "confirmation_token", "password_requested_at", "roles", "credentials_expired", "credentials_expire_at") VALUES
-            (1, 'test', 'test', 'tast@example.com', 'test@example.com', 't',    '5cmq15n0q0w0go4ogcc0co444ocw4oc', 'LJQRDmbG37bHbZTi0oTH4td8L6mHU7kecPoX2zw8SDwWFpBcT11bQqx+FjOYvfSyP8BdZhwYlUB/kTp1RR31Qg==', NULL,   'f',    'f',    NULL,   NULL,   NULL,   '{"ROLE_ADMIN"}',   'f',    NULL);
+            (1, 'pierre', 'pierre', 'pierre@example.com', 'pierre@example.com', 't',    '5cmq15n0q0w0go4ogcc0co444ocw4oc', 'LJQRDmbG37bHbZTi0oTH4td8L6mHU7kecPoX2zw8SDwWFpBcT11bQqx+FjOYvfSyP8BdZhwYlUB/kTp1RR31Qg==', NULL,   'f',    'f',    NULL,   NULL,   NULL,   '{"ROLE_ADMIN"}',   'f',    NULL);
+SQL
+        $this->execute( <<<SQL
+            INSERT INTO "account" ("id", "username", "username_canonical", "email", "email_canonical", "enabled", "salt", "password", "last_login", "locked", "expired", "expires_at", "confirmation_token", "password_requested_at", "roles", "credentials_expired", "credentials_expire_at") VALUES
+            (2, 'paul', 'paul', 'paul@example.com', 'paul@example.com', 't',    '5cmq15n0q0w0go4ogcc0co444ocw4oc', 'LJQRDmbG37bHbZTi0oTH4td8L6mHU7kecPoX2zw8SDwWFpBcT11bQqx+FjOYvfSyP8BdZhwYlUB/kTp1RR31Qg==', NULL,   'f',    'f',    NULL,   NULL,   NULL,   '{"ROLE_SECRETAIRE"}',   'f',    NULL);
 SQL
         );
         $this->execute( <<<SQL
-            INSERT INTO "person" (account_id, firstname, lastname) VALUES
-            (1, 'Pierre', 'Kephas');
+            INSERT INTO "person" (id, account_id, firstname, lastname, phone, address) VALUES
+            (1, 1, 'Pierre', 'Kephas', '["0240496518"]', '["number"=>"42", "street"=>"Boulevard Auguste Péneau", "postcode"=>"", "city"=>"Nantes"]');
+SQL
+        );
+        $this->execute( <<<SQL
+            INSERT INTO "person" (id, account_id, firstname, lastname) VALUES
+            (2, 2, 'Paul', 'Paulus');
 SQL
         );
 
