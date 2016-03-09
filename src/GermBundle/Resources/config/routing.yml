@@ -7,7 +7,7 @@ fos_user:
     resource: "@FOSUserBundle/Resources/config/routing/all.xml"
 
 germ_person_list:
-    path:     /person/list
+    path:     /person
     defaults: { _controller: GermBundle:Person:list }
 
 germ_person_show:
@@ -21,3 +21,21 @@ germ_person_edit:
 germ_person_create:
     path:     /person/create
     defaults: { _controller: GermBundle:Person:create }
+
+germ_person_account_disable:
+    path:     /person/edit/{personId}/disableAccount
+    defaults:
+        _controller: GermBundle:Person:accountActivation
+        enable: false
+
+germ_person_account_enable:
+    path:     /person/edit/{personId}/enableAccount
+    defaults:
+        _controller: GermBundle:Person:accountActivation
+        enable: true
+
+germ_person_remove:
+    path:     /person/remove/{personId}
+    defaults:
+        _controller: GermBundle:Person:remove
+        enable: true

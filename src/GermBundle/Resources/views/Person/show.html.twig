@@ -6,7 +6,7 @@
 	  <dt>{% trans %}Phone{% endtrans %}</dt>
 	  <dd>{{ person.phone|join('<br />') }}</dd>
 	  <dt>{% trans %}Address{% endtrans %}</dt>
-	  <dd>{{ person.address|nl2br }}</dd>
+	  <dd>{{ person.address|join('<br />') }}</dd>
 	</dl>
 {% endblock %}
 

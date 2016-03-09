@@ -9,6 +9,11 @@ imports:
 parameters:
     locale: fr
 
+# Twig Configuration
+twig:
+    debug:            "%kernel.debug%"
+    strict_variables: "%kernel.debug%"
+
 framework:
     #esi:             ~
     translator:      { fallbacks: ["%locale%"] }
@@ -34,19 +39,20 @@ framework:
     http_method_override: true
     assets: ~
 
-# Twig Configuration
-twig:
-    debug:            "%kernel.debug%"
-    strict_variables: "%kernel.debug%"
-
-# Pomm Configuration
-pomm:
-    configuration:
-        germ:
-            dsn: 'pgsql://%db_user1%:%db_password1%@%db_host1%:%db_port1%/%db_name1%'
-            pomm:default: true
-    logger:
-        service: '@logger'
+# Doctrine Configuration
+doctrine:
+    dbal:
+        driver:   pdo_mysql
+        host:     "%database_host%"
+        port:     "%database_port%"
+        dbname:   "%database_name%"
+        user:     "%database_user%"
+        password: "%database_password%"
+        charset:  UTF8
+    orm:
+        auto_generate_proxy_classes: "%kernel.debug%"
+        naming_strategy: doctrine.orm.naming_strategy.underscore
+        auto_mapping: true
 
 # Swiftmailer Configuration
 swiftmailer:
@@ -70,11 +76,9 @@ assetic:
            ode_paths: [/home/USER/.node_libraries]
 
 fos_user:
-    db_driver: custom
+    db_driver: orm
     firewall_name: main
-    user_class: GermBundle\Model\Germ\PublicSchema\Account
-    service:
-        user_manager: pomm_fos_user_bundle.user_manager
+    user_class: GermBundle\Entity\Account
 
 knp_paginator:
     page_range: 30                     # default page range used in pagination control

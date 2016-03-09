@@ -1,10 +1,10 @@
 Home: Accueil
 Persons: Personnes
 Logout: Déconnexion
-firstname: prénom
-lastname: nom
-Firstname: Prénom
-Lastname: Nom
+first name: prénom
+last name: nom
+First name: Prénom
+Last name: Nom
 Save the person: Enregistrer la personne
 New person: Nouvelle personne
 Name: Nom
@@ -14,3 +14,38 @@ Person updated: Personne enregistrée
 Person created: Personne créé
 Address: Adresse
 Phone: Téléphone
+Save: Enregistrer
+Family: Famille
+Birth date: Naissance
+'(optional)': (facultatif)
+Account: Compte
+Person form: Éditer la personne
+Email: Courriel
+Roles: Roles
+Secretary: Secrétaire
+Helder: Ancien
+Pastor: Pasteur
+User: Utilisateur
+Administrator: Administrateur
+0: 0
+1: 1
+2: 2
+Person was edited successuly: Personne modifiée avec succès
+Person was created successuly: Personne créée avec succès
+Create an access account: Créer un compte d’accès
+Germ account: Compte et niveau d’accès
+Change password form: Modifier le mot de passe
+Desactivate account: Désactiver le compte associé
+The person wont be able to connect this application: Cette personne ne pourra plus se connecter à cette application
+Account was disabled successuly: Compte désactivé avec succès
+Account was enabled successuly : Compte activé avec succès
+The person will be able to connect this application: Cette personne pourra se connecter à cette application
+Activate account: Activer le compte associé
+Person was removed successuly: Personne supprimée avec succès
+Remove person: Supprimer la personne
+The person will be complety removed: La personne sera complétement supprimée
+Remove definitely: Supprimer définitevement
+Caution ! You are about to definitevly remove this person. All those data will be lost: Attention ! Vous êtes sur le point de supprimer définitivement une personne. Ces données seront définitevement perdues
+add_item: Ajouter
+remove_item: Supprimer
+__name__label__: __name__label__

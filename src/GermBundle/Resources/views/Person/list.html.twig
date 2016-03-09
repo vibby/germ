@@ -10,7 +10,7 @@
 		<tr>
 			<th>{% trans %}Name{% endtrans %}</th>
 		</tr>
-		{% for person in persons %}
+		{% for person in pagination %}
 			<tr>
 				<td>
 					{% if is_granted('ROLE_PERSON_EDIT') %}
@@ -26,6 +26,9 @@
 			</tr>
 		{% endfor %}
 	</table>
+	<div class="navigation">
+	    {{ knp_pagination_render(pagination) }}
+	</div>
 {% endblock %}
 
 
