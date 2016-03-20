@@ -5,9 +5,11 @@ namespace GermBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use GermBundle\Form\Type\PersonFormType;
-use GermBundle\Form\Type\ChangePasswordFormType;
+use GermBundle\Form\Type\AccountPasswordFormType;
 use GermBundle\Form\Type\AccountFormType;
+use GermBundle\Form\Type\PersonCreateAccountFormType;
 use GermBundle\Entity\Person;
+use GermBundle\Entity\Account;
 
 class PersonController extends Controller
 {
@@ -22,7 +24,7 @@ class PersonController extends Controller
         $pagination = $paginator->paginate(
             $query,
             $request->query->getInt('page', 1),
-            2
+            30
         );
 
         return $this->render(
@@ -37,28 +39,44 @@ class PersonController extends Controller
     {
         $person = $this->getPersonOr404($personId);
         $form = $this->createForm(PersonFormType::class, $person);
-        $form->handleRequest($request);
-        $em = $this->getDoctrine()->getManager();
         $passwordForm = null;
         $accountForm = null;
         $accountCreateForm = null;
         if ($person->getAccount() && $person->getAccount()->isEnabled() === true) {
-            $passwordForm = $this->createForm(ChangePasswordFormType::class, $person->getAccount());
+            $passwordForm = $this->createForm(AccountPasswordFormType::class, $person->getAccount());
+            $passwordForm->handleRequest($request);
+            if ($passwordForm->isSubmitted() && $passwordForm->isValid()) {
+                return $this->treateSubmission($passwordForm, 'Password was edited successuly');
+            }
+
             $accountForm = $this->createForm(AccountFormType::class, $person->getAccount());
+            $accountForm->handleRequest($request);
+            if ($accountForm->isSubmitted() && $accountForm->isValid()) {
+                return $this->treateSubmission($accountForm, 'Account was edited successuly');
+            }
         } elseif (!$person->getAccount()) {
-            $accountCreateForm = $this->createForm(AccountFormType::class);
+            $accountCreateForm = $this->createForm(PersonCreateAccountFormType::class, $person);
+            $accountCreateForm->handleRequest($request);
+            if ($accountCreateForm->isSubmitted() && $accountCreateForm->isValid()) {
+                $account = $form->getData()->getAccount();
+                $account->setPerson($person);
+                $account->setEnabled(true);
+                $em = $this->getDoctrine()->getManager();
+
+                $em->persist($account);
+                $em->flush();
+                $this->get('session')->getFlashBag()->add(
+                    'success',
+                    'Account was created successuly'
+                );
+
+                return $this->redirectToRoute('germ_person_edit', ['personId' => $person->getId()]);
+            }
         }
+
+        $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $person = $form->getData();
-
-            $em->persist($person);
-            $em->flush();
-            $this->get('session')->getFlashBag()->add(
-                'success',
-                'Person was edited successuly'
-            );
-
-            return $this->redirectToRoute('germ_person_edit', ['personId' => $person->getId()]);
+            return $this->treateSubmission($form, 'Person was edited successuly');
         }
 
         return $this->render(
@@ -70,6 +88,22 @@ class PersonController extends Controller
                 'accountCreateForm' => $accountCreateForm ? $accountCreateForm->createView() : null,
             )
         );
+    }
+
+
+    private function treateSubmission($form, $message = 'Person was submitted successuly')
+    {
+        $em = $this->getDoctrine()->getManager();
+        $person = $form->getData();
+
+        $em->persist($person);
+        $em->flush();
+        $this->get('session')->getFlashBag()->add(
+            'success',
+            $message
+        );
+
+        return $this->redirectToRoute('germ_person_edit', ['personId' => $person->getId()]);
     }
 
     public function removeAction(Request $request, $personId)

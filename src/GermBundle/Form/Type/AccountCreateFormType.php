@@ -20,7 +20,7 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
-class AccountFormType extends AbstractType
+class AccountCreateFormType extends AbstractType
 {
     private $class;
 
@@ -46,6 +46,13 @@ class AccountFormType extends AbstractType
             ])
             ->add('username', null, array('label' => 'form.username', 'translation_domain' => 'FOSUserBundle'))
             ->add('email', null, array('label' => 'form.email', 'translation_domain' => 'FOSUserBundle'))
+            ->add('plainPassword', LegacyFormHelper::getType('Symfony\Component\Form\Extension\Core\Type\RepeatedType'), array(
+                'type' => LegacyFormHelper::getType('Symfony\Component\Form\Extension\Core\Type\PasswordType'),
+                'options' => array('translation_domain' => 'FOSUserBundle'),
+                'first_options' => array('label' => 'form.new_password'),
+                'second_options' => array('label' => 'form.new_password_confirmation'),
+                'invalid_message' => 'fos_user.password.mismatch',
+            ))
         ;
     }
 
@@ -53,7 +60,7 @@ class AccountFormType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => $this->class,
-            'csrf_token_id' => 'account',
+            'csrf_token_id' => 'person',
             'data_class' => 'GermBundle\Entity\Account',
         ));
     }

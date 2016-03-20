@@ -20,32 +20,14 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
-class AccountFormType extends AbstractType
+class PersonCreateAccountFormType extends AbstractType
 {
     private $class;
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('roles', CollectionType::class, [
-                // each entry in the array will be an "email" field
-                'entry_type'   => ChoiceType::class,
-                // these options are passed to each "email" type
-                'entry_options'  => array(
-                    'choices'  => array(
-                        'Secretary' => 'ROLE_SECRETARY',
-                        'Helder' => 'ROLE_HELDER',
-                        'Pastor' => 'ROLE_PASTOR',
-                        'User' => 'ROLE_USER',
-                        'Administrator' => 'ROLE_ADMIN',
-                    ),
-                    'label'  => false,
-                ),
-                'allow_add'     =>true,
-                'allow_delete'  =>true,
-            ])
-            ->add('username', null, array('label' => 'form.username', 'translation_domain' => 'FOSUserBundle'))
-            ->add('email', null, array('label' => 'form.email', 'translation_domain' => 'FOSUserBundle'))
+            ->add('account', AccountCreateFormType::class)
         ;
     }
 
@@ -53,8 +35,8 @@ class AccountFormType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => $this->class,
-            'csrf_token_id' => 'account',
-            'data_class' => 'GermBundle\Entity\Account',
+            'csrf_token_id' => 'person',
+            'data_class' => 'GermBundle\Entity\Person',
         ));
     }
 

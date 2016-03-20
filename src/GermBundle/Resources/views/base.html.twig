@@ -9,29 +9,27 @@
 {% block main_menu %}
 {% embed '@MopaBootstrap/Navbar/navbar.html.twig' %}
     {% block brand %}
-        <a class="navbar-brand" href="#">{{ app.user.username }}</a>
+        <a class="navbar-brand" href="{{ path('germ_person_edit', {'personId': app.user.person.id}) }}"  aria-hidden="true" data-toggle="tooltip" data-placement="top" title="{% trans %}Edit your infos{% endtrans %}">{{ app.user.username }} <span class="glyphicon glyphicon-user"></span></a>
     {% endblock %}
 
     {% block menu %}
         {{ mopa_bootstrap_menu('GermBundle:Builder:mainMenu', {'automenu':'navbar'}) }}
     {% endblock %}
 {% endembed %}
-<!-- {{ mopa_bootstrap_menu('GermBundle:Builder:mainMenu', {'automenu': 'navbar'}) }} -->
 {% endblock %}
 
 {% block content %}
-<div class="col-sm-9">
+<div class="col-sm-8">
     {% block content_content %}
     <strong>Hier könnte Ihre Werbung stehen ... </strong>
     {% endblock content_content %}
 </div>
-<div class="col-sm-3">
+<div class="col-sm-4">
     {% block content_sidebar %}
-    <h2>Sidebar</h2>
     {% endblock content_sidebar %}
 </div>
 {% endblock content %}
 
 {% block footer %}
-    <p><strong>Germ</strong> <small>− Gestion d’Église pour les Responsables et les Membres.</small> <a href="http://www.vibby.fr" target="_blank">Vibby</a> 2016</p>
+    <p class="text-center top10"><strong>Germ</strong> <small>− Gestion d’Église pour les Responsables et les Membres.</small> <a href="http://www.vibby.fr" target="_blank">Vibby</a> 2016</p>
 {% endblock footer %}

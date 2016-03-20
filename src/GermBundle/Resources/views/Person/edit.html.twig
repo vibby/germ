@@ -1,27 +1,52 @@
 {% extends 'GermBundle::base.html.twig' %}
 
 {% block content_content %}
-	{{ form_start(form) }}
-	{{ form_widget(form) }}
-	{{ form_end(form) }}
-	<a class="btn btn-danger" href="{{ path('germ_person_remove', {'personId': form.vars.value.id}) }}" data-toggle="tooltip" data-placement="left" title="{% trans %}The person will be complety removed{% endtrans %}">{% trans %}Remove person{% endtrans %}</a>
+	<div class="panel panel-default">
+		<div class="panel-body">
+			{{ form_start(form) }}
+			{{ form_widget(form) }}
+			<button class="btn btn-primary" type="submit">{% trans %}Save{% endtrans %}</button>
+			<a class="btn btn-danger" href="{{ path('germ_person_remove', {'personId': form.vars.value.id}) }}" data-toggle="tooltip" data-placement="left" title="{% trans %}The person will be complety removed{% endtrans %}">{% trans %}Remove person{% endtrans %}</a>
+			{{ form_end(form) }}
+		</div>
+	</div>
+{% endblock %}
+
+{% block content_sidebar %}
+	{% if accountForm %}
+		<div class="panel panel-default">
+			<div class="panel-body">
+	  			{{ form_start(accountForm) }}
+				{{ form_widget(accountForm) }}
+				<button class="btn btn-primary" type="submit">{% trans %}Save{% endtrans %}</button>
+				{{ form_end(accountForm) }}
+  		  	</div>
+		</div>
+	{% endif %}
+	{% if passwordForm  %}
+		<div class="panel panel-default">
+			<div class="panel-body">
+				{{ form_start(passwordForm) }}
+				{{ form_widget(passwordForm) }}
+				<button class="btn btn-primary" type="submit">{% trans %}Save{% endtrans %}</button>
+				{{ form_end(passwordForm) }}
+			</div>
+		</div>
+	{% endif %}
+	{% if accountCreateForm %}
+		<div class="panel panel-default">
+			<div class="panel-body">
+				{{ form_start(accountCreateForm) }}
+				{{ form_widget(accountCreateForm) }}
+				<button class="btn btn-primary" type="submit">{% trans %}Save{% endtrans %}</button>
+				{{ form_end(accountCreateForm) }}
+			</div>
+		</div>
+	{% endif %}
 	{% if not accountCreateForm and not accountForm %}
 		<a class="btn btn-default" href="{{ path('germ_person_account_enable', {'personId': form.vars.value.id}) }}" data-toggle="tooltip" data-placement="left" title="{% trans %}The person will be able to connect this application{% endtrans %}">{% trans %}Activate account{% endtrans %}</a>
 	{% endif %}
 	{% if accountForm %}
-		<a class="btn btn-default" href="{{ path('germ_person_account_disable', {'personId': form.vars.value.id}) }}" data-toggle="tooltip" data-placement="left" title="{% trans %}The person wont be able to connect this application{% endtrans %}">{% trans %}Desactivate account{% endtrans %}</a>
-		{{ form_start(accountForm) }}
-		{{ form_widget(accountForm) }}
-		{{ form_end(accountForm) }}
-	{% endif %}
-	{% if passwordForm  %}
-		{{ form_start(passwordForm) }}
-		{{ form_widget(passwordForm) }}
-		{{ form_end(passwordForm) }}
-	{% endif %}
-	{% if accountCreateForm %}
-		{{ form_start(accountCreateForm) }}
-		{{ form_widget(accountCreateForm) }}
-		{{ form_end(accountCreateForm) }}
+		<a class="btn btn-default btn-warning" href="{{ path('germ_person_account_disable', {'personId': form.vars.value.id}) }}" data-toggle="tooltip" data-placement="left" title="{% trans %}The person wont be able to connect this application{% endtrans %}">{% trans %}Desactivate account{% endtrans %}</a>
 	{% endif %}
 {% endblock %}
