@@ -4,24 +4,6 @@
 	{{ form_start(form) }}
 	{{ form_widget(form) }}
 	{{ form_end(form) }}
-	<a class="btn btn-danger" href="{{ path('germ_person_remove', {'personId': form.vars.value.id}) }}" data-toggle="tooltip" data-placement="left" title="{% trans %}The person will be complety removed{% endtrans %}">{% trans %}Remove person{% endtrans %}</a>
-	{% if not accountCreateForm and not accountForm %}
-		<a class="btn btn-default" href="{{ path('germ_person_account_enable', {'personId': form.vars.value.id}) }}" data-toggle="tooltip" data-placement="left" title="{% trans %}The person will be able to connect this application{% endtrans %}">{% trans %}Activate account{% endtrans %}</a>
-	{% endif %}
-	{% if accountForm %}
-		<a class="btn btn-default" href="{{ path('germ_person_account_disable', {'personId': form.vars.value.id}) }}" data-toggle="tooltip" data-placement="left" title="{% trans %}The person wont be able to connect this application{% endtrans %}">{% trans %}Desactivate account{% endtrans %}</a>
-		{{ form_start(accountForm) }}
-		{{ form_widget(accountForm) }}
-		{{ form_end(accountForm) }}
-	{% endif %}
-	{% if passwordForm  %}
-		{{ form_start(passwordForm) }}
-		{{ form_widget(passwordForm) }}
-		{{ form_end(passwordForm) }}
-	{% endif %}
-	{% if accountCreateForm %}
-		{{ form_start(accountCreateForm) }}
-		{{ form_widget(accountCreateForm) }}
-		{{ form_end(accountCreateForm) }}
-	{% endif %}
 {% endblock %}
+
+

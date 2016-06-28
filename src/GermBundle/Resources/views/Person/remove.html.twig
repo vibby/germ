@@ -1,9 +1,0 @@
-{% extends 'GermBundle:Person:show.html.twig' %}
-
-{% block content_content %}
-	<p class="bg-danger">{% trans %}Caution ! You are about to definitevly remove this person. All those data will be lost{% endtrans %}</p>
-	<form action="{{ path('germ_person_remove', {'personId': person.id}) }}" method="POST"><button class="btn btn-danger">{% trans %}Remove definitely{% endtrans %}</button></form>
-	{{ parent() }}
-{% endblock %}
-
-

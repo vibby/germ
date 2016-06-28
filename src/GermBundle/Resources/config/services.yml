@@ -1,4 +1,10 @@
 
-parameters: ~
+parameters:
+    pomm_fos_user.connection_name: 'germ'
+    pomm_fos_user.user_model_class: GermBundle\Model\Germ\PublicSchema\AccountModel
 
-services: ~
+services:
+    germ.pomm.subscriber:
+        class: GermBundle\Subscriber\PommSubscriber
+        tags:
+            - { name: knp_paginator.subscriber }
