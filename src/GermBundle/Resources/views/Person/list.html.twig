@@ -19,9 +19,6 @@
 						<a href="{{ path('germ_person_show', {'personId': person.id}) }}">
 					{% endif %}
 						{{ person.name }}
-					{% if person.account and person.account.enabled %}
-						<span class="glyphicon glyphicon-briefcase" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="{% trans with {'%name%': person.name} %}%name% can connect with login and password{% endtrans %}"></span>
-					{% endif %}
 					{% if is_granted('ROLE_PERSON_EDIT') or is_granted('ROLE_PERSON_SEE') %}
 						</a>
 					{% endif  %}

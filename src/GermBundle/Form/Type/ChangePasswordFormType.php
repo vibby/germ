@@ -19,7 +19,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
-class AccountPasswordFormType extends AbstractType
+class ChangePasswordFormType extends AbstractType
 {
     private $class;
 
@@ -33,6 +33,7 @@ class AccountPasswordFormType extends AbstractType
                 'second_options' => array('label' => 'form.new_password_confirmation'),
                 'invalid_message' => 'fos_user.password.mismatch',
             ))
+            ->add('save', SubmitType::class)
         ;
     }
 
@@ -41,6 +42,8 @@ class AccountPasswordFormType extends AbstractType
         $resolver->setDefaults(array(
             'data_class' => $this->class,
             'csrf_token_id' => 'change_password',
+            // BC for SF < 2.8
+            'intention'  => 'change_password',
             'data_class' => 'GermBundle\Entity\Account',
         ));
     }

@@ -45,7 +45,7 @@ class AccountFormType extends AbstractType
                 'allow_delete'  =>true,
             ])
             ->add('username', null, array('label' => 'form.username', 'translation_domain' => 'FOSUserBundle'))
-            ->add('email', null, array('label' => 'form.email', 'translation_domain' => 'FOSUserBundle'))
+            ->add('save', SubmitType::class)
         ;
     }
 
@@ -54,6 +54,8 @@ class AccountFormType extends AbstractType
         $resolver->setDefaults(array(
             'data_class' => $this->class,
             'csrf_token_id' => 'account',
+            // BC for SF < 2.8
+            'intention'  => 'registration',
             'data_class' => 'GermBundle\Entity\Account',
         ));
     }

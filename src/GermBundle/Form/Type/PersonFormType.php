@@ -36,6 +36,7 @@ class PersonFormType extends AbstractType
             ->add('email', EmailType::class, array(
                 'required' => false,
             ))
+            ->add('save', SubmitType::class)
         ;
     }
 

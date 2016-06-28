@@ -78,7 +78,7 @@ class Person
     private $family;
 
     /**
-    * @ORM\OneToOne(targetEntity="Account", mappedBy="person", cascade={"persist"})
+    * @ORM\OneToOne(targetEntity="Account", mappedBy="person")
     */
     private $account;
 
@@ -240,18 +240,6 @@ class Person
     public function getAccount()
     {
         return $this->account;
-    }
-
-    /**
-     * Get account
-     *
-     * @return array
-     */
-    public function setAccount(Account $account)
-    {
-        $this->account = $account;
-
-        return $this;
     }
 
     /**

@@ -49,9 +49,3 @@ Caution ! You are about to definitevly remove this person. All those data will b
 add_item: Ajouter
 remove_item: Supprimer
 __name__label__: __name__label__
-Password: Mot de passe
-Account password form: Changer le mot de passe
-Account was edited successuly: Compte modifié avec succès
-Account was created successuly: Compte créé avec succès
-%name% can connect with login and password: %name% peut se connecter avec identifiant et mot de passe
-Edit your infos: Éditer vos informations
