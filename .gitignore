@@ -17,3 +17,6 @@
 /web/bundles/
 /auth.json
 /phinx.yml
+*.orig
+/web/js/*
+/web/css/*
