@@ -53,7 +53,9 @@ class Members extends AbstractMigration
             firstname VARCHAR(32) NULL,
             lastname VARCHAR(32) NOT NULL,
             phone VARCHAR(32)[] NULL,
-            address VARCHAR(256) NULL
+            address VARCHAR(256) NULL,
+            email VARCHAR(64) NULL,
+            birthdate DATE NULL
         );');
 
         $this->execute('ALTER TABLE "person" ADD FOREIGN KEY ("family_id") REFERENCES "person" ("id") ON DELETE SET NULL ON UPDATE CASCADE;');

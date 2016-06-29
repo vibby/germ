@@ -4,7 +4,7 @@ parameters:
     db_port1: 5432
     db_name1: germ
     db_user1: germ
-    db_password1: ~
+    db_password1: xxxxxxxxxxxx
     mailer_transport: smtp
     mailer_host: 127.0.0.1
     mailer_user: null

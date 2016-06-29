@@ -39,6 +39,8 @@ class Phinxlog extends RowStructure
             ->addField('version', 'int8')
             ->addField('start_time', 'timestamp')
             ->addField('end_time', 'timestamp')
+            ->addField('migration_name', 'varchar')
+            ->addField('breakpoint', 'bool')
             ;
     }
 }

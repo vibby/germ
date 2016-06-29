@@ -13,7 +13,7 @@ use PommProject\ModelManager\Model\RowStructure;
  * Person
  *
  * Structure class for relation public.person.
- * 
+ *
  * Class and fields comments are inspected from table and fields comments.
  * Just add comments in your database and they will appear here.
  * @see http://www.postgresql.org/docs/9.0/static/sql-comment.html
@@ -42,6 +42,8 @@ class Person extends RowStructure
             ->addField('lastname', 'varchar')
             ->addField('phone', 'varchar[]')
             ->addField('address', 'varchar')
+            ->addField('email', 'varchar')
+            ->addField('birthdate', 'date')
             ;
     }
 }

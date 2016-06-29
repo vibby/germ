@@ -8,6 +8,13 @@ imports:
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: fr
+    knp_paginator.template.pagination: MopaBootstrapBundle:Pagination:sliding.html.twig
+    pomm_fos_user.connection_name: 'germ'
+
+# Twig Configuration
+twig:
+    debug:            "%kernel.debug%"
+    strict_variables: "%kernel.debug%"
 
 framework:
     #esi:             ~
@@ -43,7 +50,7 @@ twig:
 pomm:
     configuration:
         germ:
-            dsn: 'pgsql://%db_user1%:%db_password1%@%db_host1%:%db_port1%/%db_name1%'
+            dsn: "pgsql://%db_user1%:%db_password1%@%db_host1%:%db_port1%/%db_name1%"
             pomm:default: true
     logger:
         service: '@logger'
