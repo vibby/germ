@@ -14,11 +14,11 @@
 			<tr>
 				<td>
 					{% if is_granted('ROLE_PERSON_EDIT') %}
-						<a href="{{ path('germ_person_edit', {'personId': person.id}) }}" data-toggle="tooltip" data-placement="left" title="{% trans with {'%name%': person.name} %}Edit %name%{% endtrans %}">
+						<a href="{{ path('germ_person_edit', {'personId': person.id}) }}" data-toggle="tooltip" data-placement="left" title="{% trans with {'%name%': person} %}Edit %name%{% endtrans %}">
 					{% elseif is_granted('ROLE_PERSON_SEE') %}
 						<a href="{{ path('germ_person_show', {'personId': person.id}) }}">
 					{% endif %}
-						{{ person.name }}
+						{{ person }}
 					{% if is_granted('ROLE_PERSON_EDIT') or is_granted('ROLE_PERSON_SEE') %}
 						</a>
 					{% endif  %}

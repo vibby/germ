@@ -18,6 +18,18 @@ germ_person_edit:
     path:     /person/edit/{personId}
     defaults: { _controller: GermBundle:Person:edit }
 
+germ_person_remove:
+    path:     /person/remove/{personId}
+    defaults: { _controller: GermBundle:Person:remove }
+
 germ_person_create:
     path:     /person/create
     defaults: { _controller: GermBundle:Person:create }
+
+germ_person_account_disable:
+    path:     /person/disable/{personId}
+    defaults: { _controller: GermBundle:Person:accountActivation, enable:false }
+
+germ_person_account_enable:
+    path:     /person/enable/{personId}
+    defaults: { _controller: GermBundle:Person:accountActivation, enable:true }
