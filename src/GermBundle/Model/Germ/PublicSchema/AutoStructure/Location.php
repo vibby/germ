@@ -10,9 +10,9 @@ namespace GermBundle\Model\Germ\PublicSchema\AutoStructure;
 use PommProject\ModelManager\Model\RowStructure;
 
 /**
- * Person
+ * Location
  *
- * Structure class for relation public.person.
+ * Structure class for relation public.location.
  * 
  * Class and fields comments are inspected from table and fields comments.
  * Just add comments in your database and they will appear here.
@@ -22,7 +22,7 @@ use PommProject\ModelManager\Model\RowStructure;
  *
  * @see RowStructure
  */
-class Person extends RowStructure
+class Location extends RowStructure
 {
     /**
      * __construct
@@ -34,16 +34,11 @@ class Person extends RowStructure
     public function __construct()
     {
         $this
-            ->setRelation('public.person')
+            ->setRelation('public.location')
             ->setPrimaryKey(['id'])
             ->addField('id', 'int4')
-            ->addField('family_id', 'int4')
-            ->addField('firstname', 'varchar')
-            ->addField('lastname', 'varchar')
-            ->addField('phone', 'varchar[]')
-            ->addField('address', 'varchar')
-            ->addField('email', 'varchar')
-            ->addField('birthdate', 'date')
+            ->addField('name', 'varchar')
+            ->addField('details', 'json')
             ;
     }
 }

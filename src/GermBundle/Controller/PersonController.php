@@ -45,7 +45,6 @@ class PersonController extends Controller
 
     public function editAction(Request $request, $personId)
     {
-        $translator = $this->get('translator');
         $accountModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\PublicSchema\AccountModel');
         $person = $this->getPersonOr404($personId);
 
@@ -85,7 +84,7 @@ class PersonController extends Controller
             }
             $accountCreateForm = null;
         } else {
-            $accountCreateForm = $this->buildAccountCreateForm(new Account());
+            $accountCreateForm = $this->buildAccountCreateForm();
             $accountCreateForm->handleRequest($request);
             if ($accountCreateForm->isSubmitted() && $accountCreateForm->isValid()) {
                 $accountModel->insertOne($account, array_keys($accountCreateForm->getData()->extract()));
@@ -101,6 +100,7 @@ class PersonController extends Controller
         return $this->render(
             'GermBundle:Person:edit.html.twig',
             array(
+                'mode' => 'edit',
                 'form' => $personForm,
                 'accountForm' => $accountForm,
                 'passwordForm' => $passwordForm,
@@ -131,7 +131,11 @@ class PersonController extends Controller
         $person = new Person();
         $person->setFirstname('');
         $person->setLastname('');
-        $form = $this->buildForm($person);
+        $person->setBirthdate('');
+        $person->setPhone([]);
+        $person->setAddress('');
+        $person->setEmail('');
+        $form = $this->buildPersonForm($person);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -145,9 +149,20 @@ class PersonController extends Controller
         return $this->render(
             'GermBundle:Person:edit.html.twig',
             array(
+                'mode' => 'create',
                 'form' => $form->createView(),
             )
         );
+    }
+
+    public function removeAction($personId)
+    {
+        $person = $this->getPersonOr404($personId);
+        $personModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\PublicSchema\PersonModel');
+        $personModel->deleteOne($person);
+        $this->get('session')->getFlashBag()->add('success', 'Person deleted');
+
+        return $this->redirectToRoute('germ_person_list');
     }
 
     private function getPersonOr404($personId)
@@ -212,7 +227,6 @@ class PersonController extends Controller
             ->getForm();
     }
 
-
     private function buildAccountForm(Account $account)
     {
         return $this->get('form.factory')
@@ -239,8 +253,13 @@ class PersonController extends Controller
             ->getForm();
     }
 
-    private function buildAccountCreateForm(Account $account)
+    private function buildAccountCreateForm(Account $account = null)
     {
+        if (!$account) {
+            $account = new Account();
+            $account->setUsername('');
+            $account->setEmail('');
+        }
         return $this->get('form.factory')
             ->createNamedBuilder('Account', FormType::class, $account)
             ->add('roles', CollectionType::class, [

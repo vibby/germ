@@ -36,7 +36,8 @@
         "pomm-project/foundation": "2.0.*@dev",
         "pomm-project/model-manager": "2.0.*@dev",
         "pomm-project/cli": "2.0.*@dev",
-        "vibby/pomm-project-fos-user-bundle": "dev-master"
+        "vibby/pomm-project-fos-user-bundle": "dev-master",
+        "mtdowling/cron-expression": "1.1.*"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",

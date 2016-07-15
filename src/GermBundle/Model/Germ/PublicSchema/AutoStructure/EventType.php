@@ -10,10 +10,10 @@ namespace GermBundle\Model\Germ\PublicSchema\AutoStructure;
 use PommProject\ModelManager\Model\RowStructure;
 
 /**
- * Person
+ * EventType
  *
- * Structure class for relation public.person.
- * 
+ * Structure class for relation public.event_type.
+ *
  * Class and fields comments are inspected from table and fields comments.
  * Just add comments in your database and they will appear here.
  * @see http://www.postgresql.org/docs/9.0/static/sql-comment.html
@@ -22,7 +22,7 @@ use PommProject\ModelManager\Model\RowStructure;
  *
  * @see RowStructure
  */
-class Person extends RowStructure
+class EventType extends RowStructure
 {
     /**
      * __construct
@@ -34,16 +34,12 @@ class Person extends RowStructure
     public function __construct()
     {
         $this
-            ->setRelation('public.person')
+            ->setRelation('public.event_type')
             ->setPrimaryKey(['id'])
             ->addField('id', 'int4')
-            ->addField('family_id', 'int4')
-            ->addField('firstname', 'varchar')
-            ->addField('lastname', 'varchar')
-            ->addField('phone', 'varchar[]')
-            ->addField('address', 'varchar')
-            ->addField('email', 'varchar')
-            ->addField('birthdate', 'date')
+            ->addField('name', 'varchar')
+            ->addField('recurence', 'varchar')
+            ->addField('event_layout', 'json')
             ;
     }
 }

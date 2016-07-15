@@ -6,14 +6,16 @@
 			{{ form_start(form) }}
 			{{ form_widget(form) }}
 			<button class="btn btn-primary" type="submit">{% trans %}Save{% endtrans %}</button>
-			<a class="btn btn-danger" href="{{ path('germ_person_remove', {'personId': form.vars.value.id}) }}" data-toggle="tooltip" data-placement="left" title="{% trans %}The person will be complety removed{% endtrans %}">{% trans %}Remove person{% endtrans %}</a>
+			{% if mode == 'edit' %}
+				<a class="btn btn-danger" href="{{ path('germ_person_remove', {'personId': form.vars.value.id}) }}" data-toggle="tooltip" data-placement="left" title="{% trans %}The person will be complety removed{% endtrans %}">{% trans %}Remove person{% endtrans %}</a>
+			{% endif %}
 			{{ form_end(form) }}
 		</div>
 	</div>
 {% endblock %}
 
 {% block content_sidebar %}
-	{% if accountForm %}
+	{% if accountForm is defined and accountForm %}
 		<div class="panel panel-default">
 			<div class="panel-body">
 	  			{{ form_start(accountForm) }}
@@ -23,7 +25,7 @@
   		  	</div>
 		</div>
 	{% endif %}
-	{% if passwordForm  %}
+	{% if passwordForm is defined and passwordForm %}
 		<div class="panel panel-default">
 			<div class="panel-body">
 				{{ form_start(passwordForm) }}
@@ -33,7 +35,7 @@
 			</div>
 		</div>
 	{% endif %}
-	{% if accountCreateForm %}
+	{% if accountCreateForm is defined and accountCreateForm %}
 		<div class="panel panel-default">
 			<div class="panel-body">
 				{{ form_start(accountCreateForm) }}
@@ -43,10 +45,10 @@
 			</div>
 		</div>
 	{% endif %}
-	{% if not accountCreateForm and not accountForm %}
+	{% if accountCreateForm is defined and not accountCreateForm and not accountForm %}
 		<a class="btn btn-default" href="{{ path('germ_person_account_enable', {'personId': form.vars.value.id}) }}" data-toggle="tooltip" data-placement="left" title="{% trans %}The person will be able to connect this application{% endtrans %}">{% trans %}Activate account{% endtrans %}</a>
 	{% endif %}
-	{% if accountForm %}
+	{% if accountForm is defined and accountForm %}
 		<a class="btn btn-default btn-warning" href="{{ path('germ_person_account_disable', {'personId': form.vars.value.id}) }}" data-toggle="tooltip" data-placement="left" title="{% trans %}The person wont be able to connect this application{% endtrans %}">{% trans %}Desactivate account{% endtrans %}</a>
 	{% endif %}
 {% endblock %}

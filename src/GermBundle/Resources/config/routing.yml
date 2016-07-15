@@ -33,3 +33,23 @@ germ_person_account_disable:
 germ_person_account_enable:
     path:     /person/enable/{personId}
     defaults: { _controller: GermBundle:Person:accountActivation, enable:true }
+
+germ_event_list:
+    path:     /event/list
+    defaults: { _controller: GermBundle:Event:list }
+
+germ_event_create:
+    path:     /event/create
+    defaults: { _controller: GermBundle:Event:create }
+
+germ_event_edit:
+    path:     /event/edit/{eventId}
+    defaults: { _controller: GermBundle:Event:edit }
+
+germ_event_show:
+    path:     /event/show/{eventId}
+    defaults: { _controller: GermBundle:Event:show }
+
+germ_event_remove:
+    path:     /event/remove/{eventId}
+    defaults: { _controller: GermBundle:Event:remove }

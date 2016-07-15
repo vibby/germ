@@ -50,7 +50,7 @@ class Account extends RowStructure
             ->addField('expires_at', 'timestamp')
             ->addField('confirmation_token', 'varchar')
             ->addField('password_requested_at', 'timestamp')
-            ->addField('roles', 'text[]')
+            ->addField('roles', 'varchar[]')
             ->addField('credentials_expired', 'bool')
             ->addField('credentials_expire_at', 'timestamp')
             ->addField('person_id', 'int4')

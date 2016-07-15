@@ -8,3 +8,14 @@ services:
         class: GermBundle\Subscriber\PommSubscriber
         tags:
             - { name: knp_paginator.subscriber }
+
+    germ.stringify_extension:
+        class: GermBundle\Twig\StringifyExtension
+        public: false
+        tags:
+            - { name: twig.extension }
+
+    germ.event_manager:
+        class: GermBundle\Manager\EventManager
+        calls:
+            - [setPomm, ['@pomm']]
