@@ -1,6 +1,6 @@
 {% extends 'GermBundle::base.html.twig' %}
 
-{% block content_content %}
+{% block content_main %}
     {% if is_granted('ROLE_EVENT_CREATE') %}
         <form class="form-inline" action="{{ path('germ_event_create') }}">
             <div class="form-group">

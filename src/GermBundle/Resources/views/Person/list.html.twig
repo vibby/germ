@@ -1,6 +1,6 @@
 {% extends 'GermBundle::base.html.twig' %}
 
-{% block content_content %}
+{% block content_main %}
 	{% if is_granted('ROLE_PERSON_CREATE') %}
 		<a class="btn btn-primary" href="{{ path('germ_person_create') }}">
 			{% trans %}New person{% endtrans %}
@@ -28,4 +28,19 @@
 	</table>
 {% endblock %}
 
+{% block main_width %}{% if form is defined %}6{% else %}12{% endif %}{% endblock %}
+{% block right_width %}{% if form is defined %}6{% else %}0{% endif %}{% endblock %}
+
+{% block content_right %}
+	{% if form is defined %}
+		<div class="panel panel-default">
+			<div class="panel-body">
+				{{ form_start(form) }}
+				{{ form_widget(form) }}
+				<button class="btn btn-primary" type="submit">{% trans %}Create person{% endtrans %}</button>
+				{{ form_end(form) }}
+			</div>
+		</div>
+	{% endif %}
+{% endblock %}
 

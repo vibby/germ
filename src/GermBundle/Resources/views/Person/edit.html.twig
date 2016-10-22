@@ -1,6 +1,9 @@
 {% extends 'GermBundle::base.html.twig' %}
 
-{% block content_content %}
+{% block main_width %}6{% endblock %}
+{% block right_width %}6{% endblock %}
+
+{% block content_main %}
 	<div class="panel panel-default">
 		<div class="panel-body">
 			{{ form_start(form) }}
@@ -14,7 +17,7 @@
 	</div>
 {% endblock %}
 
-{% block content_sidebar %}
+{% block content_right %}
 	{% if accountForm is defined and accountForm %}
 		<div class="panel panel-default">
 			<div class="panel-body">

@@ -14,6 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use FOS\UserBundle\Util\LegacyFormHelper;
 
 class PersonController extends Controller
@@ -34,11 +35,26 @@ class PersonController extends Controller
         //     30
         // );
 
+        $output['persons'] = $persons;
+
+        $authorizationChecker = $this->get('security.authorization_checker');
+        if ($authorizationChecker->isGranted('ROLE_PERSON_CREATE')) {
+            $person = new Person();
+            $person->setFirstname('');
+            $person->setLastname('');
+            $person->setBirthdate('');
+            $person->setPhone([]);
+            $person->setAddress('');
+            $person->setEmail('');
+            $form = $this->buildPersonForm($person);
+            $form->handleRequest($request);
+
+            $output['form'] = $form->createView();
+        }
+
         return $this->render(
             'GermBundle:Person:list.html.twig',
-            array(
-                'persons' => $persons,
-            )
+            $output
         );
 
     }
