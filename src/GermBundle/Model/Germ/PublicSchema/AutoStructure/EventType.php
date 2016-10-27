@@ -13,7 +13,7 @@ use PommProject\ModelManager\Model\RowStructure;
  * EventType
  *
  * Structure class for relation public.event_type.
- *
+ * 
  * Class and fields comments are inspected from table and fields comments.
  * Just add comments in your database and they will appear here.
  * @see http://www.postgresql.org/docs/9.0/static/sql-comment.html

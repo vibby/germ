@@ -6,7 +6,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use GermBundle\Model\Germ\PublicSchema\Event;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use GermBundle\Type\DateIntervalType;
+// TODO : replace previous line with the above when sf 3.2 is out
+// use Symfony\Component\Form\Extension\Core\Type\DateIntervalType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -19,7 +22,7 @@ class EventController extends Controller
     public function listAction(Request $request)
     {
         $model = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\PublicSchema\EventModel');
-        $events = $model->findAll();
+        $events = $model->findAll('order by date_from desc');
 
         $model = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\PublicSchema\EventTypeModel');
         $eventTypes = $model->findAll();
@@ -52,6 +55,7 @@ class EventController extends Controller
         return $this->render(
             'GermBundle:Event:edit.html.twig',
             array(
+                'mode' => 'edit',
                 'form' => $eventForm,
             )
         );
@@ -95,6 +99,7 @@ class EventController extends Controller
             'GermBundle:Event:edit.html.twig',
             array(
                 'form' => $form->createView(),
+                'mode' => 'create',
             )
         );
     }
@@ -111,11 +116,23 @@ class EventController extends Controller
 
     private function buildEventForm(Event $event)
     {
-        return $this->get('form.factory')
+        $builder = $this->get('form.factory')
             ->createNamedBuilder('Event', FormType::class, $event)
             ->add('name', TextType::class)
-            ->add('date_from')
-            ->add('duration')
-            ->getForm();
+            ->add('date_from', DateType::class)
+            ->add('duration', DateIntervalType::class);
+
+        // $builder->get('date_from')
+        //     ->addModelTransformer(new CallbackTransformer(
+        //         function (/DateTime $date) {
+        //             return $date->format('d-m-Y h:i:s');
+        //         },
+        //         function ($dateAsString) {
+        //             return new \DateTime()
+        //         }
+        //     ))
+        // ;
+
+        return $builder->getForm();
     }
 }
