@@ -25,7 +25,7 @@ class PersonController extends Controller
         $model = $this->get('pomm')['germ']
             ->getModel('GermBundle\Model\Germ\PublicSchema\PersonModel');
 
-        $persons = $model->findAll();
+        $output['persons'] = $model->findAll('order by lastname, firstname');
 
         // $where = $model->generateWhere();
         // $paginator  = $this->get('knp_paginator');

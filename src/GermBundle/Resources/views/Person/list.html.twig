@@ -5,6 +5,12 @@
 		<a class="btn btn-primary" href="{{ path('germ_person_create') }}">
 			{% trans %}New person{% endtrans %}
 		</a>
+		<a class="btn btn-default" href="{{ path('germ_person_list', {_format: 'csv'}) }}">
+			{% trans %}Export CSV{% endtrans %}
+		</a>
+		<a class="btn btn-default" href="{{ path('germ_person_list', {_format: 'geojson'}) }}">
+			{% trans %}Export GeoJson{% endtrans %}
+		</a> à utiliser sur <a target="_blank" href="http://geojson.io">geojson.io</a></li>
 	{% endif  %}
 	<table class="table table-striped">
 		<tr>

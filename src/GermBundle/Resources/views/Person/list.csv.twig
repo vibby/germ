@@ -1,0 +1,7 @@
+
+{% trans %}Lastname{% endtrans %};{% trans %}Firstname{% endtrans %};{% trans %}Phone{% endtrans %};{% trans %}Address{% endtrans %};{% trans %}Lattitude{% endtrans %};{% trans %}Longitude{% endtrans %}
+
+{% for person in persons %}
+{{ person.lastname }};{{ person.firstname }};{{ person.phone|join(', ') }};{{ person.address|replace({"\n":' ', "\r":' '}) }};{% if person.latlong %}{{ person.latlong.x }}{% endif %};{% if person.latlong %}{{ person.latlong.y }}{% endif %}
+
+{% endfor %}

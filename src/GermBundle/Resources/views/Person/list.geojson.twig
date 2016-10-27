@@ -1,0 +1,34 @@
+{
+	"type": "FeatureCollection",
+	"features": [
+		{% for person in persons if person.latlong %}
+		{
+			"type": "Feature",
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					{{ person.latlong.x }},
+					{{ person.latlong.y }}
+				]
+			},
+			"properties": {
+				"name": "{{ person }}"
+			}
+		},
+		{% endfor %}
+		{
+			"type": "Feature",
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					-1.5070366859436035,
+					47.23205643139263
+				]
+			},
+			"properties": {
+				"marker-color": "#c92f46",
+				"name": "Église"
+			}
+		}
+	]
+}
