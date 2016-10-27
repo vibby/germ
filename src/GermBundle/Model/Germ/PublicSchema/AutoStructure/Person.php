@@ -44,6 +44,7 @@ class Person extends RowStructure
             ->addField('address', 'varchar')
             ->addField('email', 'varchar')
             ->addField('birthdate', 'date')
+            ->addField('latlong', 'point')
             ;
     }
 }

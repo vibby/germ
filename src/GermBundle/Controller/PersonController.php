@@ -35,28 +35,19 @@ class PersonController extends Controller
         //     30
         // );
 
-        $output['persons'] = $persons;
-
         $authorizationChecker = $this->get('security.authorization_checker');
         if ($authorizationChecker->isGranted('ROLE_PERSON_CREATE')) {
-            $person = new Person();
-            $person->setFirstname('');
-            $person->setLastname('');
-            $person->setBirthdate('');
-            $person->setPhone([]);
-            $person->setAddress('');
-            $person->setEmail('');
-            $form = $this->buildPersonForm($person);
-            $form->handleRequest($request);
-
-            $output['form'] = $form->createView();
+            $output['form'] = $this->buildPersonCreateForm();
         }
 
-        return $this->render(
-            'GermBundle:Person:list.html.twig',
-            $output
-        );
+        $response = $this->render('GermBundle:Person:list.'.$request->get('_format').'.twig', $output);
 
+        if ($request->get('_format') != 'html')
+        {
+            $response->headers->set('Content-Disposition', 'attachment; filename="persons.'.$request->get('_format').'"');
+        }
+
+        return $response;
     }
 
     public function editAction(Request $request, $personId)
@@ -144,14 +135,7 @@ class PersonController extends Controller
 
     public function createAction(Request $request)
     {
-        $person = new Person();
-        $person->setFirstname('');
-        $person->setLastname('');
-        $person->setBirthdate('');
-        $person->setPhone([]);
-        $person->setAddress('');
-        $person->setEmail('');
-        $form = $this->buildPersonForm($person);
+        $form = $this->buildPersonCreateForm();
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -237,10 +221,33 @@ class PersonController extends Controller
             ->add('address', TextareaType::class, array(
                 'required' => false,
             ))
+            ->add('latlong', TextType::class, array(
+                'required' => false,
+            ))
             ->add('email', EmailType::class, array(
                 'required' => false,
             ))
             ->getForm();
+    }
+
+    private function buildPersonCreateForm()
+    {
+        $authorizationChecker = $this->get('security.authorization_checker');
+        if ($authorizationChecker->isGranted('ROLE_PERSON_CREATE')) {
+            $person = new Person();
+            $person->setFirstname('');
+            $person->setLastname('');
+            $person->setBirthdate('');
+            $person->setPhone([]);
+            $person->setAddress('');
+            $person->setEmail('');
+            $person->setLatlong('');
+            $form = $this->buildPersonForm($person);
+
+            return $form->createView();
+        }
+
+        return null;
     }
 
     private function buildAccountForm(Account $account)
