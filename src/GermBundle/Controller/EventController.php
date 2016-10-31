@@ -121,11 +121,10 @@ class EventController extends Controller
         $event->setDockets($dockets);
 
         $accountModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\PublicSchema\AccountModel');
-        foreach ($accountModel->getAccounts($event) as $key => $account) {
+        foreach ($accountModel->getAccounts() as $key => $account) {
             $accountLabels[$key] = $account->getPersonName();
             $accountChoices[$key] = $account->getId();
         }
-        dump($accountLabels);
 
         $builder = $this->get('form.factory')
             ->createNamedBuilder('Event', FormType::class, $event)
@@ -159,6 +158,7 @@ class EventController extends Controller
                     'choice_label' => function ($value, $key, $index) use ($accountLabels) {
                         return $accountLabels[$key];
                     },
+                    'choice_translation_domain' => false,
                 ]
             );
         }

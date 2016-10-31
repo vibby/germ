@@ -37,7 +37,7 @@ class PersonController extends Controller
 
         $authorizationChecker = $this->get('security.authorization_checker');
         if ($authorizationChecker->isGranted('ROLE_PERSON_CREATE')) {
-            $output['form'] = $this->buildPersonCreateForm();
+            $output['form'] = $this->buildPersonCreateForm()->createView();
         }
 
         $response = $this->render('GermBundle:Person:list.'.$request->get('_format').'.twig', $output);
@@ -205,6 +205,7 @@ class PersonController extends Controller
     {
         return $this->get('form.factory')
             ->createNamedBuilder('Person', FormType::class, $person)
+            ->setAction($this->generateUrl('germ_person_create'))
             ->add('firstname', TextType::class)
             ->add('lastname', TextType::class)
             ->add('birthdate')
@@ -244,7 +245,7 @@ class PersonController extends Controller
             $person->setLatlong('');
             $form = $this->buildPersonForm($person);
 
-            return $form->createView();
+            return $form;
         }
 
         return null;
