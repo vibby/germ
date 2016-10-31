@@ -5,14 +5,14 @@
  * generation.
  */
 
-namespace GermBundle\Model\Germ\PublicSchema\AutoStructure;
+namespace GermBundle\Model\Germ\PersonSchema\AutoStructure;
 
 use PommProject\ModelManager\Model\RowStructure;
 
 /**
  * Account
  *
- * Structure class for relation public.account.
+ * Structure class for relation person.account.
  * 
  * Class and fields comments are inspected from table and fields comments.
  * Just add comments in your database and they will appear here.
@@ -34,7 +34,7 @@ class Account extends RowStructure
     public function __construct()
     {
         $this
-            ->setRelation('public.account')
+            ->setRelation('person.account')
             ->setPrimaryKey(['id'])
             ->addField('id', 'int4')
             ->addField('username', 'varchar')

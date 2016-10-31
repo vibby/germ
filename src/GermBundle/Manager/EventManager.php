@@ -25,8 +25,8 @@ class EventManager
             $from = new \DateTime;
         }
 
-        $eventModel = $this->pomm['germ']->getModel('GermBundle\Model\Germ\PublicSchema\EventModel');
-        $eventTypeModel = $this->pomm['germ']->getModel('GermBundle\Model\Germ\PublicSchema\EventTypeModel');
+        $eventModel = $this->pomm['germ']->getModel('GermBundle\Model\Germ\EventSchema\EventModel');
+        $eventTypeModel = $this->pomm['germ']->getModel('GermBundle\Model\Germ\EventSchema\EventTypeModel');
 
 
 

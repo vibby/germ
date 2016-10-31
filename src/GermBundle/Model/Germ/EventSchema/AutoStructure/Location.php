@@ -5,14 +5,14 @@
  * generation.
  */
 
-namespace GermBundle\Model\Germ\PublicSchema\AutoStructure;
+namespace GermBundle\Model\Germ\EventSchema\AutoStructure;
 
 use PommProject\ModelManager\Model\RowStructure;
 
 /**
  * Location
  *
- * Structure class for relation public.location.
+ * Structure class for relation event.location.
  * 
  * Class and fields comments are inspected from table and fields comments.
  * Just add comments in your database and they will appear here.
@@ -34,7 +34,7 @@ class Location extends RowStructure
     public function __construct()
     {
         $this
-            ->setRelation('public.location')
+            ->setRelation('event.location')
             ->setPrimaryKey(['id'])
             ->addField('id', 'int4')
             ->addField('name', 'varchar')

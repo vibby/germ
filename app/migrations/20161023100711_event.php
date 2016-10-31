@@ -27,18 +27,19 @@ class Event extends AbstractMigration
      */
     public function up()
     {
-        $this->execute('CREATE TABLE "location" (
+        $this->execute('CREATE SCHEMA "event"');
+        $this->execute('CREATE TABLE "event"."location" (
             id SERIAL PRIMARY KEY,
             name VARCHAR(64) NOT NULL,
             details JSON NULL
         );');
-        $this->execute('CREATE TABLE "event_type" (
+        $this->execute('CREATE TABLE "event"."event_type" (
             id SERIAL PRIMARY KEY,
             name VARCHAR(32) NULL,
             recurence VARCHAR(32) NULL,
             event_layout JSON NULL
         );');
-        $this->execute('CREATE TABLE "event" (
+        $this->execute('CREATE TABLE "event"."event" (
             id SERIAL PRIMARY KEY,
             type_id INTEGER NOT NULL,
             location_id INTEGER NULL,
@@ -48,35 +49,35 @@ class Event extends AbstractMigration
             is_deleted BOOLEAN NULL,
             description TEXT NULL
         );');
-        $this->execute('ALTER TABLE "event" ADD FOREIGN KEY ("type_id") REFERENCES "event_type" ("id") ON DELETE SET NULL ON UPDATE CASCADE;');
-        $this->execute('ALTER TABLE "event" ADD FOREIGN KEY ("location_id") REFERENCES "location" ("id") ON DELETE SET NULL ON UPDATE CASCADE;');
+        $this->execute('ALTER TABLE "event"."event" ADD FOREIGN KEY ("type_id") REFERENCES "event"."event_type" ("id") ON DELETE SET NULL ON UPDATE CASCADE;');
+        $this->execute('ALTER TABLE "event"."event" ADD FOREIGN KEY ("location_id") REFERENCES "event"."location" ("id") ON DELETE SET NULL ON UPDATE CASCADE;');
 
-        $this->execute('CREATE TABLE "docket" (
+        $this->execute('CREATE TABLE "event"."docket" (
             id SERIAL PRIMARY KEY,
             name VARCHAR(32) NOT NULL,
             role VARCHAR(32)[] NULL,
             event_type_id INTEGER NOT NULL
         );');
-        $this->execute('ALTER TABLE "docket" ADD FOREIGN KEY ("event_type_id") REFERENCES "event_type" ("id") ON UPDATE CASCADE;');
-        $this->execute('CREATE TABLE "assignation" (
+        $this->execute('ALTER TABLE "event"."docket" ADD FOREIGN KEY ("event_type_id") REFERENCES "event"."event_type" ("id") ON UPDATE CASCADE;');
+        $this->execute('CREATE TABLE "event"."assignation" (
             id SERIAL PRIMARY KEY,
-            person_id INTEGER NULL,
+            account_id INTEGER NULL,
             docket_id INTEGER NULL,
             event_id INTEGER NULL,
             details JSON NULL
         );');
-        $this->execute('ALTER TABLE "assignation" ADD FOREIGN KEY ("person_id") REFERENCES "person" ("id") ON DELETE SET NULL ON UPDATE CASCADE;');
-        $this->execute('ALTER TABLE "assignation" ADD FOREIGN KEY ("docket_id") REFERENCES "docket" ("id") ON DELETE SET NULL ON UPDATE CASCADE;');
-        $this->execute('ALTER TABLE "assignation" ADD FOREIGN KEY ("event_id") REFERENCES "event" ("id") ON DELETE SET NULL ON UPDATE CASCADE;');
+        $this->execute('ALTER TABLE "event"."assignation" ADD FOREIGN KEY ("account_id") REFERENCES "person"."account" ("id") ON DELETE SET NULL ON UPDATE CASCADE;');
+        $this->execute('ALTER TABLE "event"."assignation" ADD FOREIGN KEY ("docket_id") REFERENCES "event"."docket" ("id") ON DELETE SET NULL ON UPDATE CASCADE;');
+        $this->execute('ALTER TABLE "event"."assignation" ADD FOREIGN KEY ("event_id") REFERENCES "event"."event" ("id") ON DELETE SET NULL ON UPDATE CASCADE;');
 
     }
 
     public function down()
     {
-        $this->execute('DROP TABLE "assignation";');
-        $this->execute('DROP TABLE "docket";');
-        $this->execute('DROP TABLE "event";');
-        $this->execute('DROP TABLE "event_type";');
-        $this->execute('DROP TABLE "location";');
+        $this->execute('DROP TABLE "event"."assignation";');
+        $this->execute('DROP TABLE "event"."docket";');
+        $this->execute('DROP TABLE "event"."event";');
+        $this->execute('DROP TABLE "event"."event_type";');
+        $this->execute('DROP TABLE "event"."location";');
     }
 }

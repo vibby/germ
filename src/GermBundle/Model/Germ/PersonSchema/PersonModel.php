@@ -1,6 +1,6 @@
 <?php
 
-namespace GermBundle\Model\Germ\PublicSchema;
+namespace GermBundle\Model\Germ\PersonSchema;
 
 use PommProject\ModelManager\Model\Model;
 use PommProject\ModelManager\Model\Projection;
@@ -8,10 +8,8 @@ use PommProject\ModelManager\Model\ModelTrait\WriteQueries;
 
 use PommProject\Foundation\Where;
 
-use GermBundle\Model\Germ\PublicSchema\AutoStructure\Person as PersonStructure;
-use GermBundle\Model\Germ\PublicSchema\Person;
-
-use Vibby\PommProjectFosUserBundle\Model\UserModel;
+use GermBundle\Model\Germ\PersonSchema\AutoStructure\Person as PersonStructure;
+use GermBundle\Model\Germ\PersonSchema\Person;
 
 /**
  * PersonModel
@@ -34,6 +32,6 @@ class PersonModel extends Model
     public function __construct()
     {
         $this->structure = new PersonStructure;
-        $this->flexible_entity_class = '\GermBundle\Model\Germ\PublicSchema\Person';
+        $this->flexible_entity_class = '\GermBundle\Model\Germ\PersonSchema\Person';
     }
 }

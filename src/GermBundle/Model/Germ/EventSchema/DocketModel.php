@@ -1,6 +1,6 @@
 <?php
 
-namespace GermBundle\Model\Germ\PublicSchema;
+namespace GermBundle\Model\Germ\EventSchema;
 
 use PommProject\ModelManager\Model\Model;
 use PommProject\ModelManager\Model\Projection;
@@ -8,8 +8,8 @@ use PommProject\ModelManager\Model\ModelTrait\WriteQueries;
 
 use PommProject\Foundation\Where;
 
-use GermBundle\Model\Germ\PublicSchema\AutoStructure\Docket as DocketStructure;
-use GermBundle\Model\Germ\PublicSchema\Docket;
+use GermBundle\Model\Germ\EventSchema\AutoStructure\Docket as DocketStructure;
+use GermBundle\Model\Germ\EventSchema\Docket;
 
 /**
  * DocketModel
@@ -32,22 +32,22 @@ class DocketModel extends Model
     public function __construct()
     {
         $this->structure = new DocketStructure;
-        $this->flexible_entity_class = '\GermBundle\Model\Germ\PublicSchema\Docket';
+        $this->flexible_entity_class = '\GermBundle\Model\Germ\EventSchema\Docket';
     }
 
     public function getDocketsAndAssignationsForEvent($event)
     {
         $assignationModel = $this
             ->getSession()
-            ->getModel('\GermBundle\Model\Germ\PublicSchema\AssignationModel')
+            ->getModel('\GermBundle\Model\Germ\EventSchema\AssignationModel')
             ;
         $accountModel = $this
             ->getSession()
-            ->getModel('\GermBundle\Model\Germ\PublicSchema\AccountModel')
+            ->getModel('\GermBundle\Model\Germ\PersonSchema\AccountModel')
             ;
         $personModel = $this
             ->getSession()
-            ->getModel('\GermBundle\Model\Germ\PublicSchema\PersonModel')
+            ->getModel('\GermBundle\Model\Germ\PersonSchema\PersonModel')
             ;
 
         $sql = <<<SQL
@@ -55,11 +55,13 @@ select
     {projection}
 from
     {docket} d
-    inner join {assignation} ass using (id)
-    inner join {account} acc using (id)
-    inner join {person} p using (id)
+    left join {assignation} ass on (ass.docket_id = d.id)
+    left join {account} acc on (acc.id = ass.account_id)
+    left join {person} p on (p.id = acc.person_id)
 where
     d.event_type_id = $*
+    AND
+    ass.event_id = $*
 SQL;
 
         $projection = $this->createProjection()
@@ -79,6 +81,6 @@ SQL;
             ]
         );
 
-        return $this->query($sql, [$event->getTypeId()], $projection);
+        return $this->query($sql, [$event->getTypeId(), $event->getId()], $projection);
     }
 }

@@ -5,14 +5,14 @@
  * generation.
  */
 
-namespace GermBundle\Model\Germ\PublicSchema\AutoStructure;
+namespace GermBundle\Model\Germ\PersonSchema\AutoStructure;
 
 use PommProject\ModelManager\Model\RowStructure;
 
 /**
- * EventType
+ * Person
  *
- * Structure class for relation public.event_type.
+ * Structure class for relation person.person.
  * 
  * Class and fields comments are inspected from table and fields comments.
  * Just add comments in your database and they will appear here.
@@ -22,7 +22,7 @@ use PommProject\ModelManager\Model\RowStructure;
  *
  * @see RowStructure
  */
-class EventType extends RowStructure
+class Person extends RowStructure
 {
     /**
      * __construct
@@ -34,12 +34,17 @@ class EventType extends RowStructure
     public function __construct()
     {
         $this
-            ->setRelation('public.event_type')
+            ->setRelation('person.person')
             ->setPrimaryKey(['id'])
             ->addField('id', 'int4')
-            ->addField('name', 'varchar')
-            ->addField('recurence', 'varchar')
-            ->addField('event_layout', 'json')
+            ->addField('family_id', 'int4')
+            ->addField('firstname', 'varchar')
+            ->addField('lastname', 'varchar')
+            ->addField('phone', 'varchar[]')
+            ->addField('address', 'varchar')
+            ->addField('email', 'varchar')
+            ->addField('birthdate', 'date')
+            ->addField('latlong', 'point')
             ;
     }
 }

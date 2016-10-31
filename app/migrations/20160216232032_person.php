@@ -27,7 +27,8 @@ class Person extends AbstractMigration
      */
     public function up()
     {
-        $this->execute('CREATE TABLE "account" (
+        $this->execute('CREATE SCHEMA "person"');
+        $this->execute('CREATE TABLE "person"."account" (
             id SERIAL PRIMARY KEY,
             username VARCHAR(255) NOT NULL,
             username_canonical VARCHAR(255) NOT NULL UNIQUE,
@@ -47,7 +48,7 @@ class Person extends AbstractMigration
             credentials_expire_at TIMESTAMP WITHOUT TIME ZONE,
             person_id INTEGER NOT NULL
         );');
-        $this->execute('CREATE TABLE "person" (
+        $this->execute('CREATE TABLE "person"."person" (
             id SERIAL PRIMARY KEY,
             family_id INTEGER NULL,
             firstname VARCHAR(32) NULL,
@@ -59,14 +60,14 @@ class Person extends AbstractMigration
             latlong point
         );');
 
-        $this->execute('ALTER TABLE "person" ADD FOREIGN KEY ("family_id") REFERENCES "person" ("id") ON DELETE SET NULL ON UPDATE CASCADE;');
-        $this->execute('ALTER TABLE "account" ADD FOREIGN KEY ("person_id") REFERENCES "person" ("id") ON DELETE CASCADE ON UPDATE CASCADE;');
+        $this->execute('ALTER TABLE "person"."person" ADD FOREIGN KEY ("family_id") REFERENCES "person"."person" ("id") ON DELETE SET NULL ON UPDATE CASCADE;');
+        $this->execute('ALTER TABLE "person"."account" ADD FOREIGN KEY ("person_id") REFERENCES "person"."person" ("id") ON DELETE CASCADE ON UPDATE CASCADE;');
 
     }
 
     public function down()
     {
-        $this->execute('DROP TABLE "account";');
-        $this->execute('DROP TABLE "person";');
+        $this->execute('DROP TABLE "person"."account";');
+        $this->execute('DROP TABLE "person"."person";');
     }
 }

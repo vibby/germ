@@ -1,6 +1,6 @@
 <?php
 
-namespace GermBundle\Model\Germ\PublicSchema;
+namespace GermBundle\Model\Germ\PersonSchema;
 
 use Vibby\PommProjectFosUserBundle\Model\User;
 
@@ -8,7 +8,7 @@ use Vibby\PommProjectFosUserBundle\Model\User;
  * Account
  *
  * Flexible entity for relation
- * public.account
+ * person.account
  *
  * @see FlexibleEntity
  */

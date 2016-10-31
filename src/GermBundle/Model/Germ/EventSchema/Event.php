@@ -1,6 +1,6 @@
 <?php
 
-namespace GermBundle\Model\Germ\PublicSchema;
+namespace GermBundle\Model\Germ\EventSchema;
 
 use PommProject\ModelManager\Model\FlexibleEntity;
 
@@ -8,7 +8,7 @@ use PommProject\ModelManager\Model\FlexibleEntity;
  * Event
  *
  * Flexible entity for relation
- * public.event
+ * event.event
  *
  * @see FlexibleEntity
  */
@@ -45,7 +45,6 @@ class Event extends FlexibleEntity
     public function __call($method, $arguments)
     {
         list($operation, $attribute) = $this->extractMethodName($method);
-
         foreach ($this->dockets as $docket) {
             if (strtolower($docket['name']) === strtolower($attribute)) {
                 switch ($operation) {
@@ -56,7 +55,6 @@ class Event extends FlexibleEntity
                 }
             }
         }
-
         return parent::__call($method, $arguments);
     }
 }

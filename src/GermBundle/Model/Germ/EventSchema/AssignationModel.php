@@ -1,6 +1,6 @@
 <?php
 
-namespace GermBundle\Model\Germ\PublicSchema;
+namespace GermBundle\Model\Germ\EventSchema;
 
 use PommProject\ModelManager\Model\Model;
 use PommProject\ModelManager\Model\Projection;
@@ -8,8 +8,8 @@ use PommProject\ModelManager\Model\ModelTrait\WriteQueries;
 
 use PommProject\Foundation\Where;
 
-use GermBundle\Model\Germ\PublicSchema\AutoStructure\Assignation as AssignationStructure;
-use GermBundle\Model\Germ\PublicSchema\Assignation;
+use GermBundle\Model\Germ\EventSchema\AutoStructure\Assignation as AssignationStructure;
+use GermBundle\Model\Germ\EventSchema\Assignation;
 
 /**
  * AssignationModel
@@ -32,6 +32,6 @@ class AssignationModel extends Model
     public function __construct()
     {
         $this->structure = new AssignationStructure;
-        $this->flexible_entity_class = '\GermBundle\Model\Germ\PublicSchema\Assignation';
+        $this->flexible_entity_class = '\GermBundle\Model\Germ\EventSchema\Assignation';
     }
 }

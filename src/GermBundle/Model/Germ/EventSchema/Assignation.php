@@ -1,17 +1,17 @@
 <?php
 
-namespace GermBundle\Model\Germ\PublicSchema;
+namespace GermBundle\Model\Germ\EventSchema;
 
 use PommProject\ModelManager\Model\FlexibleEntity;
 
 /**
- * Phinxlog
+ * Assignation
  *
  * Flexible entity for relation
- * public.phinxlog
+ * event.assignation
  *
  * @see FlexibleEntity
  */
-class Phinxlog extends FlexibleEntity
+class Assignation extends FlexibleEntity
 {
 }

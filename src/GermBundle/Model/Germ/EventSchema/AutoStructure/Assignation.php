@@ -5,14 +5,14 @@
  * generation.
  */
 
-namespace GermBundle\Model\Germ\PublicSchema\AutoStructure;
+namespace GermBundle\Model\Germ\EventSchema\AutoStructure;
 
 use PommProject\ModelManager\Model\RowStructure;
 
 /**
- * Phinxlog
+ * Assignation
  *
- * Structure class for relation public.phinxlog.
+ * Structure class for relation event.assignation.
  * 
  * Class and fields comments are inspected from table and fields comments.
  * Just add comments in your database and they will appear here.
@@ -22,7 +22,7 @@ use PommProject\ModelManager\Model\RowStructure;
  *
  * @see RowStructure
  */
-class Phinxlog extends RowStructure
+class Assignation extends RowStructure
 {
     /**
      * __construct
@@ -34,13 +34,13 @@ class Phinxlog extends RowStructure
     public function __construct()
     {
         $this
-            ->setRelation('public.phinxlog')
-            ->setPrimaryKey(['version'])
-            ->addField('version', 'int8')
-            ->addField('migration_name', 'varchar')
-            ->addField('start_time', 'timestamp')
-            ->addField('end_time', 'timestamp')
-            ->addField('breakpoint', 'bool')
+            ->setRelation('event.assignation')
+            ->setPrimaryKey(['id'])
+            ->addField('id', 'int4')
+            ->addField('account_id', 'int4')
+            ->addField('docket_id', 'int4')
+            ->addField('event_id', 'int4')
+            ->addField('details', 'json')
             ;
     }
 }

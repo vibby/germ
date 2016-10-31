@@ -1,6 +1,6 @@
 <?php
 
-namespace GermBundle\Model\Germ\PublicSchema;
+namespace GermBundle\Model\Germ\PersonSchema;
 
 use PommProject\ModelManager\Model\FlexibleEntity;
 
@@ -8,7 +8,7 @@ use PommProject\ModelManager\Model\FlexibleEntity;
  * Person
  *
  * Flexible entity for relation
- * public.person
+ * person.person
  *
  * @see FlexibleEntity
  */

@@ -1,6 +1,6 @@
 <?php
 
-namespace GermBundle\Model\Germ\PublicSchema;
+namespace GermBundle\Model\Germ\EventSchema;
 
 use PommProject\ModelManager\Model\Model;
 use PommProject\ModelManager\Model\Projection;
@@ -8,8 +8,8 @@ use PommProject\ModelManager\Model\ModelTrait\WriteQueries;
 
 use PommProject\Foundation\Where;
 
-use GermBundle\Model\Germ\PublicSchema\AutoStructure\Event as EventStructure;
-use GermBundle\Model\Germ\PublicSchema\Event;
+use GermBundle\Model\Germ\EventSchema\AutoStructure\Event as EventStructure;
+use GermBundle\Model\Germ\EventSchema\Event;
 
 /**
  * EventModel
@@ -32,18 +32,19 @@ class EventModel extends Model
     public function __construct()
     {
         $this->structure = new EventStructure;
-        $this->flexible_entity_class = '\GermBundle\Model\Germ\PublicSchema\Event';
+        $this->flexible_entity_class = '\GermBundle\Model\Germ\EventSchema\Event';
     }
+
 
     public function getEventById($eventId)
     {
         $eventTypeModel = $this
             ->getSession()
-            ->getModel('\GermBundle\Model\Germ\PublicSchema\EventTypeModel')
+            ->getModel('\GermBundle\Model\Germ\EventSchema\EventTypeModel')
             ;
         $locationModel = $this
             ->getSession()
-            ->getModel('\GermBundle\Model\Germ\PublicSchema\LocationModel')
+            ->getModel('\GermBundle\Model\Germ\EventSchema\LocationModel')
             ;
 
         $sql = <<<SQL
@@ -51,8 +52,8 @@ select
     {projection}
 from
     {event}
-    inner join {eventType} et using (id)
-    inner join {location} l using (id)
+    inner join {eventType} et on (et.id = event.type_id)
+    inner join {location} lo on (lo.id = event.location_id)
 where
     event.id = $*
 SQL;
@@ -60,7 +61,7 @@ SQL;
         $projection = $this->createProjection()
             ->setField("event_type_name", "et.name as event_type_name", "varchar")
             ->setField("event_type_layout", "et.event_layout as event_type_layout", "json")
-            ->setField("location_name", "l.name as location_name", "varchar")
+            ->setField("location_name", "lo.name as location_name", "varchar")
             ;
 
         $sql = strtr(

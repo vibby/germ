@@ -1,6 +1,6 @@
 <?php
 
-namespace GermBundle\Model\Germ\PublicSchema;
+namespace GermBundle\Model\Germ\EventSchema;
 
 use PommProject\ModelManager\Model\FlexibleEntity;
 
@@ -8,7 +8,7 @@ use PommProject\ModelManager\Model\FlexibleEntity;
  * Docket
  *
  * Flexible entity for relation
- * public.docket
+ * event.docket
  *
  * @see FlexibleEntity
  */

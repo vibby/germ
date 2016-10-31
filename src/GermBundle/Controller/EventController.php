@@ -4,7 +4,7 @@ namespace GermBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use GermBundle\Model\Germ\PublicSchema\Event;
+use GermBundle\Model\Germ\EventSchema\Event;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use GermBundle\Type\DateIntervalType;
@@ -21,10 +21,10 @@ class EventController extends Controller
 
     public function listAction(Request $request)
     {
-        $model = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\PublicSchema\EventModel');
+        $model = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\EventSchema\EventModel');
         $events = $model->findAll('order by date_from desc');
 
-        $model = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\PublicSchema\EventTypeModel');
+        $model = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\EventSchema\EventTypeModel');
         $eventTypes = $model->findAll();
 
         return $this->render(
@@ -45,7 +45,7 @@ class EventController extends Controller
         $eventForm = $this->buildEventForm($event);
         $eventForm->handleRequest($request);
         if ($eventForm->isSubmitted() && $eventForm->isValid()) {
-            $eventModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\PublicSchema\EventModel');
+            $eventModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\EventSchema\EventModel');
             $eventModel->updateOne($event, array_keys($eventForm->getData()->extract()));
             $this->get('session')->getFlashBag()->add('success', 'Event updated');
             return $this->redirectToRoute('germ_event_edit', ['eventId' => $event->getId()]);
@@ -64,7 +64,7 @@ class EventController extends Controller
     public function showAction(Request $request, $eventId)
     {
         $eventModel = $this->get('pomm')['germ']
-            ->getModel('GermBundle\Model\Germ\PublicSchema\EventModel');
+            ->getModel('GermBundle\Model\Germ\EventSchema\EventModel');
         $event = $this->getEventOr404($eventId);
         if (!$event) {
             throw $this->createNotFoundException('The event does not exist');
@@ -88,7 +88,7 @@ class EventController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $eventModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\PublicSchema\EventModel');
+            $eventModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\EventSchema\EventModel');
             $eventModel->insertOne($event, array_keys($form->getData()->extract()));
             $translator = $this->get('translator');
             $this->get('session')->getFlashBag()->add('success', $translator->trans('Event created'));
@@ -106,7 +106,7 @@ class EventController extends Controller
 
     private function getEventOr404($eventId)
     {
-        $eventModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\PublicSchema\EventModel');
+        $eventModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\EventSchema\EventModel');
         $event = $eventModel->getEventById($eventId);
         if (!$event) {
             throw $this->createNotFoundException('The event does not exist');
@@ -116,11 +116,11 @@ class EventController extends Controller
 
     private function buildEventForm($event)
     {
-        $docketModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\PublicSchema\DocketModel');
+        $docketModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\EventSchema\DocketModel');
         $dockets = $docketModel->getDocketsAndAssignationsForEvent($event);
         $event->setDockets($dockets);
 
-        $accountModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\PublicSchema\AccountModel');
+        $accountModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\PersonSchema\AccountModel');
         foreach ($accountModel->getAccounts() as $key => $account) {
             $accountLabels[$key] = $account->getPersonName();
             $accountChoices[$key] = $account->getId();

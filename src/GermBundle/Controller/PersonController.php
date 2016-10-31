@@ -5,8 +5,8 @@ namespace GermBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
-use GermBundle\Model\Germ\PublicSchema\Person;
-use GermBundle\Model\Germ\PublicSchema\Account;
+use GermBundle\Model\Germ\PersonSchema\Person;
+use GermBundle\Model\Germ\PersonSchema\Account;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
@@ -23,7 +23,7 @@ class PersonController extends Controller
     public function listAction(Request $request)
     {
         $model = $this->get('pomm')['germ']
-            ->getModel('GermBundle\Model\Germ\PublicSchema\PersonModel');
+            ->getModel('GermBundle\Model\Germ\PersonSchema\PersonModel');
 
         $output['persons'] = $model->findAll('order by lastname, firstname');
 
@@ -52,13 +52,13 @@ class PersonController extends Controller
 
     public function editAction(Request $request, $personId)
     {
-        $accountModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\PublicSchema\AccountModel');
+        $accountModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\PersonSchema\AccountModel');
         $person = $this->getPersonOr404($personId);
 
         $personForm = $this->buildPersonForm($person);
         $personForm->handleRequest($request);
         if ($personForm->isSubmitted() && $personForm->isValid()) {
-            $personModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\PublicSchema\PersonModel');
+            $personModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\PersonSchema\PersonModel');
             $personModel->updateOne($person, array_keys($personForm->getData()->extract()));
             $this->get('session')->getFlashBag()->add('success', 'Person updated');
             return $this->redirectToRoute('germ_person_edit', ['personId' => $person->getId()]);
@@ -119,7 +119,7 @@ class PersonController extends Controller
     public function showAction(Request $request, $personId)
     {
         $personModel = $this->get('pomm')['germ']
-            ->getModel('GermBundle\Model\Germ\PublicSchema\PersonModel');
+            ->getModel('GermBundle\Model\Germ\PersonSchema\PersonModel');
         $person = $personModel->findByPK(['id'=>$personId]);
         if (!$person) {
             throw $this->createNotFoundException('The person does not exist');
@@ -139,7 +139,7 @@ class PersonController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $personModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\PublicSchema\PersonModel');
+            $personModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\PersonSchema\PersonModel');
             $personModel->insertOne($person, array_keys($form->getData()->extract()));
             $translator = $this->get('translator');
             $this->get('session')->getFlashBag()->add('success', $translator->trans('Person created'));
@@ -158,7 +158,7 @@ class PersonController extends Controller
     public function removeAction($personId)
     {
         $person = $this->getPersonOr404($personId);
-        $personModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\PublicSchema\PersonModel');
+        $personModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\PersonSchema\PersonModel');
         $personModel->deleteOne($person);
         $this->get('session')->getFlashBag()->add('success', 'Person deleted');
 
@@ -167,7 +167,7 @@ class PersonController extends Controller
 
     private function getPersonOr404($personId)
     {
-        $personModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\PublicSchema\PersonModel');
+        $personModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\PersonSchema\PersonModel');
         $person = $personModel->findByPK(['id'=>$personId]);
         if (!$person) {
             throw $this->createNotFoundException('The person does not exist');
@@ -177,7 +177,7 @@ class PersonController extends Controller
 
     private function getAccountOr404($personId)
     {
-        $accountModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\PublicSchema\AccountModel');
+        $accountModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\PersonSchema\AccountModel');
         $account = $accountModel->findWhere("person_id = $*", [$personId])->current();
         if (!$account) {
             throw $this->createNotFoundException('The account does not exist');
@@ -192,7 +192,7 @@ class PersonController extends Controller
             throw $this->createNotFoundException('The account is already ' . ($enable ? 'enabled' : 'disabled'));
         }
         $account->setEnabled($enable);
-        $accountModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\PublicSchema\AccountModel');
+        $accountModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\PersonSchema\AccountModel');
         $accountModel->updateOne($account, ['enabled']);
         $this->get('session')->getFlashBag()->add(
             'success',
