@@ -38,7 +38,7 @@ class Assignation extends RowStructure
             ->setPrimaryKey(['id'])
             ->addField('id', 'int4')
             ->addField('person_id', 'int4')
-            ->addField('function_id', 'int4')
+            ->addField('docket_id', 'int4')
             ->addField('event_id', 'int4')
             ->addField('details', 'json')
             ;

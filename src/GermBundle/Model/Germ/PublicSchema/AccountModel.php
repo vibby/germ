@@ -36,4 +36,38 @@ class AccountModel extends UserModel
         $this->structure = new AccountStructure;
         $this->flexible_entity_class = '\GermBundle\Model\Germ\PublicSchema\Account';
     }
+
+    public function getAccounts()
+    {
+        $personModel = $this
+            ->getSession()
+            ->getModel('\GermBundle\Model\Germ\PublicSchema\PersonModel')
+            ;
+
+        $sql = <<<SQL
+select
+    {projection}
+from
+    {account} a
+    inner join {person} p using (id)
+where
+    true
+SQL;
+
+        $projection = $this->createProjection()
+            ->setField("person_name", "concat(p.lastname, ' ', p.firstname) as person_name", "varchar")
+            ->setField("account_id", "a.id as account_id", "varchar")
+            ;
+
+        $sql = strtr(
+            $sql,
+            [
+                '{account}'     => $this->structure->getRelation(),
+                '{person}'      => $personModel->getStructure()->getRelation(),
+                '{projection}'  => $projection->formatFields('a'),
+            ]
+        );
+
+        return $this->query($sql, [], $projection);
+    }
 }

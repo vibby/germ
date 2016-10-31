@@ -51,20 +51,22 @@ class Event extends AbstractMigration
         $this->execute('ALTER TABLE "event" ADD FOREIGN KEY ("type_id") REFERENCES "event_type" ("id") ON DELETE SET NULL ON UPDATE CASCADE;');
         $this->execute('ALTER TABLE "event" ADD FOREIGN KEY ("location_id") REFERENCES "location" ("id") ON DELETE SET NULL ON UPDATE CASCADE;');
 
-        $this->execute('CREATE TABLE "function" (
+        $this->execute('CREATE TABLE "docket" (
             id SERIAL PRIMARY KEY,
             name VARCHAR(32) NOT NULL,
-            role VARCHAR(32)[] NULL
+            role VARCHAR(32)[] NULL,
+            event_type_id INTEGER NOT NULL
         );');
+        $this->execute('ALTER TABLE "docket" ADD FOREIGN KEY ("event_type_id") REFERENCES "event_type" ("id") ON UPDATE CASCADE;');
         $this->execute('CREATE TABLE "assignation" (
             id SERIAL PRIMARY KEY,
             person_id INTEGER NULL,
-            function_id INTEGER NULL,
+            docket_id INTEGER NULL,
             event_id INTEGER NULL,
             details JSON NULL
         );');
         $this->execute('ALTER TABLE "assignation" ADD FOREIGN KEY ("person_id") REFERENCES "person" ("id") ON DELETE SET NULL ON UPDATE CASCADE;');
-        $this->execute('ALTER TABLE "assignation" ADD FOREIGN KEY ("function_id") REFERENCES "function" ("id") ON DELETE SET NULL ON UPDATE CASCADE;');
+        $this->execute('ALTER TABLE "assignation" ADD FOREIGN KEY ("docket_id") REFERENCES "docket" ("id") ON DELETE SET NULL ON UPDATE CASCADE;');
         $this->execute('ALTER TABLE "assignation" ADD FOREIGN KEY ("event_id") REFERENCES "event" ("id") ON DELETE SET NULL ON UPDATE CASCADE;');
 
     }
@@ -72,7 +74,7 @@ class Event extends AbstractMigration
     public function down()
     {
         $this->execute('DROP TABLE "assignation";');
-        $this->execute('DROP TABLE "function";');
+        $this->execute('DROP TABLE "docket";');
         $this->execute('DROP TABLE "event";');
         $this->execute('DROP TABLE "event_type";');
         $this->execute('DROP TABLE "location";');

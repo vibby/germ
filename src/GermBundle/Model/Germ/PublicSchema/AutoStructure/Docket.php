@@ -10,9 +10,9 @@ namespace GermBundle\Model\Germ\PublicSchema\AutoStructure;
 use PommProject\ModelManager\Model\RowStructure;
 
 /**
- * Function
+ * Docket
  *
- * Structure class for relation public.function.
+ * Structure class for relation public.docket.
  * 
  * Class and fields comments are inspected from table and fields comments.
  * Just add comments in your database and they will appear here.
@@ -22,7 +22,7 @@ use PommProject\ModelManager\Model\RowStructure;
  *
  * @see RowStructure
  */
-class Function extends RowStructure
+class Docket extends RowStructure
 {
     /**
      * __construct
@@ -34,11 +34,12 @@ class Function extends RowStructure
     public function __construct()
     {
         $this
-            ->setRelation('public.function')
+            ->setRelation('public.docket')
             ->setPrimaryKey(['id'])
             ->addField('id', 'int4')
             ->addField('name', 'varchar')
             ->addField('role', 'varchar[]')
+            ->addField('event_type_id', 'int4')
             ;
     }
 }

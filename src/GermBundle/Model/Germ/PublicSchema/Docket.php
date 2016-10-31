@@ -5,13 +5,17 @@ namespace GermBundle\Model\Germ\PublicSchema;
 use PommProject\ModelManager\Model\FlexibleEntity;
 
 /**
- * Function
+ * Docket
  *
  * Flexible entity for relation
- * public.function
+ * public.docket
  *
  * @see FlexibleEntity
  */
-class Function extends FlexibleEntity
+class Docket extends FlexibleEntity
 {
+    public function __toString()
+    {
+        return $this->getAccountId();
+    }
 }

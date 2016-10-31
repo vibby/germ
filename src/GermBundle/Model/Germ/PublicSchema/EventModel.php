@@ -35,16 +35,44 @@ class EventModel extends Model
         $this->flexible_entity_class = '\GermBundle\Model\Germ\PublicSchema\Event';
     }
 
-    public function getEvents(\DateTime $from = null, \DateTime $to = null, $limit = 20)
+    public function getEventById($eventId)
     {
-        if (!$from) {
-            $from = new \DateTime;
-        }
-        if (!$to) {
-            $to = $from;
-            $to = $to->add(new \DateInterval('P1Y'));
-        }
+        $eventTypeModel = $this
+            ->getSession()
+            ->getModel('\GermBundle\Model\Germ\PublicSchema\EventTypeModel')
+            ;
+        $locationModel = $this
+            ->getSession()
+            ->getModel('\GermBundle\Model\Germ\PublicSchema\LocationModel')
+            ;
 
+        $sql = <<<SQL
+select
+    {projection}
+from
+    {event}
+    inner join {eventType} et using (id)
+    inner join {location} l using (id)
+where
+    event.id = $*
+SQL;
 
+        $projection = $this->createProjection()
+            ->setField("event_type_name", "et.name as event_type_name", "varchar")
+            ->setField("event_type_layout", "et.event_layout as event_type_layout", "json")
+            ->setField("location_name", "l.name as location_name", "varchar")
+            ;
+
+        $sql = strtr(
+            $sql,
+            [
+                '{event}'      => $this->structure->getRelation(),
+                '{eventType}'  => $eventTypeModel->getStructure()->getRelation(),
+                '{location}'   => $locationModel->getStructure()->getRelation(),
+                '{projection}' => $projection->formatFields('event'),
+            ]
+        );
+
+        return $this->query($sql, [$eventId], $projection)->current();
     }
 }

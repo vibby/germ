@@ -65,7 +65,7 @@ class EventController extends Controller
     {
         $eventModel = $this->get('pomm')['germ']
             ->getModel('GermBundle\Model\Germ\PublicSchema\EventModel');
-        $event = $eventModel->findByPK(['id'=>$eventId]);
+        $event = $this->getEventOr404($eventId);
         if (!$event) {
             throw $this->createNotFoundException('The event does not exist');
         }
@@ -82,8 +82,8 @@ class EventController extends Controller
     {
         $event = new Event();
         $event->setName('');
-        $event->setDateFrom('');
-        $event->setDuration('');
+        $event->setDateFrom(new \DateTime());
+        $event->setDuration(new \DateInterval('PT1H'));
         $form = $this->buildEventForm($event);
         $form->handleRequest($request);
 
@@ -107,31 +107,61 @@ class EventController extends Controller
     private function getEventOr404($eventId)
     {
         $eventModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\PublicSchema\EventModel');
-        $event = $eventModel->findByPK(['id'=>$eventId]);
+        $event = $eventModel->getEventById($eventId);
         if (!$event) {
             throw $this->createNotFoundException('The event does not exist');
         }
         return $event;
     }
 
-    private function buildEventForm(Event $event)
+    private function buildEventForm($event)
     {
+        $docketModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\PublicSchema\DocketModel');
+        $dockets = $docketModel->getDocketsAndAssignationsForEvent($event);
+        $event->setDockets($dockets);
+
+        $accountModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\PublicSchema\AccountModel');
+        foreach ($accountModel->getAccounts($event) as $key => $account) {
+            $accountLabels[$key] = $account->getPersonName();
+            $accountChoices[$key] = $account->getId();
+        }
+        dump($accountLabels);
+
         $builder = $this->get('form.factory')
             ->createNamedBuilder('Event', FormType::class, $event)
             ->add('name', TextType::class)
             ->add('date_from', DateType::class)
-            ->add('duration', DateIntervalType::class);
-
-        // $builder->get('date_from')
-        //     ->addModelTransformer(new CallbackTransformer(
-        //         function (/DateTime $date) {
-        //             return $date->format('d-m-Y h:i:s');
-        //         },
-        //         function ($dateAsString) {
-        //             return new \DateTime()
-        //         }
-        //     ))
-        // ;
+            ->add(
+                'duration',
+                DateIntervalType::class,
+                [
+                    'with_years' => false,
+                    'with_months' => false,
+                    'with_weeks' => false,
+                    'with_days' => false,
+                    'with_hours' => true,
+                    'with_minutes' => true,
+                ]
+            )
+            ->add(
+                'event_type_name',
+                TextType::class,
+                [
+                    'attr' => ['readonly' => true],
+                ]
+            );
+        foreach ($dockets as $docket) {
+            $builder->add(
+                $docket->getName(),
+                ChoiceType::class,
+                [
+                    'choices'      => $accountChoices,
+                    'choice_label' => function ($value, $key, $index) use ($accountLabels) {
+                        return $accountLabels[$key];
+                    },
+                ]
+            );
+        }
 
         return $builder->getForm();
     }

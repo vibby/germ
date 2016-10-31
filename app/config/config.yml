@@ -48,11 +48,6 @@ framework:
         formats:
             geojson: 'application/json'
 
-# Twig Configuration
-twig:
-    debug:            "%kernel.debug%"
-    strict_variables: "%kernel.debug%"
-
 # Pomm Configuration
 pomm:
     configuration:
