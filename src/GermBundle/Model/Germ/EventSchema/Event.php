@@ -3,6 +3,7 @@
 namespace GermBundle\Model\Germ\EventSchema;
 
 use PommProject\ModelManager\Model\FlexibleEntity;
+use PommProject\ModelManager\Exception\ModelException;
 
 /**
  * Event
@@ -21,14 +22,14 @@ class Event extends FlexibleEntity
         return $this->getName();
     }
 
-    public function setEventType(EventType $eventType)
-    {
-        $this->eventType = $eventType;
-    }
-
     public function setDockets($dockets)
     {
         $this->dockets = $dockets;
+    }
+
+    public function getDockets()
+    {
+        return $this->dockets;
     }
 
     /**

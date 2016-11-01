@@ -34,7 +34,6 @@ class EventController extends Controller
                 'eventTypes' => $eventTypes,
             )
         );
-
     }
 
     public function editAction(Request $request, $eventId)
@@ -116,18 +115,26 @@ class EventController extends Controller
 
     private function buildEventForm($event)
     {
-        $docketModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\EventSchema\DocketModel');
-        $dockets = $docketModel->getDocketsAndAssignationsForEvent($event);
-        $event->setDockets($dockets);
+        $eventModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\EventSchema\EventModel');
+        $event = $eventModel->hydrateDockets($event);
 
         $accountModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\PersonSchema\AccountModel');
+        $accountLabels[] = '-'.$this->get('translator')->trans('none').'-';
+        $accountChoices[] = null;
         foreach ($accountModel->getAccounts() as $key => $account) {
-            $accountLabels[$key] = $account->getPersonName();
-            $accountChoices[$key] = $account->getId();
+            $accountLabels[] = $account->getPersonName();
+            $accountChoices[] = $account->getId();
         }
 
         $builder = $this->get('form.factory')
             ->createNamedBuilder('Event', FormType::class, $event)
+            ->add(
+                'event_type_name',
+                TextType::class,
+                [
+                    'attr' => ['readonly' => true],
+                ]
+            )
             ->add('name', TextType::class)
             ->add('date_from', DateType::class)
             ->add(
@@ -142,14 +149,8 @@ class EventController extends Controller
                     'with_minutes' => true,
                 ]
             )
-            ->add(
-                'event_type_name',
-                TextType::class,
-                [
-                    'attr' => ['readonly' => true],
-                ]
-            );
-        foreach ($dockets as $docket) {
+        ;
+        foreach ($event->getDockets() as $docket) {
             $builder->add(
                 $docket->getName(),
                 ChoiceType::class,

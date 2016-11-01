@@ -129,9 +129,11 @@ Minutes: Minutes
 58: 58
 59: 59
 60: 60
-Event type name: Nom du type d’événement
+Event type name: Type d’événement
 Predicator: Prédicateur
 President: Président
 Prayer: Prière
+Storyteller: Conteur
 The event will be complety removed: L’événement sera définitevement supprimé
 Remove event: Supprimer l’événement
+none: aucun

@@ -16,6 +16,10 @@ class Docket extends FlexibleEntity
 {
     public function __toString()
     {
-        return $this->getAccountId();
+    	try {
+	        return (string) $this->getAccountId();
+    	} catch (\Exception $e) {
+    		return 'test';
+    	}
     }
 }

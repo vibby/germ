@@ -35,6 +35,16 @@ class EventModel extends Model
         $this->flexible_entity_class = '\GermBundle\Model\Germ\EventSchema\Event';
     }
 
+    public function hydrateDockets(Event $event)
+    {
+        $docketModel = $this
+            ->getSession()
+            ->getModel('\GermBundle\Model\Germ\EventSchema\DocketModel')
+            ;
+        $event->setDockets($docketModel->getDocketsAndAssignationsForEvent($event));
+
+        return $event;
+    }
 
     public function getEventById($eventId)
     {

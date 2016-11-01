@@ -55,13 +55,11 @@ select
     {projection}
 from
     {docket} d
-    left join {assignation} ass on (ass.docket_id = d.id)
+    left outer join {assignation} ass on (ass.docket_id = d.id AND ass.event_id = $*)
     left join {account} acc on (acc.id = ass.account_id)
     left join {person} p on (p.id = acc.person_id)
 where
     d.event_type_id = $*
-    AND
-    ass.event_id = $*
 SQL;
 
         $projection = $this->createProjection()
@@ -81,6 +79,6 @@ SQL;
             ]
         );
 
-        return $this->query($sql, [$event->getTypeId(), $event->getId()], $projection);
+        return $this->query($sql, [$event->getId(), $event->getTypeId()], $projection);
     }
 }
