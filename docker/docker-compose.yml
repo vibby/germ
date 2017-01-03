@@ -3,9 +3,8 @@ germ-postgres:
   image: postgres:9.6
   container_name: germ-postgres
   environment:
-    - POSTGRES_USER=root
-    - POSTGRES_PASSWORD=SuP3RP455w0Rd
-    - POSTGRES_DB=germ
+    POSTGRES_PASSWORD: SuP3RP455w0Rd
+    POSTGRES_USER: germ
   ports:
     - 5432:5432
 
