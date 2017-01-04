@@ -37,6 +37,15 @@ class AccountModel extends Model
 
     public function getAccounts(Array $role = [])
     {
+        $where = new Where();
+        if ($role) {
+            $where->andWhereIn('role', $role);
+        }
+        return $this->findWhere($where);
+    }
+
+    public function findWhere(Where $where)
+    {
         $personModel = $this
             ->getSession()
             ->getModel('\GermBundle\Model\Germ\PersonSchema\PersonModel')
@@ -52,15 +61,10 @@ where
     {where}
 SQL;
 
-
         $projection = $this->createProjection()
             ->setField("person_name", "concat(p.lastname, ' ', p.firstname) as person_name", "varchar")
             ->setField("account_id", "a.id as account_id", "varchar")
             ;
-        $where = new Where();
-        if ($role) {
-            $where->andWhereIn('role', $role);
-        }
 
         $sql = strtr(
             $sql,
@@ -71,7 +75,6 @@ SQL;
                 '{where}'       => $where,
             ]
         );
-
 
         return $this->query($sql, [], $projection);
     }

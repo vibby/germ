@@ -43,7 +43,6 @@ class Person extends AbstractMigration
             expires_at TIMESTAMP WITHOUT TIME ZONE,
             confirmation_token VARCHAR(255),
             password_requested_at TIMESTAMP WITHOUT TIME ZONE,
-            roles VARCHAR(32)[] NOT NULL,
             credentials_expired BOOLEAN NOT NULL DEFAULT FALSE,
             credentials_expire_at TIMESTAMP WITHOUT TIME ZONE,
             person_id INTEGER NOT NULL
@@ -53,6 +52,7 @@ class Person extends AbstractMigration
             family_id INTEGER NULL,
             firstname VARCHAR(32) NULL,
             lastname VARCHAR(32) NOT NULL,
+            roles VARCHAR(32)[] NOT NULL,
             phone VARCHAR(32)[] NULL,
             address VARCHAR(256) NULL,
             email VARCHAR(64) NULL,

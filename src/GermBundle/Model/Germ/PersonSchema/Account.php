@@ -14,4 +14,8 @@ use Vibby\PommProjectFosUserBundle\Model\User;
  */
 class Account extends User
 {
+	public function getRoles()
+	{
+		return [];
+	}
 }

@@ -13,7 +13,7 @@ use PommProject\ModelManager\Model\RowStructure;
  * Account
  *
  * Structure class for relation person.account.
- * 
+ *
  * Class and fields comments are inspected from table and fields comments.
  * Just add comments in your database and they will appear here.
  * @see http://www.postgresql.org/docs/9.0/static/sql-comment.html
@@ -50,7 +50,6 @@ class Account extends RowStructure
             ->addField('expires_at', 'timestamp')
             ->addField('confirmation_token', 'varchar')
             ->addField('password_requested_at', 'timestamp')
-            ->addField('roles', 'varchar[]')
             ->addField('credentials_expired', 'bool')
             ->addField('credentials_expire_at', 'timestamp')
             ->addField('person_id', 'int4')
