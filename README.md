@@ -35,6 +35,11 @@ Créer la structure de la base de données
 vendor/bin/phinx migrate
 ```
 
+Pour le dévelopement, vous pouvez insérez des données de test, notament le login / mot de passe : «jojo» / «test»
+```
+vendor/bin/phinx migrate -c phinx-dev.yml
+```
+
 Configurer votre serveur web (nginx ou apache) pour pointer sur le dossier web.
 Vous pouvez maintenant vous rendre sur l’application dans un navigateur web.
 
@@ -65,6 +70,11 @@ docker-compose exec germ-php-fpm composer install
 Créer la structure de la base de données
 ```
 docker-compose exec germ-php-fpm vendor/bin/phinx migrate
+```
+
+Pour le dévelopement, vous pouvez insérez des données de test
+```
+docker-compose exec germ-php-fpm vendor/bin/phinx migrate -c phinx-dev.yml
 ```
 
 Installer les assets

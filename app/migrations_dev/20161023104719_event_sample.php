@@ -2,7 +2,7 @@
 
 use Phinx\Migration\AbstractMigration;
 
-class EventData extends AbstractMigration
+class EventSample extends AbstractMigration
 {
     /**
      * Change Method.
