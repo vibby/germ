@@ -45,6 +45,7 @@ class Person extends AbstractMigration
             password_requested_at TIMESTAMP WITHOUT TIME ZONE,
             credentials_expired BOOLEAN NOT NULL DEFAULT FALSE,
             credentials_expire_at TIMESTAMP WITHOUT TIME ZONE,
+            roles VARCHAR(32)[] NOT NULL,
             person_id INTEGER NOT NULL
         );');
         $this->execute('CREATE TABLE "person"."person" (
@@ -52,10 +53,10 @@ class Person extends AbstractMigration
             family_id INTEGER NULL,
             firstname VARCHAR(32) NULL,
             lastname VARCHAR(32) NOT NULL,
-            roles VARCHAR(32)[] NOT NULL,
             phone VARCHAR(32)[] NULL,
             address VARCHAR(256) NULL,
             email VARCHAR(64) NULL,
+            roles VARCHAR(32)[] NOT NULL,
             birthdate DATE NULL,
             latlong point
         );');

@@ -1,6 +1,6 @@
 paths:
-    migrations: app/migrations-dev
-    seeds: app/seeds
+    migrations: app/migrations_dev
+    seeds: app/seeds_dev
 
 environments:
     default_migration_table: phinxlog

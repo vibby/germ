@@ -28,5 +28,6 @@ germ-php-fpm:
   volumes:
     - ..:/var/www/germ
     - ./php-fpm/php-ini-overrides.ini:/etc/php/7.1/fpm/conf.d/99-overrides.ini:ro
+    - ./php-fpm/php-ini-overrides.ini:/etc/php/7.1/cli/conf.d/99-overrides.ini:ro
   links:
     - germ-postgres

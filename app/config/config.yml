@@ -82,6 +82,9 @@ fos_user:
     db_driver: custom
     firewall_name: main
     user_class: GermBundle\Model\Germ\PublicSchema\Account
+    from_email:
+        address:        noreply@germ.fr
+        sender_name:    Germ
     service:
         user_manager: pomm_fos_user_bundle.user_manager
 
