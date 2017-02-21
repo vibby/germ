@@ -168,7 +168,7 @@ class PersonController extends Controller
     private function getPersonOr404($personId)
     {
         $personModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\PersonSchema\PersonModel');
-        $person = $personModel->findByPK(['id'=>$personId]);
+        $person = $personModel->findByPK(['id_person_person'=>$personId]);
         if (!$person) {
             throw $this->createNotFoundException('The person does not exist');
         }

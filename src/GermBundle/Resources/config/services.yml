@@ -1,4 +1,8 @@
 
+
+parameters:
+    pomm_fos_user.user_model_class: GermBundle\Model\Germ\PersonSchema\AccountModel
+
 services:
     germ.pomm.subscriber:
         class: GermBundle\Subscriber\PommSubscriber

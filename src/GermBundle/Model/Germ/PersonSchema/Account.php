@@ -14,8 +14,9 @@ use Vibby\PommProjectFosUserBundle\Model\User;
  */
 class Account extends User
 {
-	public function getRoles()
-	{
-		return [];
-	}
+	public $keyForId = 'id_person_account';
+
+    public function getId() {
+        return $this->get($this->keyForId);
+    }
 }

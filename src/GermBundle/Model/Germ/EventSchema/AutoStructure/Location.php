@@ -13,7 +13,7 @@ use PommProject\ModelManager\Model\RowStructure;
  * Location
  *
  * Structure class for relation event.location.
- * 
+ *
  * Class and fields comments are inspected from table and fields comments.
  * Just add comments in your database and they will appear here.
  * @see http://www.postgresql.org/docs/9.0/static/sql-comment.html
@@ -35,8 +35,8 @@ class Location extends RowStructure
     {
         $this
             ->setRelation('event.location')
-            ->setPrimaryKey(['id'])
-            ->addField('id', 'int4')
+            ->setPrimaryKey(['id_event_location'])
+            ->addField('id_event_location', 'int4')
             ->addField('name', 'varchar')
             ->addField('details', 'json')
             ;

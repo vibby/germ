@@ -13,7 +13,7 @@ use PommProject\ModelManager\Model\RowStructure;
  * Assignation
  *
  * Structure class for relation event.assignation.
- * 
+ *
  * Class and fields comments are inspected from table and fields comments.
  * Just add comments in your database and they will appear here.
  * @see http://www.postgresql.org/docs/9.0/static/sql-comment.html
@@ -35,8 +35,8 @@ class Assignation extends RowStructure
     {
         $this
             ->setRelation('event.assignation')
-            ->setPrimaryKey(['id'])
-            ->addField('id', 'int4')
+            ->setPrimaryKey(['id_event_assignation'])
+            ->addField('id_event_assignation', 'int4')
             ->addField('account_id', 'int4')
             ->addField('docket_id', 'int4')
             ->addField('event_id', 'int4')

@@ -13,7 +13,7 @@ use PommProject\ModelManager\Model\RowStructure;
  * Docket
  *
  * Structure class for relation event.docket.
- * 
+ *
  * Class and fields comments are inspected from table and fields comments.
  * Just add comments in your database and they will appear here.
  * @see http://www.postgresql.org/docs/9.0/static/sql-comment.html
@@ -35,8 +35,8 @@ class Docket extends RowStructure
     {
         $this
             ->setRelation('event.docket')
-            ->setPrimaryKey(['id'])
-            ->addField('id', 'int4')
+            ->setPrimaryKey(['id_event_docket'])
+            ->addField('id_event_docket', 'int4')
             ->addField('name', 'varchar')
             ->addField('role', 'varchar[]')
             ->addField('event_type_id', 'int4')

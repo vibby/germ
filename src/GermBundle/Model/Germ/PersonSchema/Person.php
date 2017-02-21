@@ -18,4 +18,8 @@ class Person extends FlexibleEntity
 	{
 		return $this->getFirstname() . ' ' . $this->getLastname();
 	}
+
+    public function getId() {
+        return $this->get('id_person_person');
+    }
 }

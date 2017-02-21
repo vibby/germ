@@ -13,7 +13,7 @@ use PommProject\ModelManager\Model\RowStructure;
  * Event
  *
  * Structure class for relation event.event.
- * 
+ *
  * Class and fields comments are inspected from table and fields comments.
  * Just add comments in your database and they will appear here.
  * @see http://www.postgresql.org/docs/9.0/static/sql-comment.html
@@ -35,8 +35,8 @@ class Event extends RowStructure
     {
         $this
             ->setRelation('event.event')
-            ->setPrimaryKey(['id'])
-            ->addField('id', 'int4')
+            ->setPrimaryKey(['id_event_event'])
+            ->addField('id_event_event', 'int4')
             ->addField('type_id', 'int4')
             ->addField('location_id', 'int4')
             ->addField('name', 'varchar')

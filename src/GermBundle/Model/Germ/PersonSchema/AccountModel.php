@@ -22,6 +22,8 @@ class AccountModel extends Model
 {
     use WriteQueries;
 
+    public $keyForId = 'id_person_account';
+
     /**
      * __construct()
      *
@@ -44,38 +46,39 @@ class AccountModel extends Model
         return $this->findWhere($where);
     }
 
-    public function findWhere(Where $where)
-    {
-        $personModel = $this
-            ->getSession()
-            ->getModel('\GermBundle\Model\Germ\PersonSchema\PersonModel')
-            ;
-
+    public function findUserWhere(Where $where) {
         $sql = <<<SQL
 select
-    {projection}
+    :projection
 from
-    {account} a
-    inner join {person} p on (p.id = a.person_id)
+    :user_relation r
+right join
+    :person_relation p ON p.id_person_person = r.person_id
 where
-    {where}
+    :condition
 SQL;
-
         $projection = $this->createProjection()
-            ->setField("person_name", "concat(p.lastname, ' ', p.firstname) as person_name", "varchar")
-            ->setField("account_id", "a.id as account_id", "varchar")
+            ->setField('roles', 'p.roles', 'varchar[]')
+            ->setField('email', 'p.email', 'varchar')
+            ->setField('id_person_person', 'p.id_person_person', 'varchar')
             ;
 
-        $sql = strtr(
-            $sql,
+        $sql = strtr($sql,
             [
-                '{account}'     => $this->structure->getRelation(),
-                '{person}'      => $personModel->getStructure()->getRelation(),
-                '{projection}'  => $projection->formatFields('a'),
-                '{where}'       => $where,
+                ':projection'      => $projection,
+                ':user_relation'   => $this->getStructure()->getRelation(),
+                ':person_relation' => $this->getSession()
+                    ->getModel('\GermBundle\Model\Germ\PersonSchema\PersonModel')
+                    ->getStructure()
+                    ->getRelation(),
+                ':condition' => $where,
             ]
         );
 
-        return $this->query($sql, [], $projection);
+        // foreach ($this->query($sql, $where->getValues(), $projection) as $person) {
+        //     dump($person);die;
+        // }
+
+        return $this->query($sql, $where->getValues(), $projection);
     }
 }

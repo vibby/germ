@@ -58,4 +58,8 @@ class Event extends FlexibleEntity
         }
         return parent::__call($method, $arguments);
     }
+
+    public function getId() {
+        return $this->get('id_event_event');
+    }
 }

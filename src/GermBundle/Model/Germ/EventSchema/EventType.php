@@ -18,4 +18,8 @@ class EventType extends FlexibleEntity
 	{
 		return $this->getName();
 	}
+
+    public function getId() {
+        return $this->get('id_event_event_type');
+    }
 }

@@ -35,8 +35,8 @@ class Account extends RowStructure
     {
         $this
             ->setRelation('person.account')
-            ->setPrimaryKey(['id'])
-            ->addField('id', 'int4')
+            ->setPrimaryKey(['id_person_account'])
+            ->addField('id_person_account', 'int4')
             ->addField('username', 'varchar')
             ->addField('username_canonical', 'varchar')
             ->addField('email', 'varchar')

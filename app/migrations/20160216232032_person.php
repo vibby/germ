@@ -29,7 +29,7 @@ class Person extends AbstractMigration
     {
         $this->execute('CREATE SCHEMA "person"');
         $this->execute('CREATE TABLE "person"."account" (
-            id SERIAL PRIMARY KEY,
+            id_person_account SERIAL PRIMARY KEY,
             username VARCHAR(255) NOT NULL,
             username_canonical VARCHAR(255) NOT NULL UNIQUE,
             email VARCHAR(255) NOT NULL,
@@ -45,11 +45,10 @@ class Person extends AbstractMigration
             password_requested_at TIMESTAMP WITHOUT TIME ZONE,
             credentials_expired BOOLEAN NOT NULL DEFAULT FALSE,
             credentials_expire_at TIMESTAMP WITHOUT TIME ZONE,
-            roles VARCHAR(32)[] NOT NULL,
             person_id INTEGER NOT NULL
         );');
         $this->execute('CREATE TABLE "person"."person" (
-            id SERIAL PRIMARY KEY,
+            id_person_person SERIAL PRIMARY KEY,
             family_id INTEGER NULL,
             firstname VARCHAR(32) NULL,
             lastname VARCHAR(32) NOT NULL,
@@ -61,8 +60,8 @@ class Person extends AbstractMigration
             latlong point
         );');
 
-        $this->execute('ALTER TABLE "person"."person" ADD FOREIGN KEY ("family_id") REFERENCES "person"."person" ("id") ON DELETE SET NULL ON UPDATE CASCADE;');
-        $this->execute('ALTER TABLE "person"."account" ADD FOREIGN KEY ("person_id") REFERENCES "person"."person" ("id") ON DELETE CASCADE ON UPDATE CASCADE;');
+        $this->execute('ALTER TABLE "person"."person" ADD FOREIGN KEY ("family_id") REFERENCES "person"."person" ("id_person_person") ON DELETE SET NULL ON UPDATE CASCADE;');
+        $this->execute('ALTER TABLE "person"."account" ADD FOREIGN KEY ("person_id") REFERENCES "person"."person" ("id_person_person") ON DELETE CASCADE ON UPDATE CASCADE;');
 
     }
 
