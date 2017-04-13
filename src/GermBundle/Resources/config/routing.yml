@@ -32,11 +32,11 @@ germ_person_create:
 
 germ_person_account_disable:
     path:     /person/disable/{personId}
-    defaults: { _controller: GermBundle:Person:accountActivation, enable:false }
+    defaults: { _controller: GermBundle:Person:accountActivation, enable: false }
 
 germ_person_account_enable:
     path:     /person/enable/{personId}
-    defaults: { _controller: GermBundle:Person:accountActivation, enable:true }
+    defaults: { _controller: GermBundle:Person:accountActivation, enable: true }
 
 germ_event_list:
     path:     /event

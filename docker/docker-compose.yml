@@ -15,7 +15,7 @@ germ-webserver:
     - ..:/var/www/germ:ro
     - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
   ports:
-    - "8080:80"
+    - "8095:80"
   links:
     - germ-php-fpm
 
