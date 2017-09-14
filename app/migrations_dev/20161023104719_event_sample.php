@@ -28,24 +28,24 @@ class EventSample extends AbstractMigration
     public function up()
     {
         $this->execute( <<<SQL
-            INSERT INTO "event"."location" (id, name, details) VALUES
+            INSERT INTO "event"."location" (id_event_location, name, details) VALUES
             (1, 'Churchill', '{"geolocalisation": {"latitude": "47.2128399", "longitude": "-1.5612279"}}'::json);
 SQL
         );
         $this->execute( <<<SQL
-            INSERT INTO "event"."event_type" (id, name, recurence, event_layout) VALUES
+            INSERT INTO "event"."event_type" (id_event_event_type, name, recurence, event_layout) VALUES
             (1, 'Celebration', '0 11 * * 6', '{"name": "Name sample"}'::json),
             (2, 'Event Type 2', '30 9 * * 6', '{}'::json);
 SQL
         );
         $this->execute( <<<SQL
-            INSERT INTO "event"."event" (id, type_id, location_id, name, date_from, duration, description) VALUES
-            (1, 1, 1, 'Celebration on august the 6th, 2016', '2016-08-06 11:00:00'::timestamp, '01:30:00'::interval, ''),
+            INSERT INTO "event"."event" (id_event_event, type_id, location_id, name, date_from, duration, description) VALUES
+            (1, 1, 1, 'Celebration on august the 6th', '2016-08-06 11:00:00'::timestamp, '01:30:00'::interval, ''),
             (2, 2, 1, 'Event 2', '2016-08-06 09:30:00'::timestamp, '01:15:00'::interval, '');
 SQL
         );
         $this->execute( <<<SQL
-            INSERT INTO "event"."docket" (id, name, role, event_type_id) VALUES
+            INSERT INTO "event"."docket" (id_event_docket, name, role, event_type_id) VALUES
             (1, 'Predicator', '{"ROLE_PASTOR", "ROLE_ELDER"}', 1),
             (2, 'President', '{"ROLE_PRESIDENT"}', 1),
             (3, 'Prayer', '{}', 1),
@@ -55,7 +55,7 @@ SQL
 SQL
         );
         $this->execute( <<<SQL
-            INSERT INTO "event"."assignation" (id, account_id, docket_id, event_id, details) VALUES
+            INSERT INTO "event"."assignation" (id_event_assignation, account_id, docket_id, event_id, details) VALUES
             (1, 1, 1, 1, '{}'::json),
             (2, 2, 2, 1, '{}'::json),
             (3, 1, 3, 1, '{}'::json),
