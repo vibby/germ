@@ -36,7 +36,7 @@ class EventType extends RowStructure
         $this
             ->setRelation('event.event_type')
             ->setPrimaryKey(['id_event_event_type'])
-            ->addField('id_event_event_type', 'int4')
+            ->addField('id_event_event_type', 'uuid')
             ->addField('name', 'varchar')
             ->addField('recurence', 'varchar')
             ->addField('event_layout', 'json')

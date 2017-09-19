@@ -27,22 +27,22 @@ class Event extends AbstractMigration
      */
     public function up()
     {
-        $this->execute('CREATE SCHEMA "event"');
+        //$this->execute('CREATE SCHEMA "event"');
         $this->execute('CREATE TABLE "event"."location" (
-            id_event_location SERIAL PRIMARY KEY,
+            id_event_location uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
             name VARCHAR(64) NOT NULL,
             details JSON NULL
         );');
         $this->execute('CREATE TABLE "event"."event_type" (
-            id_event_event_type SERIAL PRIMARY KEY,
+            id_event_event_type uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
             name VARCHAR(32) NULL,
             recurence VARCHAR(32) NULL,
             event_layout JSON NULL
         );');
         $this->execute('CREATE TABLE "event"."event" (
-            id_event_event SERIAL PRIMARY KEY,
-            type_id INTEGER NOT NULL,
-            location_id INTEGER NULL,
+            id_event_event uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+            type_id uuid NOT NULL,
+            location_id uuid NULL,
             name VARCHAR(32) NOT NULL,
             date_from TIMESTAMP NOT NULL,
             duration INTERVAL NOT NULL,
@@ -53,17 +53,17 @@ class Event extends AbstractMigration
         $this->execute('ALTER TABLE "event"."event" ADD FOREIGN KEY ("location_id") REFERENCES "event"."location" ("id_event_location") ON DELETE SET NULL ON UPDATE CASCADE;');
 
         $this->execute('CREATE TABLE "event"."docket" (
-            id_event_docket SERIAL PRIMARY KEY,
+            id_event_docket uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
             name VARCHAR(32) NOT NULL,
             role VARCHAR(32)[] NULL,
-            event_type_id INTEGER NOT NULL
+            event_type_id uuid NOT NULL
         );');
         $this->execute('ALTER TABLE "event"."docket" ADD FOREIGN KEY ("event_type_id") REFERENCES "event"."event_type" ("id_event_event_type") ON UPDATE CASCADE;');
         $this->execute('CREATE TABLE "event"."assignation" (
-            id_event_assignation SERIAL PRIMARY KEY,
-            account_id INTEGER NULL,
-            docket_id INTEGER NULL,
-            event_id INTEGER NULL,
+            id_event_assignation uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+            account_id uuid NULL,
+            docket_id uuid NULL,
+            event_id uuid NULL,
             details JSON NULL
         );');
         $this->execute('ALTER TABLE "event"."assignation" ADD FOREIGN KEY ("account_id") REFERENCES "person"."account" ("id_person_account") ON DELETE SET NULL ON UPDATE CASCADE;');
@@ -79,5 +79,6 @@ class Event extends AbstractMigration
         $this->execute('DROP TABLE "event"."event";');
         $this->execute('DROP TABLE "event"."event_type";');
         $this->execute('DROP TABLE "event"."location";');
+        $this->execute('DROP SCHEMA "event";');
     }
 }

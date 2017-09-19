@@ -40,7 +40,8 @@
         "pomm-project/model-manager"           : "2.*@dev",
         "pomm-project/cli"                     : "2.*@dev",
         "vibby/pomm-project-fos-user-bundle"   : "dev-master",
-        "mtdowling/cron-expression"            : "1.1.*"
+        "mtdowling/cron-expression"            : "1.1.*",
+        "ramsey/uuid": "^3.7"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",

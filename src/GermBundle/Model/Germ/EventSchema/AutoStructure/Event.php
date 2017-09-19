@@ -36,9 +36,9 @@ class Event extends RowStructure
         $this
             ->setRelation('event.event')
             ->setPrimaryKey(['id_event_event'])
-            ->addField('id_event_event', 'int4')
-            ->addField('type_id', 'int4')
-            ->addField('location_id', 'int4')
+            ->addField('id_event_event', 'uuid')
+            ->addField('type_id', 'uuid')
+            ->addField('location_id', 'uuid')
             ->addField('name', 'varchar')
             ->addField('date_from', 'timestamp')
             ->addField('duration', 'interval')

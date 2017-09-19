@@ -5,8 +5,6 @@ namespace GermBundle\Model\Germ\PersonSchema;
 use PommProject\ModelManager\Model\Model;
 use PommProject\ModelManager\Model\Projection;
 use PommProject\ModelManager\Model\ModelTrait\WriteQueries;
-use PommProject\ModelManager\Model\ModelTrait\;
-
 use PommProject\Foundation\Where;
 
 use GermBundle\Model\Germ\PersonSchema\AutoStructure\Person as PersonStructure;

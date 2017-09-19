@@ -36,7 +36,7 @@ class Location extends RowStructure
         $this
             ->setRelation('event.location')
             ->setPrimaryKey(['id_event_location'])
-            ->addField('id_event_location', 'int4')
+            ->addField('id_event_location', 'uuid')
             ->addField('name', 'varchar')
             ->addField('details', 'json')
             ;

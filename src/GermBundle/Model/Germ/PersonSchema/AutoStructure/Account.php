@@ -36,7 +36,7 @@ class Account extends RowStructure
         $this
             ->setRelation('person.account')
             ->setPrimaryKey(['id_person_account'])
-            ->addField('id_person_account', 'int4')
+            ->addField('id_person_account', 'uuid')
             ->addField('username', 'varchar')
             ->addField('username_canonical', 'varchar')
             ->addField('email', 'varchar')
@@ -52,7 +52,7 @@ class Account extends RowStructure
             ->addField('password_requested_at', 'timestamp')
             ->addField('credentials_expired', 'bool')
             ->addField('credentials_expire_at', 'timestamp')
-            ->addField('person_id', 'int4')
+            ->addField('person_id', 'uuid')
             ;
     }
 }

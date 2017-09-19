@@ -36,10 +36,10 @@ class Docket extends RowStructure
         $this
             ->setRelation('event.docket')
             ->setPrimaryKey(['id_event_docket'])
-            ->addField('id_event_docket', 'int4')
+            ->addField('id_event_docket', 'uuid')
             ->addField('name', 'varchar')
             ->addField('role', 'varchar[]')
-            ->addField('event_type_id', 'int4')
+            ->addField('event_type_id', 'uuid')
             ;
     }
 }

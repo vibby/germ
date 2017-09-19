@@ -14,6 +14,11 @@ use PommProject\ModelManager\Model\FlexibleEntity;
  */
 class Person extends FlexibleEntity
 {
+	public function __construct()
+	{
+		$this->roles = [];
+	}
+
 	public function __toString()
 	{
 		return $this->getFirstname() . ' ' . $this->getLastname();

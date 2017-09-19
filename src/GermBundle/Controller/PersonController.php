@@ -24,6 +24,9 @@ class PersonController extends Controller
     public function listAction(Request $request, $page)
     {
         $model = $this->get('pomm')['germ']
+            ->getModel('GermBundle\Model\Germ\PersonSchema\AccountModel');
+
+        $model = $this->get('pomm')['germ']
             ->getModel('GermBundle\Model\Germ\PersonSchema\PersonModel');
 
         if ($request->get('_format') != 'html') {
@@ -142,7 +145,12 @@ class PersonController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $personModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\PersonSchema\PersonModel');
-            $personModel->insertOne($person, array_keys($form->getData()->extract()));
+            $person = new Person();
+            foreach ($form->getData()->extract() as $key => $value) {
+                $method = 'set'.ucfirst($key);
+                $person->$method($value);
+            }
+            $personModel->insertOne($person);
             $translator = $this->get('translator');
             $this->get('session')->getFlashBag()->add('success', $translator->trans('Person created'));
             return $this->redirectToRoute('germ_person_edit', ['personId' => $person->getId()]);

@@ -28,8 +28,9 @@ class Person extends AbstractMigration
     public function up()
     {
         $this->execute('CREATE SCHEMA "person"');
+        $this->execute('CREATE EXTENSION IF NOT EXISTS "uuid-ossp";');
         $this->execute('CREATE TABLE "person"."account" (
-            id_person_account SERIAL PRIMARY KEY,
+            id_person_account uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
             username VARCHAR(255) NOT NULL,
             username_canonical VARCHAR(255) NOT NULL UNIQUE,
             email VARCHAR(255) NOT NULL,
@@ -45,13 +46,14 @@ class Person extends AbstractMigration
             password_requested_at TIMESTAMP WITHOUT TIME ZONE,
             credentials_expired BOOLEAN NOT NULL DEFAULT FALSE,
             credentials_expire_at TIMESTAMP WITHOUT TIME ZONE,
-            person_id INTEGER NOT NULL
+            person_id uuid NOT NULL
         );');
         $this->execute('CREATE TABLE "person"."person" (
-            id_person_person SERIAL PRIMARY KEY,
-            family_id INTEGER NULL,
+            id_person_person uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+            family_id uuid NULL,
             firstname VARCHAR(32) NULL,
             lastname VARCHAR(32) NOT NULL,
+            slug VARCHAR(255) NOT NULL UNIQUE,
             phone VARCHAR(32)[] NULL,
             address VARCHAR(256) NULL,
             email VARCHAR(64) NULL,
@@ -69,5 +71,6 @@ class Person extends AbstractMigration
     {
         $this->execute('DROP TABLE "person"."account";');
         $this->execute('DROP TABLE "person"."person";');
+        $this->execute('DROP SCHEMA "person";');
     }
 }

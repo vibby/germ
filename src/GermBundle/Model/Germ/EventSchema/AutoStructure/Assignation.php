@@ -36,10 +36,10 @@ class Assignation extends RowStructure
         $this
             ->setRelation('event.assignation')
             ->setPrimaryKey(['id_event_assignation'])
-            ->addField('id_event_assignation', 'int4')
-            ->addField('account_id', 'int4')
-            ->addField('docket_id', 'int4')
-            ->addField('event_id', 'int4')
+            ->addField('id_event_assignation', 'uuid')
+            ->addField('account_id', 'uuid')
+            ->addField('docket_id', 'uuid')
+            ->addField('event_id', 'uuid')
             ->addField('details', 'json')
             ;
     }
