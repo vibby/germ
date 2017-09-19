@@ -8,23 +8,26 @@ namespace GermBundle\Subscriber;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Knp\Component\Pager\Event\ItemsEvent;
+use PommProject\Foundation\Where;
+use PommProject\ModelManager\Model\Model;
 
 class PommSubscriber implements EventSubscriberInterface
 {
     public function items(ItemsEvent $event)
     {
         if (isset($event->target[0])
-        	&& is_a($event->target[0], 'PommProject\ModelManager\Model\Model')
-        	&& is_a($event->target[1], 'PommProject\Foundation\Where')
+            && isset($event->target[1])
+            && is_a($event->target[0], Model::class)
+            && is_a($event->target[1], Where::class)
         ) {
-            $event->count = count($event->target);
+            $model = $event->target[0];
+            $where = $event->target[1];
+            $event->count = $model->countWhere($where);
             $event->items = $event->target[0]->paginateFindWhere(
-            	$event->target[1],
-            	$event->getLimit(),
-            	$event->getOffset()/$event->getLimit()
+                $event->target[1],
+                $event->getLimit(),
+                $event->getOffset()/$event->getLimit() + 1
             )->getIterator();
-            // dump($event->items);
-            // die;
             $event->stopPropagation();
         }
     }

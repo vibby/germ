@@ -89,7 +89,7 @@ fos_user:
         user_manager: pomm_fos_user_bundle.user_manager
 
 knp_paginator:
-    page_range: 30                     # default page range used in pagination control
+    page_range: 15                     # default page range used in pagination control
     default_options:
         page_name: page                # page query parameter name
         sort_field_name: sort          # sort field query parameter name

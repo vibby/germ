@@ -16,7 +16,7 @@
 		<tr>
 			<th>{% trans %}Name{% endtrans %}</th>
 		</tr>
-		{% for person in persons %}
+		{% for person in paginatedPersons.items %}
 			<tr>
 				<td>
 					{% if is_granted('ROLE_PERSON_EDIT') %}
@@ -32,6 +32,7 @@
 			</tr>
 		{% endfor %}
 	</table>
+	{{ knp_pagination_render(paginatedPersons) }}
 {% endblock %}
 
 {% block main_width %}{% if form is defined %}6{% else %}12{% endif %}{% endblock %}

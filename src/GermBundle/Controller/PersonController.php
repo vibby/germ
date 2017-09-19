@@ -16,24 +16,27 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use FOS\UserBundle\Util\LegacyFormHelper;
+use PommProject\Foundation\Where;
 
 class PersonController extends Controller
 {
 
-    public function listAction(Request $request)
+    public function listAction(Request $request, $page)
     {
         $model = $this->get('pomm')['germ']
             ->getModel('GermBundle\Model\Germ\PersonSchema\PersonModel');
 
-        $output['persons'] = $model->findAll('order by lastname, firstname');
-
-        // $where = $model->generateWhere();
-        // $paginator  = $this->get('knp_paginator');
-        // $persons = $paginator->paginate(
-        //     array($model, $where),
-        //     $request->query->getInt('page', 1)+1,
-        //     30
-        // );
+        if ($request->get('_format') != 'html') {
+            $output['persons'] = $model->findAll('order by lastname, firstname');
+        } else {
+            $where = Where::create();
+            $paginator  = $this->get('knp_paginator');
+            $output['paginatedPersons'] = $paginator->paginate(
+                [$model, $where],
+                $page,
+                15
+            );
+        }
 
         $authorizationChecker = $this->get('security.authorization_checker');
         if ($authorizationChecker->isGranted('ROLE_PERSON_CREATE')) {
@@ -42,8 +45,7 @@ class PersonController extends Controller
 
         $response = $this->render('GermBundle:Person:list.'.$request->get('_format').'.twig', $output);
 
-        if ($request->get('_format') != 'html')
-        {
+        if ($request->get('_format') != 'html') {
             $response->headers->set('Content-Disposition', 'attachment; filename="persons.'.$request->get('_format').'"');
         }
 

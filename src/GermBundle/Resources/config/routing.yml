@@ -7,10 +7,11 @@ fos_user:
     resource: "@FOSUserBundle/Resources/config/routing/all.xml"
 
 germ_person_list:
-    path:     /person.{_format}
+    path:     /persons{page}.{_format}
     defaults:
         _controller: GermBundle:Person:list
         _format: html
+        page: 1
     requirements:
         _format:  html|csv|geojson
 

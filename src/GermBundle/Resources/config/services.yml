@@ -15,6 +15,12 @@ services:
         tags:
             - { name: twig.extension }
 
+    germ.person_extension:
+        class: GermBundle\Twig\PersonExtension
+        public: false
+        tags:
+            - { name: twig.extension }
+
     germ.event_manager:
         class: GermBundle\Manager\EventManager
         calls:
