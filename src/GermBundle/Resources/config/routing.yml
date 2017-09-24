@@ -7,7 +7,7 @@ fos_user:
     resource: "@FOSUserBundle/Resources/config/routing/all.xml"
 
 germ_person_list:
-    path:     /persons{page}.{_format}
+    path:     /person_{page}.{_format}
     defaults:
         _controller: GermBundle:Person:list
         _format: html
@@ -16,15 +16,15 @@ germ_person_list:
         _format:  html|csv|geojson
 
 germ_person_show:
-    path:     /person/show/{personId}
+    path:     /person/show/{personSlug}
     defaults: { _controller: GermBundle:Person:show }
 
 germ_person_edit:
-    path:     /person/edit/{personId}
+    path:     /person/edit/{personSlug}
     defaults: { _controller: GermBundle:Person:edit }
 
 germ_person_remove:
-    path:     /person/remove/{personId}
+    path:     /person/remove/{personSlug}
     defaults: { _controller: GermBundle:Person:remove }
 
 germ_person_create:
@@ -32,11 +32,11 @@ germ_person_create:
     defaults: { _controller: GermBundle:Person:create }
 
 germ_person_account_disable:
-    path:     /person/disable/{personId}
+    path:     /person/disable/{personSlug}
     defaults: { _controller: GermBundle:Person:accountActivation, enable: false }
 
 germ_person_account_enable:
-    path:     /person/enable/{personId}
+    path:     /person/enable/{personSlug}
     defaults: { _controller: GermBundle:Person:accountActivation, enable: true }
 
 germ_event_list:

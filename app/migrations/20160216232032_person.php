@@ -53,7 +53,7 @@ class Person extends AbstractMigration
             family_id uuid NULL,
             firstname VARCHAR(32) NULL,
             lastname VARCHAR(32) NOT NULL,
-            slug VARCHAR(255) NOT NULL UNIQUE,
+            slug_canonical VARCHAR(255) NOT NULL UNIQUE,
             phone VARCHAR(32)[] NULL,
             address VARCHAR(256) NULL,
             email VARCHAR(64) NULL,
@@ -63,14 +63,57 @@ class Person extends AbstractMigration
         );');
 
         $this->execute('ALTER TABLE "person"."person" ADD FOREIGN KEY ("family_id") REFERENCES "person"."person" ("id_person_person") ON DELETE SET NULL ON UPDATE CASCADE;');
-        $this->execute('ALTER TABLE "person"."account" ADD FOREIGN KEY ("person_id") REFERENCES "person"."person" ("id_person_person") ON DELETE CASCADE ON UPDATE CASCADE;');
+        $this->execute('ALTER TABLE "person"."account" ADD FOREIGN KEY ("person_id") REFERENCES "person"."person" ("id_person_person") ON DELETE CASCADE 
+            ON UPDATE CASCADE;');
 
+        $this->execute('CREATE EXTENSION IF NOT EXISTS "unaccent";');
+        $this->execute(<<<SQL
+            CREATE OR REPLACE FUNCTION "public".slugify(str TEXT)
+            RETURNS text AS $$
+            BEGIN
+                RETURN regexp_replace(
+                   lower(translate(str,
+                     'äëïöüáéíóúâêîûôåãõàèìòùřšěčůńýśćłęążźĄŃÝŚĆŁĘÄËÏÖÜÁÉÍÓÚÂÊÎÛÔÅÃÕÀÈÌÒÙŘŠĚČŮŻŹß ²ø®',
+                     'aeiouaeiouaeiouaaoaeioursecunyscleazzANYSCLEAEIOUAEIOUAEIOUAAOAEIOURSECUZzs-2dR'
+                     -- missing chars will be removed
+                   )),
+                   -- strip all others chars than [^a-z0-9 \-]
+                   '[^a-z0-9 \-]',
+                   '',
+                   'g'
+                );
+            END;
+            $$ LANGUAGE plpgsql;
+SQL
+        );
+        $this->execute(<<<SQL
+            CREATE OR REPLACE FUNCTION "person".person_slug()
+            RETURNS trigger AS $$
+            BEGIN
+                IF NEW.slug_canonical IS NULL or NEW.slug_canonical='' THEN
+                    NEW.slug_canonical = public.slugify(NEW.firstname || ' ' || NEW.lastname);
+                END IF;
+                RETURN NEW;
+            END;
+            $$ LANGUAGE plpgsql;
+SQL
+        );
+
+        $this->execute(<<<SQL
+            CREATE TRIGGER "person_slug"
+              BEFORE INSERT OR UPDATE
+              ON "person"."person"
+              FOR EACH ROW
+              EXECUTE PROCEDURE "person".person_slug();
+SQL
+        );
     }
 
     public function down()
     {
         $this->execute('DROP TABLE "person"."account";');
         $this->execute('DROP TABLE "person"."person";');
+        $this->execute('DROP FUNCTION "person".person_slug();');
         $this->execute('DROP SCHEMA "person";');
     }
 }

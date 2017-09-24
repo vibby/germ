@@ -55,10 +55,10 @@ class PersonController extends Controller
         return $response;
     }
 
-    public function editAction(Request $request, $personId)
+    public function editAction(Request $request, $personSlug)
     {
         $accountModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\PersonSchema\AccountModel');
-        $person = $this->getPersonOr404($personId);
+        $person = $this->getPersonOr404($personSlug);
 
         $personForm = $this->buildPersonForm($person);
         $personForm->handleRequest($request);
@@ -66,11 +66,11 @@ class PersonController extends Controller
             $personModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\PersonSchema\PersonModel');
             $personModel->updateOne($person, array_keys($personForm->getData()->extract()));
             $this->get('session')->getFlashBag()->add('success', 'Person updated');
-            return $this->redirectToRoute('germ_person_edit', ['personId' => $person->getId()]);
+            return $this->redirectToRoute('germ_person_edit', ['personSlug' => $person->getId()]);
         }
         $personForm = $personForm->createView();
 
-        $account = $accountModel->findWhere("person_id = $*", [$personId])->current();
+        $account = $accountModel->findWhere("person_id = $*", [$person->getId()])->current();
         if ($account) {
             if ($account->getEnabled()) {
                 $accountForm = $this->buildAccountForm($account);
@@ -78,7 +78,7 @@ class PersonController extends Controller
                 if ($accountForm->isSubmitted() && $accountForm->isValid()) {
                     $accountModel->updateOne($account, array_keys($accountForm->getData()->extract()));
                     $this->get('session')->getFlashBag()->add('success', 'Person updated');
-                    return $this->redirectToRoute('germ_person_edit', ['personId' => $person->getId()]);
+                    return $this->redirectToRoute('germ_person_edit', ['personSlug' => $person->getId()]);
                 }
                 $accountForm = $accountForm->createView();
 
@@ -87,7 +87,7 @@ class PersonController extends Controller
                 if ($passwordForm->isSubmitted() && $passwordForm->isValid()) {
                     $accountModel->updateOne($account, array_keys($passwordForm->getData()->extract()));
                     $this->get('session')->getFlashBag()->add('success', 'Person updated');
-                    return $this->redirectToRoute('germ_person_edit', ['personId' => $person->getId()]);
+                    return $this->redirectToRoute('germ_person_edit', ['personSlug' => $person->getId()]);
                 }
                 $passwordForm = $passwordForm->createView();
             } else {
@@ -101,7 +101,7 @@ class PersonController extends Controller
             if ($accountCreateForm->isSubmitted() && $accountCreateForm->isValid()) {
                 $accountModel->insertOne($account, array_keys($accountCreateForm->getData()->extract()));
                 $this->get('session')->getFlashBag()->add('success', 'Person updated');
-                return $this->redirectToRoute('germ_person_edit', ['personId' => $person->getId()]);
+                return $this->redirectToRoute('germ_person_edit', ['personSlug' => $person->getId()]);
             }
             $accountCreateForm = $accountCreateForm->createView();
 
@@ -121,11 +121,11 @@ class PersonController extends Controller
         );
     }
 
-    public function showAction(Request $request, $personId)
+    public function showAction(Request $request, $personSlug)
     {
         $personModel = $this->get('pomm')['germ']
             ->getModel('GermBundle\Model\Germ\PersonSchema\PersonModel');
-        $person = $personModel->findByPK(['id'=>$personId]);
+        $person = $personModel->findByPK(['id'=>$personSlug]);
         if (!$person) {
             throw $this->createNotFoundException('The person does not exist');
         }
@@ -153,7 +153,7 @@ class PersonController extends Controller
             $personModel->insertOne($person);
             $translator = $this->get('translator');
             $this->get('session')->getFlashBag()->add('success', $translator->trans('Person created'));
-            return $this->redirectToRoute('germ_person_edit', ['personId' => $person->getId()]);
+            return $this->redirectToRoute('germ_person_edit', ['personSlug' => $person->getId()]);
         }
 
         return $this->render(
@@ -165,9 +165,9 @@ class PersonController extends Controller
         );
     }
 
-    public function removeAction($personId)
+    public function removeAction($personSlug)
     {
-        $person = $this->getPersonOr404($personId);
+        $person = $this->getPersonOr404($personSlug);
         $personModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\PersonSchema\PersonModel');
         $personModel->deleteOne($person);
         $this->get('session')->getFlashBag()->add('success', 'Person deleted');
@@ -175,29 +175,29 @@ class PersonController extends Controller
         return $this->redirectToRoute('germ_person_list');
     }
 
-    private function getPersonOr404($personId)
+    private function getPersonOr404($personSlug)
     {
         $personModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\PersonSchema\PersonModel');
-        $person = $personModel->findByPK(['id_person_person'=>$personId]);
+        $person = $personModel->findWhere(new Where('slug_canonical = $1', [':slug' => $personSlug]))->current();
         if (!$person) {
             throw $this->createNotFoundException('The person does not exist');
         }
         return $person;
     }
 
-    private function getAccountOr404($personId)
+    private function getAccountOr404($personSlug)
     {
         $accountModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\PersonSchema\AccountModel');
-        $account = $accountModel->findWhere("person_id = $*", [$personId])->current();
+        $account = $accountModel->findWhere("person_id = $*", [$personSlug])->current();
         if (!$account) {
             throw $this->createNotFoundException('The account does not exist');
         }
         return $account;
     }
 
-    public function accountActivationAction(Request $request, $personId, $enable)
+    public function accountActivationAction(Request $request, $personSlug, $enable)
     {
-        $account = $this->getAccountOr404($personId);
+        $account = $this->getAccountOr404($personSlug);
         if ($account->getEnabled() === $enable) {
             throw $this->createNotFoundException('The account is already ' . ($enable ? 'enabled' : 'disabled'));
         }
@@ -208,7 +208,7 @@ class PersonController extends Controller
             'success',
             'Account was ' . ($enable ? 'enabled' : 'disabled') . ' successuly'
         );
-        return $this->redirectToRoute('germ_person_edit', ['personId' => $personId]);
+        return $this->redirectToRoute('germ_person_edit', ['personSlug' => $personSlug]);
     }
 
     private function buildPersonForm(Person $person)

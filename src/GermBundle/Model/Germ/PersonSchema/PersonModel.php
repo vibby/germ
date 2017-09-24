@@ -33,4 +33,13 @@ class PersonModel extends Model
         $this->structure = new PersonStructure;
         $this->flexible_entity_class = '\GermBundle\Model\Germ\PersonSchema\Person';
     }
+
+    public function getPersons(Array $role = [])
+    {
+        $where = new Where();
+        if ($role) {
+            $where->andWhereIn('role', $role);
+        }
+        return $this->findWhere($where);
+    }
 }
