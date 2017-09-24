@@ -27,7 +27,7 @@ class Event extends AbstractMigration
      */
     public function up()
     {
-        //$this->execute('CREATE SCHEMA "event"');
+        $this->execute('CREATE SCHEMA "event"');
         $this->execute('CREATE TABLE "event"."location" (
             id_event_location uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
             name VARCHAR(64) NOT NULL,
@@ -60,13 +60,13 @@ class Event extends AbstractMigration
         );');
         $this->execute('ALTER TABLE "event"."docket" ADD FOREIGN KEY ("event_type_id") REFERENCES "event"."event_type" ("id_event_event_type") ON UPDATE CASCADE;');
         $this->execute('CREATE TABLE "event"."assignation" (
-            id_event_assignation uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
-            account_id uuid NULL,
+            person_id uuid NULL,
             docket_id uuid NULL,
             event_id uuid NULL,
-            details JSON NULL
+            details JSON NULL,
+            PRIMARY KEY (person_id, docket_id, event_id)
         );');
-        $this->execute('ALTER TABLE "event"."assignation" ADD FOREIGN KEY ("account_id") REFERENCES "person"."account" ("id_person_account") ON DELETE SET NULL ON UPDATE CASCADE;');
+        $this->execute('ALTER TABLE "event"."assignation" ADD FOREIGN KEY ("person_id") REFERENCES "person"."person" ("id_person_person") ON DELETE SET NULL ON UPDATE CASCADE;');
         $this->execute('ALTER TABLE "event"."assignation" ADD FOREIGN KEY ("docket_id") REFERENCES "event"."docket" ("id_event_docket") ON DELETE SET NULL ON UPDATE CASCADE;');
         $this->execute('ALTER TABLE "event"."assignation" ADD FOREIGN KEY ("event_id") REFERENCES "event"."event" ("id_event_event") ON DELETE SET NULL ON UPDATE CASCADE;');
 

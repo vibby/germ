@@ -62,10 +62,10 @@ select
     {projection}
 from
     {event}
-    inner join {eventType} et on (et.id = event.type_id)
-    inner join {location} lo on (lo.id = event.location_id)
+    inner join {eventType} et on (et.id_event_event_type = event.type_id)
+    left join {location} lo on (lo.id_event_location = event.location_id)
 where
-    event.id = $*
+    event.id_event_event = $*
 SQL;
 
         $projection = $this->createProjection()
@@ -85,5 +85,28 @@ SQL;
         );
 
         return $this->query($sql, [$eventId], $projection)->current();
+    }
+
+    public function saveEvent(Event $event, array $properties)
+    {
+        $this->startTransaction();
+        try {
+            foreach ($event->dockets as $docket) {
+                $this->save($event, $properties);
+                $assignationModel = $this->getModel(assignationModel::class)
+                    ->updateOne(
+                        [
+                            'account_id' => $docket['target'],
+                            'event_id' => $event->getId(),
+                            'docket_id' => $docket['id_event_docket'],
+                        ]
+                    );
+            }
+        } catch (\Exception $e) {
+            // If an exception is thrown, rollback everything and propage it.
+            $this->rollbackTransaction();
+
+            throw $e;
+        }
     }
 }

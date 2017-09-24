@@ -4,7 +4,7 @@
     {% if is_granted('ROLE_EVENT_CREATE') %}
         <form class="form-inline" action="{{ path('germ_event_create') }}">
             <div class="form-group">
-                <select class="form-control">
+                <select class="form-control" name="event_type">
                     {% for eventType in eventTypes %}
                         <option value="{{ eventType.id }}">{{ eventType }}</option>
                     {% endfor %}

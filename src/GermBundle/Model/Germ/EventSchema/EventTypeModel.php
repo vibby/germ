@@ -5,6 +5,7 @@ namespace GermBundle\Model\Germ\EventSchema;
 use PommProject\ModelManager\Model\Model;
 use PommProject\ModelManager\Model\Projection;
 use PommProject\ModelManager\Model\ModelTrait\WriteQueries;
+use PommProject\ModelManager\Model\ModelTrait\ReadQueries;
 
 use PommProject\Foundation\Where;
 
@@ -20,7 +21,7 @@ use GermBundle\Model\Germ\EventSchema\EventType;
  */
 class EventTypeModel extends Model
 {
-    use WriteQueries;
+    use ReadQueries;
 
     /**
      * __construct()

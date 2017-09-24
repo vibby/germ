@@ -35,8 +35,12 @@ class DocketModel extends Model
         $this->flexible_entity_class = '\GermBundle\Model\Germ\EventSchema\Docket';
     }
 
-    public function getDocketsAndAssignationsForEvent($event)
+    public function getDocketsAndAssignationsForEvent(Event $event)
     {
+        if (!isset($event['id_event_event'])) {
+            return $this->findWhere('event_type_id = $*',[$event['type_id']]);
+        }
+
         $assignationModel = $this
             ->getSession()
             ->getModel('\GermBundle\Model\Germ\EventSchema\AssignationModel')
@@ -55,17 +59,16 @@ select
     {projection}
 from
     {docket} d
-    left outer join {assignation} ass on (ass.docket_id = d.id AND ass.event_id = $*)
-    left join {account} acc on (acc.id = ass.account_id)
-    left join {person} p on (p.id = acc.person_id)
+    left outer join {assignation} ass on (ass.docket_id = d.id_event_docket AND ass.event_id = $*)
+    left join {person} p on (p.id_person_person = ass.person_id)
 where
     d.event_type_id = $*
 SQL;
 
         $projection = $this->createProjection()
             ->setField("person_name", "concat(p.lastname, ' ', p.firstname) as person_name", "varchar")
-            ->setField("account_roles", "acc.roles as account_roles", "varchar")
-            ->setField("account_id", "acc.id as account_id", "varchar")
+            ->setField("person_id", "p.id_person_person as id_person_person", "varchar")
+            ->setField("person_roles", "p.roles as person_roles", "varchar")
             ;
 
         $sql = strtr(

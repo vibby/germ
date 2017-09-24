@@ -7,9 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use GermBundle\Model\Germ\EventSchema\Event;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
-use GermBundle\Type\DateIntervalType;
-// TODO : replace previous line with the above when sf 3.2 is out
-// use Symfony\Component\Form\Extension\Core\Type\DateIntervalType;
+use Symfony\Component\Form\Extension\Core\Type\DateIntervalType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -45,7 +43,13 @@ class EventController extends Controller
         $eventForm->handleRequest($request);
         if ($eventForm->isSubmitted() && $eventForm->isValid()) {
             $eventModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\EventSchema\EventModel');
-            $eventModel->updateOne($event, array_keys($eventForm->getData()->extract()));
+            $propeties = $eventForm->getData()->extract();
+            unset($propeties['event_type_name']);
+            unset($propeties['event_type_layout']);
+            unset($propeties['location_name']);
+            //dump($propeties);die;
+            $eventModel = $this->get('pomm')['germ']->getModelLayer('GermBundle\Model\Germ\EventSchema\EventModelLayer');
+            $eventModel->saveEvent($event, array_keys($propeties));
             $this->get('session')->getFlashBag()->add('success', 'Event updated');
             return $this->redirectToRoute('germ_event_edit', ['eventId' => $event->getId()]);
         }
@@ -79,15 +83,15 @@ class EventController extends Controller
 
     public function createAction(Request $request)
     {
-        $event = new Event();
-        $event->setName('');
-        $event->setDateFrom(new \DateTime());
-        $event->setDuration(new \DateInterval('PT1H'));
+        $event = $this->buildNextEvent($request->get('event_type'));
         $form = $this->buildEventForm($event);
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $eventModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\EventSchema\EventModel');
+            $propeties = array_keys($form->getData()->extract());
+            unset($propeties['event_type_name']);
             $eventModel->insertOne($event, array_keys($form->getData()->extract()));
             $translator = $this->get('translator');
             $this->get('session')->getFlashBag()->add('success', $translator->trans('Event created'));
@@ -113,17 +117,34 @@ class EventController extends Controller
         return $event;
     }
 
-    private function buildEventForm($event)
+    private function buildEventCreateForm($eventTypeId)
+    {
+    }
+
+    private function buildNextEvent($eventTypeId)
+    {
+        $eventTypeModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\EventSchema\EventTypeModel');
+        $type = $eventTypeModel->findByPk(['id_event_event_type' => $eventTypeId]);
+
+        $event = new Event();
+        $event['type_id'] = $eventTypeId;
+        $event['event_type_name'] = $type['name'];
+        $event['name'] = '';
+        $event['date_from'] = new \DateTime;
+        $event['duration'] = new \DateInterval('PT1H');
+
+        return $event;
+    }
+
+    private function buildEventForm(Event $event)
     {
         $eventModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\EventSchema\EventModel');
         $event = $eventModel->hydrateDockets($event);
 
-        $accountModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\PersonSchema\AccountModel');
-        $accountLabels[] = '-'.$this->get('translator')->trans('none').'-';
-        $accountChoices[] = null;
-        foreach ($accountModel->getAccounts() as $key => $account) {
-            $accountLabels[] = $account->getPersonName();
-            $accountChoices[] = $account->getId();
+        $personModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\PersonSchema\PersonModel');
+        $personChoices['-'.$this->get('translator')->trans('none').'-'] = null;
+        foreach ($personModel->getPersons() as $key => $person) {
+            $personChoices[(string) $person] = $person->getId();
         }
 
         $builder = $this->get('form.factory')
@@ -152,13 +173,10 @@ class EventController extends Controller
         ;
         foreach ($event->getDockets() as $docket) {
             $builder->add(
-                $docket->getName(),
+                'docket_'.$docket->getName(),
                 ChoiceType::class,
                 [
-                    'choices'      => $accountChoices,
-                    'choice_label' => function ($value, $key, $index) use ($accountLabels) {
-                        return $accountLabels[$key];
-                    },
+                    'choices'      => $personChoices,
                     'choice_translation_domain' => false,
                 ]
             );

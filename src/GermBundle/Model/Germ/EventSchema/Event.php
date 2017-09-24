@@ -16,6 +16,7 @@ use PommProject\ModelManager\Exception\ModelException;
 class Event extends FlexibleEntity
 {
     private $dockets = [];
+    private $assignations = [];
 
     public function __toString()
     {
@@ -30,6 +31,11 @@ class Event extends FlexibleEntity
     public function getDockets()
     {
         return $this->dockets;
+    }
+
+    public function getAssignations()
+    {
+        return $this->assignations;
     }
 
     /**
@@ -47,10 +53,16 @@ class Event extends FlexibleEntity
     {
         list($operation, $attribute) = $this->extractMethodName($method);
         foreach ($this->dockets as $docket) {
-            if (strtolower($docket['name']) === strtolower($attribute)) {
+            if (strtolower('docket_'.$docket['name']) === strtolower($attribute)) {
                 switch ($operation) {
                 case 'get':
-                    return $docket;
+                    return isset ($docket['id_person_person']) ? $docket['id_person_person'] : null;
+                case 'set':
+                    $accountId = $arguments[0];
+                    if ($accountId) {
+                        $this->assignations[$docket['id']] = [$accountId];
+                    }
+                    return true;
                 default:
                     throw new ModelException(sprintf('No such method "%s:%s()"', get_class($this), $method));
                 }

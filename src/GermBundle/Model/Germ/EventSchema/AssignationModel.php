@@ -10,6 +10,7 @@ use PommProject\Foundation\Where;
 
 use GermBundle\Model\Germ\EventSchema\AutoStructure\Assignation as AssignationStructure;
 use GermBundle\Model\Germ\EventSchema\Assignation;
+use GermBundle\Model\Germ\EventSchema\Event;
 
 /**
  * AssignationModel
@@ -33,5 +34,11 @@ class AssignationModel extends Model
     {
         $this->structure = new AssignationStructure;
         $this->flexible_entity_class = '\GermBundle\Model\Germ\EventSchema\Assignation';
+    }
+
+    public function removeAllForEvent(Event $event, $docketId)
+    {
+        $where = Where::create('event_id = $* AND docket_id = $*', [$event->getId(), $docketId]);
+        $this->deleteWhere($where);
     }
 }
