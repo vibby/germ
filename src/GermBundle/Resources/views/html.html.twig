@@ -20,6 +20,16 @@
          # Be sure you understand whats going on: have a look into
          # https://github.com/phiamo/MopaBootstrapBundle/blob/master/Resources/doc/css-vs-less.md
          #}
+         <style type="text/css">
+            @font-face {
+                font-family: 'advent_sanslogo';
+                src: url('{{ asset('web/bundles/germ/fonts/adventsans-logo-webfont.woff2') }}') format('woff2'),
+                     url('{{ asset('web/bundles/germ/fonts/adventsans-logo-webfont.woff') }}') format('woff');
+                font-weight: normal;
+                font-style: normal;
+            }
+            body {font-family: 'advent_sanslogo', sans-serif; font-size: 1.4em}
+        </style>
     {% endblock head_style %}
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">

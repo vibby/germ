@@ -14,6 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\SearchType;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use FOS\UserBundle\Util\LegacyFormHelper;
 use PommProject\Foundation\Where;
@@ -21,7 +22,7 @@ use PommProject\Foundation\Where;
 class PersonController extends Controller
 {
 
-    public function listAction(Request $request, $page)
+    public function listAction(Request $request, $page, $search = null)
     {
         $model = $this->get('pomm')['germ']
             ->getModel('GermBundle\Model\Germ\PersonSchema\AccountModel');
@@ -33,18 +34,32 @@ class PersonController extends Controller
             $output['persons'] = $model->findAll('order by lastname, firstname');
         } else {
             $where = Where::create();
+            if ($search) {
+                $where->orWhere(Where::createGroupCondition('LOWER(lastname)', 'LIKE', [sprintf('%%%s%%', strtolower($search))]));
+                $where->orWhere(Where::createGroupCondition('LOWER(firstname)', 'LIKE', [sprintf('%%%s%%', strtolower($search))]));
+            }
             $paginator  = $this->get('knp_paginator');
             $output['paginatedPersons'] = $paginator->paginate(
                 [$model, $where],
                 $page,
-                15
+                min((int) $request->get('perPage', 30), 250)
             );
         }
 
-        $authorizationChecker = $this->get('security.authorization_checker');
-        if ($authorizationChecker->isGranted('ROLE_PERSON_CREATE')) {
-            $output['form'] = $this->buildPersonCreateForm()->createView();
+        // $authorizationChecker = $this->get('security.authorization_checker');
+        // if ($authorizationChecker->isGranted('ROLE_PERSON_CREATE')) {
+        //     $output['form'] = $this->buildPersonCreateForm()->createView();
+        // }
+        $searchForm = $this->createFormBuilder(null, ['csrf_protection' => false, 'label' => false])
+            ->add('search', SearchType::class, ['data' => $search])
+            ->add('ok', SubmitType::class, array('label' => 'OK'))
+            ->setMethod('GET')
+            ->getForm();
+        $searchForm->handleRequest($request);
+        if ($searchForm->isSubmitted()) {
+            return $this->redirectToRoute('germ_person_search', ['search' => $searchForm->get('search')->getData()]);
         }
+        $output['searchForm'] = $searchForm->createView();
 
         $response = $this->render('GermBundle:Person:list.'.$request->get('_format').'.twig', $output);
 

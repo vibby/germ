@@ -1,0 +1,27 @@
+
+{% macro perPageLink(queryPerPage, route, perPage) %}
+    <li {% if queryPerPage == perPage %}class="active"{% endif %}>
+        <a href="{{ path(route, app.request|cleanRequestParams({'page': 1, 'perPage': perPage})) }}">{{ perPage }}</a>
+    </li>
+{% endmacro %}
+{% import _self as paginationPerPage %}
+
+{% set data = paginated.paginationData %}
+{% if data.totalCount > 30 %}
+    <ul class="pagination">
+        <li class="disabled">
+            <span>
+            {% trans %}Item per page{% endtrans %}
+             </span>
+        </li>
+        {{ paginationPerPage.perPageLink(data.numItemsPerPage, paginated.route, 15) }}
+        {{ paginationPerPage.perPageLink(data.numItemsPerPage, paginated.route, 30) }}
+        {{ paginationPerPage.perPageLink(data.numItemsPerPage, paginated.route, 100) }}
+        {% if data.totalCount > 100 %}
+            {{ paginationPerPage.perPageLink(data.numItemsPerPage, paginated.route, 250) }}
+            {% if data.totalCount > 250 %}
+                {{ paginationPerPage.perPageLink(data.numItemsPerPage, paginated.route, 500) }}
+            {% endif %}
+        {% endif %}
+    </div>
+{% endif %}

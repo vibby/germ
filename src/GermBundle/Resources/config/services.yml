@@ -21,6 +21,12 @@ services:
         tags:
             - { name: twig.extension }
 
+    germ.route_extension:
+        class: GermBundle\Twig\RouteExtension
+        public: false
+        tags:
+            - { name: twig.extension }
+
     germ.event_manager:
         class: GermBundle\Manager\EventManager
         calls:
