@@ -2,14 +2,23 @@
 
 namespace GermBundle\Twig;
 
+use GermBundle\Person\Searcher;
+
 class PersonExtension extends \Twig_Extension
 {
     private $coloredRoles = ['ROLE_ELDER', 'ROLE_DEACON', 'ROLE_DEACONESS'];
+    private $searcher;
+
+    public function __construct(Searcher $searcher)
+    {
+        $this->searcher = $searcher;
+    }
 
     public function getFilters()
     {
         return array(
             new \Twig_SimpleFilter('colorizeRoles', array($this, 'colorizeRoles')),
+            new \Twig_SimpleFilter('highlightPerson', array($this->searcher, 'highlight'), ['is_safe' => ['html']]),
         );
     }
 
@@ -29,7 +38,7 @@ class PersonExtension extends \Twig_Extension
     {
         $code = dechex(crc32($str));
         $code = substr($code, 0, 6);
-      
+
         return $code;
     }
 

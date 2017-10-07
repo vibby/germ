@@ -16,7 +16,7 @@ germ_person_list:
         _format:  html|csv|geojson
 
 germ_person_search:
-    path:     /person/{search}/{page}
+    path:     /person/search/{search}/{page}
     defaults:
         _format: html
         _controller: GermBundle:Person:list

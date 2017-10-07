@@ -17,6 +17,7 @@ services:
 
     germ.person_extension:
         class: GermBundle\Twig\PersonExtension
+        autowire: true
         public: false
         tags:
             - { name: twig.extension }
@@ -31,3 +32,7 @@ services:
         class: GermBundle\Manager\EventManager
         calls:
             - [setPomm, ['@pomm']]
+
+    germ.person_searcher:
+        class: GermBundle\Person\Searcher
+        autowire: true

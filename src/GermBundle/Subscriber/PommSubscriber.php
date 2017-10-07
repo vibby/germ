@@ -10,6 +10,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Knp\Component\Pager\Event\ItemsEvent;
 use PommProject\Foundation\Where;
 use PommProject\ModelManager\Model\Model;
+use PommProject\ModelManager\Model\CollectionIterator;
 
 class PommSubscriber implements EventSubscriberInterface
 {
@@ -18,16 +19,30 @@ class PommSubscriber implements EventSubscriberInterface
         if (isset($event->target[0])
             && isset($event->target[1])
             && is_a($event->target[0], Model::class)
-            && is_a($event->target[1], Where::class)
         ) {
             $model = $event->target[0];
-            $where = $event->target[1];
-            $event->count = $model->countWhere($where);
-            $event->items = $event->target[0]->paginateFindWhere(
-                $event->target[1],
-                $event->getLimit(),
-                $event->getOffset()/$event->getLimit() + 1
-            )->getIterator();
+            if (is_string($event->target[1]) && method_exists($model, $event->target[1])) {
+                $methodName = $event->target[1];
+                $parameters = array_merge(
+                    $event->target[2],
+                    [
+                        $event->getLimit(),
+                        $event->getOffset()/$event->getLimit() + 1,
+                    ]
+                );
+                list($event->count, $query) = call_user_func_array([$model, $methodName], $parameters);
+            } elseif ($event->target[1] instanceOf Where) {
+                $where = $event->target[1];
+                $event->count = $model->countWhere($where);
+                $query = $model->paginateFindWhere(
+                    $where,
+                    $event->getLimit(),
+                    $event->getOffset()/$event->getLimit() + 1
+                );
+            } else {
+                throw new \Exception('Cannot understand how to deal pagination');
+            }
+            $event->items = $query->getIterator();
             $event->stopPropagation();
         }
     }

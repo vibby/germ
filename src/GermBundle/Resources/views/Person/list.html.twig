@@ -27,7 +27,7 @@
 					{% elseif is_granted('ROLE_PERSON_SEE') %}
 						<a href="{{ path('germ_person_show', {'personSlug': person.slug_canonical}) }}">
 					{% endif %}
-						{{ person }}
+						{{ person|highlightPerson() }}
 					{% if is_granted('ROLE_PERSON_EDIT') or is_granted('ROLE_PERSON_SEE') %}
 						</a>
 					{% endif  %}
