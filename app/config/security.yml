@@ -9,6 +9,7 @@ security:
         ROLE_ELDER:        ROLE_PERSON_READ, ROLE_EVENT_READ
         ROLE_PASTEUR:      ROLE_PERSON_READ, ROLE_EVENT_READ
         ROLE_ADMIN:        ROLE_ELDER, ROLE_SECRETARY
+        ROLE_DIACONATE:    ROLE_DEACON, ROLE_DEACONNESS
 
     encoders:
         FOS\UserBundle\Model\UserInterface: sha512

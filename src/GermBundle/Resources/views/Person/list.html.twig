@@ -30,7 +30,10 @@
 						{{ person|highlightPerson() }}
 					{% if is_granted('ROLE_PERSON_EDIT') or is_granted('ROLE_PERSON_SEE') %}
 						</a>
-					{% endif  %}
+					{% endif  %}<br />
+					{% for role in person.roles %}
+						<span style="background: {{ role | colorizeRole }};" class="badge">{{ role | trans }}</span>
+					{% endfor %}
 				</td>
 				<td>
 					{{ person.phone|first }}

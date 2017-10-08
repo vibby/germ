@@ -10,6 +10,8 @@ use PommProject\Foundation\Where;
 use GermBundle\Model\Germ\PersonSchema\AutoStructure\Person as PersonStructure;
 use GermBundle\Model\Germ\PersonSchema\Person;
 
+use GermBundle\Person\Searcher;
+
 /**
  * PersonModel
  *
@@ -43,38 +45,24 @@ class PersonModel extends Model
         return $this->findWhere($where);
     }
 
-    public function searchQuery(array $terms, $item_per_page, $page = 1)
+    public function searchQuery(Searcher $searcher, $item_per_page, $page = 1)
     {
         $where = Where::create();
-        foreach ($terms as $searchTerm) {
-            $where->orWhere(Where::createGroupCondition('LOWER(lastname)', 'LIKE', [sprintf('%s%%', strtolower($searchTerm))]));
-            $where->orWhere(Where::createGroupCondition('LOWER(firstname)', 'LIKE', [sprintf('%s%%', strtolower($searchTerm))]));
-        }
-
         $projection = $this->createProjection();
-        $field = '';
-        $countResultProjectionValues = [];
-        foreach ($terms as $searchTerm) {
-            $field .= $field ? ' + ' : '(';
-            $condition = (string) Where::createGroupCondition('LOWER(lastname)', 'LIKE', [sprintf('%s%%', strtolower($searchTerm))]);
-            $countResultProjectionValues[] = sprintf('%s%%', strtolower($searchTerm));
-            $field .= 'case when '.$condition.' THEN 1 ELSE 0 END';
-            $field .= ' + ';
-            $condition = (string) Where::createGroupCondition('LOWER(firstname)', 'LIKE', [sprintf('%s%%', strtolower($searchTerm))]);
-            $countResultProjectionValues[] = sprintf('%s%%', strtolower($searchTerm));
-            $field .= 'case when '.$condition.' THEN 1 ELSE 0 END';
+        $projectionValues = [];
+        $orderBy = ['lastname', 'firstname'];
+        foreach ($searcher->getItems() as $item) {
+            $where->andWhere($item->buildWhere());
+            $projectionValues += $item->alterProjection($projection);
+            $item->alterOrderBy($orderBy);
         }
-        $fieldName = 'countresults';
-        $projection->setField($fieldName, $field.')');
-
-        $orderBy = "order by $fieldName DESC, lastname, firstname";
         $count = $this->countWhere($where);
 
         return [
             $count,
             $this->paginateQuery(
-                $this->getFindWhereSql($where, $projection, $orderBy),
-                array_merge($countResultProjectionValues, $where->getValues()),
+                $this->getFindWhereSql($where, $projection, 'order by '.implode(', ', $orderBy)),
+                array_merge($projectionValues, $where->getValues()),
                 $count,
                 $item_per_page,
                 $page

@@ -140,3 +140,16 @@ none: aucun
 Item per page: Résultats par page
 Search: Recherche
 Filter: Filtrer
+Role: Role
+ROLE_ELDER: Ancien
+ROLE_DEACONESS: Diaconesse
+ROLE_DEACON: Diacre
+ROLE_FIRST_DEACON: Premier diacre
+ROLE_FIRST_DEACONESS: Première diaconesse
+ROLE_DIACONATE: Diaconat
+ROLE_DIRECTOR: Responsable de département
+ROLE_ADMIN: Administrateur
+ROLE_TREASURER: Trésorier
+ROLE_PASTOR: Pasteur
+ROLE_SECRETARY: Secrétaire
+ROLE_COMMUNICATION: Communication

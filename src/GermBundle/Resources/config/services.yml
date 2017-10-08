@@ -36,3 +36,13 @@ services:
     germ.person_searcher:
         class: GermBundle\Person\Searcher
         autowire: true
+
+    germ.person_search_terms:
+        class: GermBundle\Person\SearchTerms
+        autowire: true
+        tags: [person.searcher_item]
+
+    germ.person_search_roles:
+        class: GermBundle\Person\SearchRoles
+        autowire: true
+        tags: [person.searcher_item]
