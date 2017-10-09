@@ -219,25 +219,32 @@ class PersonController extends Controller
             ->setAction($this->generateUrl('germ_person_create'))
             ->add('firstname', TextType::class)
             ->add('lastname', TextType::class)
-            ->add('birthdate')
+            ->add('birthdate', TextType::class, [
+                'required'  => false,
+                'render_optional_text' => false,
+            ])
             ->add('phone', CollectionType::class, array(
                 'entry_type'    => TextType::class,
                 'entry_options' => array(
                     'required'  => false,
                     'attr'      => array('class' => 'phone-number'),
                     'label'     => false,
+                    'render_optional_text' => false,
                 ),
                 'allow_add'     =>true,
                 'allow_delete'  =>true,
             ))
             ->add('address', TextareaType::class, array(
                 'required' => false,
+                'render_optional_text' => false,
             ))
             ->add('latlong', TextType::class, array(
                 'required' => false,
+                'render_optional_text' => false,
             ))
             ->add('email', EmailType::class, array(
                 'required' => false,
+                'render_optional_text' => false,
             ))
             ->add('roles', CollectionType::class, [
                 'entry_type'   => ChoiceType::class,
@@ -275,8 +282,15 @@ class PersonController extends Controller
     {
         return $this->get('form.factory')
             ->createNamedBuilder('Account', FormType::class, $account)
-            ->add('username', TextType::class, array('label' => 'form.username', 'translation_domain' => 'FOSUserBundle'))
-            ->add('email', null, array('label' => 'form.email', 'translation_domain' => 'FOSUserBundle'))
+            ->add('username', TextType::class, [
+                'label' => 'form.username',
+                'translation_domain' => 'FOSUserBundle'
+            ])
+            ->add('email', null, [
+                'label' => 'form.email',
+                'translation_domain' => 'FOSUserBundle',
+                'required' => true,
+            ])
             ->getForm();
     }
 

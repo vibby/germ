@@ -155,3 +155,4 @@ Treasurer: Trésorier
 Communication: Communication
 Dept. Director: Responsable de département
 Lastname Firstname: Nom Prénom
+'{0} No person|{1} 1 person|]1,Inf[ %count% persons': '{0} Aucune personne|]0,Inf[ %count% personnes'

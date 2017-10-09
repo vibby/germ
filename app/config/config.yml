@@ -110,13 +110,13 @@ mopa_bootstrap:
     menu: ~  # enables twig helpers for menu
 
 assetic:
-   debug: true
-   use_controller: false
-   filters:
-       cssrewrite: ~
-       less:
+    debug: %kernel.debug%
+    use_controller: false
+    filters:
+        cssrewrite: ~
+        less:
            node: /usr/bin/nodejs
-           ode_paths: [/home/USER/.node_libraries]
+           node_paths: [/usr/lib/node_modules]
 
 fos_user:
     db_driver: custom
