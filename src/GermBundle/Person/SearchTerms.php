@@ -15,9 +15,10 @@ class SearchTerms extends AbstractSearchItem
     public function alterForm(Form &$form)
     {
         $form->add(self::NAME, SearchType::class, [
-            'label' => 'Name',
+            'label' => 'Lastname Firstname',
             'data' => $this->data,
             'required' => false,
+            'render_optional_text' => false,
         ]);
     }
 

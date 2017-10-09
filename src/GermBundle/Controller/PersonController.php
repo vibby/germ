@@ -16,6 +16,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use FOS\UserBundle\Util\LegacyFormHelper;
+use PommProject\Foundation\Where;
 
 class PersonController extends Controller
 {
@@ -28,7 +29,7 @@ class PersonController extends Controller
         if ($request->get('_format') != 'html') {
             $output['persons'] = $model->findAll('order by lastname, firstname');
         } else {
-            $searcher = $this->get('germ.person_searcher');
+            $searcher = $this->get('GermBundle\Person\Searcher');
             if ($redirect = $searcher->handleRequest($request)) {
                 return $redirect;
             }
@@ -238,6 +239,15 @@ class PersonController extends Controller
             ->add('email', EmailType::class, array(
                 'required' => false,
             ))
+            ->add('roles', CollectionType::class, [
+                'entry_type'   => ChoiceType::class,
+                'entry_options'  => array(
+                    'choices' => $this->get('GermBundle\Person\RoleManager')->getAssignable(),
+                    'label'   => false,
+                ),
+                'allow_add'     =>true,
+                'allow_delete'  =>true,
+            ])
             ->getForm();
     }
 
@@ -266,23 +276,6 @@ class PersonController extends Controller
         return $this->get('form.factory')
             ->createNamedBuilder('Account', FormType::class, $account)
             ->add('username', TextType::class, array('label' => 'form.username', 'translation_domain' => 'FOSUserBundle'))
-            ->add('roles', CollectionType::class, [
-                // each entry in the array will be an "email" field
-                'entry_type'   => ChoiceType::class,
-                // these options are passed to each "email" type
-                'entry_options'  => array(
-                    'choices'  => array(
-                        'Secretary' => 'ROLE_SECRETARY',
-                        'Helder' => 'ROLE_HELDER',
-                        'Pastor' => 'ROLE_PASTOR',
-                        'User' => 'ROLE_USER',
-                        'Administrator' => 'ROLE_ADMIN',
-                    ),
-                    'label'  => false,
-                ),
-                'allow_add'     =>true,
-                'allow_delete'  =>true,
-            ])
             ->add('email', null, array('label' => 'form.email', 'translation_domain' => 'FOSUserBundle'))
             ->getForm();
     }
@@ -296,23 +289,6 @@ class PersonController extends Controller
         }
         return $this->get('form.factory')
             ->createNamedBuilder('Account', FormType::class, $account)
-            ->add('roles', CollectionType::class, [
-                // each entry in the array will be an "email" field
-                'entry_type'   => ChoiceType::class,
-                // these options are passed to each "email" type
-                'entry_options'  => array(
-                    'choices'  => array(
-                        'Secretary' => 'ROLE_SECRETARY',
-                        'Helder' => 'ROLE_HELDER',
-                        'Pastor' => 'ROLE_PASTOR',
-                        'User' => 'ROLE_USER',
-                        'Administrator' => 'ROLE_ADMIN',
-                    ),
-                    'label'  => false,
-                ),
-                'allow_add'     =>true,
-                'allow_delete'  =>true,
-            ])
             ->add('username', null, array('label' => 'form.username', 'translation_domain' => 'FOSUserBundle'))
             ->add('email', null, array('label' => 'form.email', 'translation_domain' => 'FOSUserBundle'))
             ->add('plainPassword', LegacyFormHelper::getType('Symfony\Component\Form\Extension\Core\Type\RepeatedType'), array(

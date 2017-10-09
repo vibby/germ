@@ -8,27 +8,26 @@ use PommProject\ModelManager\Model\Projection;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Security\Core\Role\RoleHierarchy;
 use Symfony\Component\Security\Core\Role\Role;
+use GermBundle\Person\RoleManager;
 
 class SearchRoles extends AbstractSearchItem
 {
     const NAME = 'roles';
 
     private $roleHierarchy;
+    private $filterRoles;
 
-    public function __construct(RoleHierarchy $roleHierarchy)
+    public function __construct(RoleHierarchy $roleHierarchy, RoleManager $roleManager)
     {
         $this->roleHierarchy = $roleHierarchy;
+        $this->roleManager = $roleManager;
     }
 
     public function alterForm(Form &$form)
     {
         $form->add(self::NAME, ChoiceType::class, [
             'label' => 'Role',
-            'choices' => [
-                'ROLE_DIACONATE' => 'ROLE_DIACONATE',
-                'ROLE_ELDER'     => 'ROLE_ELDER',
-                'ROLE_DIRECTOR'  => 'ROLE_DIRECTOR',
-            ],
+            'choices' => $this->roleManager->getFilterChoices(),
             'expanded' => true,
             'multiple' => true,
             'data' => $this->data,

@@ -3,15 +3,22 @@
 namespace GermBundle\Twig;
 
 use GermBundle\Person\SearchTerms;
+use Symfony\Component\Security\Core\Role\RoleHierarchy;
+use Symfony\Component\Security\Core\Role\Role;
+use GermBundle\Person\RoleManager;
 
 class PersonExtension extends \Twig_Extension
 {
-    private $coloredRoles = ['ROLE_ELDER', 'ROLE_DEACON', 'ROLE_DEACONESS'];
     private $searchTerms;
+    private $roleHierarchy;
+    private $coloredRoles;
+    private $roleManager;
 
-    public function __construct(SearchTerms $searchTerms)
+    public function __construct(SearchTerms $searchTerms, RoleHierarchy $roleHierarchy, RoleManager $roleManager)
     {
         $this->searchTerms = $searchTerms;
+        $this->roleHierarchy = $roleHierarchy;
+        $this->roleManager = $roleManager;
     }
 
     public function getFilters()
@@ -19,30 +26,37 @@ class PersonExtension extends \Twig_Extension
         return array(
             new \Twig_SimpleFilter('colorizeRoles', array($this, 'colorizeRoles')),
             new \Twig_SimpleFilter('colorizeRole', array($this, 'colorizeRole')),
+            new \Twig_SimpleFilter('nameRole', array($this->roleManager, 'string')),
             new \Twig_SimpleFilter('highlightPerson', array($this->searchTerms, 'highlight'), ['is_safe' => ['html']]),
         );
     }
 
     public function colorizeRoles(array $roles)
     {
-        $color = 888;
-        foreach ($this->coloredRoles as $coloredRole) {
-            if (in_array($coloredRole, $roles)) {
-                $color = $this->stringToColorCode($coloredRole);
+        $color = null;
+        foreach ($this->roleManager->getColored() as $coloredRole) {
+            $hierarchyRoles = array_map(function(Role $role) {return $role->getRole();}, $this->roleHierarchy->getReachableRoles([$coloredRole]));
+            foreach ($roles as $role) {
+                if (in_array($role, $hierarchyRoles)) {
+                    $color = $this->stringToColorCode($coloredRole->getRole());
+                }
             }
         }
 
-        return '#'.$color;
+        return '#'.($color ? $color : '888');
     }
 
     public function colorizeRole($role)
     {
-        $color = 888;
-        if (in_array($role, $this->coloredRoles)) {
-            $color = $this->stringToColorCode($role);
+        $color = null;
+        foreach ($this->roleManager->getColored() as $coloredRole) {
+            $hierarchyRoles = array_map(function(Role $role) {return $role->getRole();}, $this->roleHierarchy->getReachableRoles([$coloredRole]));
+            if (in_array($role, $hierarchyRoles)) {
+                $color = $this->stringToColorCode($coloredRole->getRole());
+            }
         }
 
-        return '#'.$color;
+        return '#'.($color ? $color : '888');
     }
 
     private function stringToColorCode($str)

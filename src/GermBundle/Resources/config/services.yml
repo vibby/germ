@@ -4,45 +4,51 @@ parameters:
     pomm_fos_user.user_model_class: GermBundle\Model\Germ\PersonSchema\AccountModel
 
 services:
-    germ.pomm.subscriber:
+    GermBundle\Subscriber\PommSubscriber:
         class: GermBundle\Subscriber\PommSubscriber
         tags:
             - { name: knp_paginator.subscriber }
 
-    germ.stringify_extension:
+    GermBundle\Twig\StringifyExtension:
         class: GermBundle\Twig\StringifyExtension
         public: false
         tags:
             - { name: twig.extension }
 
-    germ.person_extension:
+    GermBundle\Twig\PersonExtension:
         class: GermBundle\Twig\PersonExtension
         autowire: true
         public: false
         tags:
             - { name: twig.extension }
 
-    germ.route_extension:
+    GermBundle\Twig\RouteExtension:
         class: GermBundle\Twig\RouteExtension
         public: false
         tags:
             - { name: twig.extension }
 
-    germ.event_manager:
+    GermBundle\Manager\EventManager:
         class: GermBundle\Manager\EventManager
         calls:
             - [setPomm, ['@pomm']]
 
-    germ.person_searcher:
+    GermBundle\Person\Searcher:
         class: GermBundle\Person\Searcher
         autowire: true
 
-    germ.person_search_terms:
+    GermBundle\Person\SearchTerms:
         class: GermBundle\Person\SearchTerms
         autowire: true
-        tags: [person.searcher_item]
+        tags: [GermBundle\Person\AbstractSearchItem]
 
-    germ.person_search_roles:
+    GermBundle\Person\SearchRoles:
         class: GermBundle\Person\SearchRoles
         autowire: true
-        tags: [person.searcher_item]
+        tags: [GermBundle\Person\AbstractSearchItem]
+
+    GermBundle\Person\RoleManager:
+        class: GermBundle\Person\RoleManager
+        calls:
+            - [setConfig, ['%germ.roles%']]
+        autowire: true
