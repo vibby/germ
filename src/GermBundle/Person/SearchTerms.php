@@ -12,6 +12,16 @@ class SearchTerms extends AbstractSearchItem
     const NAME = 'terms';
     const COUNT_FIELD_NAME = 'terms_count';
 
+    public function serialize($data)
+    {
+        return $data ? $data : self::NO_FILTER_STRING;
+    }
+
+    public function unserialize($data)
+    {
+        return $data == self::NO_FILTER_STRING ? '' : $data;
+    }
+
     public function alterForm(Form &$form)
     {
         $form->add(self::NAME, SearchType::class, [

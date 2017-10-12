@@ -6,6 +6,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class Searcher
 {
@@ -13,9 +15,10 @@ class Searcher
     private $form;
     private $items = [];
 
-    public function __construct(FormFactoryInterface $formFactory)
+    public function __construct(FormFactoryInterface $formFactory, RouterInterface $router)
     {
         $this->formFactory = $formFactory;
+        $this->router = $router;
     }
 
     public function addItem(AbstractSearchItem $item)
@@ -31,6 +34,11 @@ class Searcher
     public function getForm($request = null)
     {
         if (!$this->form) {
+            foreach ($this->items as $item) {
+                if ($value = $request->get($item::NAME)) {
+                    $item->setData($value, true);
+                }
+            }
             $form = $this->formFactory
                 ->create(FormType::class, null, [
                     'show_legend' => false,
@@ -38,7 +46,6 @@ class Searcher
                     'method' => 'GET',
                 ]);
             foreach ($this->items as $item) {
-                $item->setData($request->query->get($item::NAME));
                 $item->alterForm($form);
             }
             $form->add('ok', SubmitType::class, [
@@ -57,8 +64,10 @@ class Searcher
         $searchForm->handleRequest($request);
         if ($searchForm->isSubmitted()) {
             foreach ($this->items as $item) {
-                $item->setData($searchForm->getData()[$item::NAME]);
+                $params[$item::NAME] = $item->serialize($searchForm->getData()[$item::NAME]);
             }
+
+            return new RedirectResponse($this->router->generate('germ_person_filter',$params));
         }
 
         return;

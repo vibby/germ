@@ -50,7 +50,14 @@ class PersonController extends Controller
         $response = $this->render('GermBundle:Person:list.'.$request->get('_format').'.twig', $output);
 
         if ($request->get('_format') != 'html') {
-            $response->headers->set('Content-Disposition', 'attachment; filename="persons.'.$request->get('_format').'"');
+            $response->headers->set(
+                'Content-Disposition',
+                sprintf('attachment; filename="persons.%s";"', $request->get('_format'))
+            );
+            $response->headers->set(
+                'Content-Type',
+                sprintf('Content-Type="text/%s";', $request->get('_format'))
+            );
         }
 
         return $response;
@@ -67,7 +74,7 @@ class PersonController extends Controller
             $personModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\PersonSchema\PersonModel');
             $personModel->updateOne($person, array_keys($personForm->getData()->extract()));
             $this->get('session')->getFlashBag()->add('success', 'Person updated');
-            return $this->redirectToRoute('germ_person_edit', ['personSlug' => $person->getId()]);
+            return $this->redirectToRoute('germ_person_edit', ['personSlug' => $person->getSlugCanonical()]);
         }
         $personForm = $personForm->createView();
 
@@ -154,7 +161,8 @@ class PersonController extends Controller
             $personModel->insertOne($person);
             $translator = $this->get('translator');
             $this->get('session')->getFlashBag()->add('success', $translator->trans('Person created'));
-            return $this->redirectToRoute('germ_person_edit', ['personSlug' => $person->getId()]);
+
+            return $this->redirectToRoute('germ_person_edit', ['personSlug' => $person->getSlugCanonical()]);
         }
 
         return $this->render(
@@ -212,11 +220,11 @@ class PersonController extends Controller
         return $this->redirectToRoute('germ_person_edit', ['personSlug' => $personSlug]);
     }
 
-    private function buildPersonForm(Person $person)
+    private function buildPersonForm(Person $person, $isNew = false)
     {
         return $this->get('form.factory')
             ->createNamedBuilder('Person', FormType::class, $person)
-            ->setAction($this->generateUrl('germ_person_create'))
+            ->setAction($isNew ? $this->generateUrl('germ_person_create') : $this->generateUrl('germ_person_edit', ['personSlug' => $person->getSlugCanonical()]))
             ->add('firstname', TextType::class)
             ->add('lastname', TextType::class)
             ->add('birthdate', TextType::class, [
@@ -270,7 +278,7 @@ class PersonController extends Controller
             $person->setAddress('');
             $person->setEmail('');
             $person->setLatlong('');
-            $form = $this->buildPersonForm($person);
+            $form = $this->buildPersonForm($person, true);
 
             return $form;
         }

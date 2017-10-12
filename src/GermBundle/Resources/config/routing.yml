@@ -15,12 +15,14 @@ germ_person_list:
     requirements:
         _format:  html|csv|geojson
 
-germ_person_search:
-    path:     /person/search/{search}/{page}
+germ_person_filter:
+    path:     /person/filter/{terms}/{roles}/{page}
     defaults:
         _format: html
         _controller: GermBundle:Person:list
         page: 1
+        roles: all
+        terms: all
 
 germ_person_show:
     path:     /person/show/{personSlug}

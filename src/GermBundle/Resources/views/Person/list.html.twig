@@ -18,6 +18,8 @@
 		    {0} No person|{1} 1 person|]1,Inf[ %count% persons
 		{% endtranschoice %}
 	</h2>
+	{{ knp_pagination_render(paginatedPersons) }}
+	{% include 'GermBundle:Pagination:perPage.html.twig' with {'paginated': paginatedPersons} %}
 	{% if paginatedPersons.count %}
 		<table class="table table-striped table-hover">
 			<tr>

@@ -13,6 +13,7 @@ use GermBundle\Person\RoleManager;
 class SearchRoles extends AbstractSearchItem
 {
     const NAME = 'roles';
+    const SEPARATOR = ',';
 
     private $roleHierarchy;
     private $filterRoles;
@@ -21,6 +22,16 @@ class SearchRoles extends AbstractSearchItem
     {
         $this->roleHierarchy = $roleHierarchy;
         $this->roleManager = $roleManager;
+    }
+
+    public function serialize($data)
+    {
+        return $data ? implode(self::SEPARATOR, $this->roleManager->getStrings($data)) : self::NO_FILTER_STRING;
+    }
+
+    public function unserialize($data)
+    {
+        return $data == self::NO_FILTER_STRING ? [] : $this->roleManager->getRoles(explode(self::SEPARATOR, $data));
     }
 
     public function alterForm(Form &$form)

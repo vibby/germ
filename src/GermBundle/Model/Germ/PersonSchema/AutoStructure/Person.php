@@ -37,7 +37,7 @@ class Person extends RowStructure
             ->setRelation('person.person')
             ->setPrimaryKey(['id_person_person'])
             ->addField('id_person_person', 'uuid')
-            ->addField('family_id', 'int4')
+            ->addField('family_id', 'uuid')
             ->addField('firstname', 'varchar')
             ->addField('lastname', 'varchar')
             ->addField('slug_canonical', 'varchar')

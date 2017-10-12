@@ -8,10 +8,13 @@ use PommProject\ModelManager\Model\Projection;
 
 abstract class AbstractSearchItem
 {
+    const NO_FILTER_STRING = 'all';
+
     protected $data;
 
-    public function setData($data)
+    public function setData($data, $needUnserializing = false)
     {
+    	$data = $needUnserializing ? $this->unserialize($data) : $data;
         $this->data = $data;
     }
 
@@ -22,4 +25,8 @@ abstract class AbstractSearchItem
     abstract public function alterProjection(Projection &$projection);
 
     abstract public function alterOrderBy(&$orderBy);
+
+    abstract protected function unserialize($data);
+
+    abstract public function serialize($data);
 }

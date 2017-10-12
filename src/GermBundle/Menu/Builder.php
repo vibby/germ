@@ -14,25 +14,29 @@ class Builder implements ContainerAwareInterface
     {
         $menu = $factory->createItem('root');
 
-        $menu->addChild('Home', array('route' => 'germ_homepage'));
+        $menu->addChild('Home', ['route' => 'germ_homepage']);
         if ($this->container->get('security.authorization_checker')->isGranted('ROLE_PERSON_LIST')) {
-            $menu->addChild('Persons', array('route' => 'germ_person_list'));
+            $menu->addChild('Persons', ['route' => 'germ_person_list']);
         }
-        $menu->addChild('Events', array('route' => 'germ_event_list'));
-        $menu->addChild('Logout', array('route' => 'fos_user_security_logout'));
+        $menu->addChild('Events', [
+            'route' => 'germ_event_list',
+        ]);
+        $menu->addChild('Logout', [
+            'route' => 'fos_user_security_logout',
+        ]);
 
         // // create another menu item
-        // $menu->addChild('Persons', array(
+        // $menu->addChild('Persons', [
         //     'route' => 'persons_list',
-        //     'routeParameters' => array('id' => $blog->getId())
+        //     'routeParameters' => ['id' => $blog->getId())
         // ));
         // // you can also add sub level's to your menu's as follows
-        // $menu['Persons']->addChild('List persons', array(
+        // $menu['Persons']->addChild('List persons', [
         //     'route' => 'persons_list',
         // ));
-        // $menu['Persons']->addChild('Last person', array(
+        // $menu['Persons']->addChild('Last person', [
         //     'route' => 'persons_list',
-        //     'routeParameters' => array('id' => $person->getId())
+        //     'routeParameters' => ['id' => $person->getId())
         // ));
 
         return $menu;

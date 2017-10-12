@@ -12,7 +12,7 @@ Name: Nom
 Birthdate: Date de naissance
 Person: Personne
 Person updated: Personne enregistrée
-Person created: Personne créé
+Person created: Personne créée
 Address: Adresse
 Phone: Téléphone
 Save: Enregistrer
@@ -156,3 +156,7 @@ Communication: Communication
 Dept. Director: Responsable de département
 Lastname Firstname: Nom Prénom
 '{0} No person|{1} 1 person|]1,Inf[ %count% persons': '{0} Aucune personne|]0,Inf[ %count% personnes'
+Person deleted: Personne supprimée
+Are you sure you want to remove this person ?: Êtes-vous sur de vouloir supprimer cette personne ?
+This action cannot be canceled.: Cette action ne peut pas être annulée.
+Cancel: Annuler
