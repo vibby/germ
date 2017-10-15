@@ -7,24 +7,33 @@ use PommProject\Foundation\Where;
 use PommProject\ModelManager\Model\Projection;
 use Symfony\Component\Form\Extension\Core\Type\SearchType;
 
-class SearchTerms extends AbstractSearchItem
+class SearchTerms extends AbstractSearchCriteria
 {
-    const NAME = 'terms';
     const COUNT_FIELD_NAME = 'terms_count';
 
-    public function serialize($data)
+    public static function getUrlPrefix()
     {
-        return $data ? $data : self::NO_FILTER_STRING;
+        return 'term';
     }
 
-    public function unserialize($data)
+    public static function getFormName()
     {
-        return $data == self::NO_FILTER_STRING ? '' : $data;
+        return 'term';
+    }
+
+    public function urlize($data)
+    {
+        return $data;
+    }
+
+    public function unurlize($data)
+    {
+        return $data;
     }
 
     public function alterForm(Form &$form)
     {
-        $form->add(self::NAME, SearchType::class, [
+        $form->add(self::getUrlPrefix(), SearchType::class, [
             'label' => 'Lastname Firstname',
             'data' => $this->data,
             'required' => false,

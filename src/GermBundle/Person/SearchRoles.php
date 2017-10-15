@@ -10,9 +10,8 @@ use Symfony\Component\Security\Core\Role\RoleHierarchy;
 use Symfony\Component\Security\Core\Role\Role;
 use GermBundle\Person\RoleManager;
 
-class SearchRoles extends AbstractSearchItem
+class SearchRoles extends AbstractSearchCriteria
 {
-    const NAME = 'roles';
     const SEPARATOR = ',';
 
     private $roleHierarchy;
@@ -24,19 +23,29 @@ class SearchRoles extends AbstractSearchItem
         $this->roleManager = $roleManager;
     }
 
-    public function serialize($data)
+    public static function getUrlPrefix()
     {
-        return $data ? implode(self::SEPARATOR, $this->roleManager->getStrings($data)) : self::NO_FILTER_STRING;
+        return 'role';
     }
 
-    public function unserialize($data)
+    public static function getFormName()
     {
-        return $data == self::NO_FILTER_STRING ? [] : $this->roleManager->getRoles(explode(self::SEPARATOR, $data));
+        return 'role';
+    }
+
+    public function urlize($data)
+    {
+        return implode(self::SEPARATOR, $this->roleManager->getStrings($data));
+    }
+
+    public function unurlize($data)
+    {
+        return $this->roleManager->getRoles(explode(self::SEPARATOR, $data));
     }
 
     public function alterForm(Form &$form)
     {
-        $form->add(self::NAME, ChoiceType::class, [
+        $form->add(self::getUrlPrefix(), ChoiceType::class, [
             'label' => 'Role',
             'choices' => $this->roleManager->getFilterChoices(),
             'expanded' => true,

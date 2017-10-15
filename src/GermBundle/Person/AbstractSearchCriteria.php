@@ -6,15 +6,13 @@ use Symfony\Component\Form\Form;
 use PommProject\Foundation\Where;
 use PommProject\ModelManager\Model\Projection;
 
-abstract class AbstractSearchItem
+abstract class AbstractSearchCriteria
 {
-    const NO_FILTER_STRING = 'all';
-
     protected $data;
 
-    public function setData($data, $needUnserializing = false)
+    public function setData($data, $fromUrl = false)
     {
-    	$data = $needUnserializing ? $this->unserialize($data) : $data;
+        $data = $fromUrl ? $this->unurlize($data) : $data;
         $this->data = $data;
     }
 
@@ -26,7 +24,11 @@ abstract class AbstractSearchItem
 
     abstract public function alterOrderBy(&$orderBy);
 
-    abstract protected function unserialize($data);
+    abstract public function unurlize($data);
 
-    abstract public function serialize($data);
+    abstract public function urlize($data);
+
+    abstract public static function getUrlPrefix();
+
+    abstract public static function getFormName();
 }

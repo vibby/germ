@@ -51,7 +51,7 @@ class PersonModel extends Model
         $projection = $this->createProjection();
         $projectionValues = [];
         $orderBy = ['lastname', 'firstname'];
-        foreach ($searcher->getItems() as $item) {
+        foreach ($searcher->getCriterias() as $item) {
             $where->andWhere($item->buildWhere());
             $projectionValues += $item->alterProjection($projection);
             $item->alterOrderBy($orderBy);

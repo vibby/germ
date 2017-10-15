@@ -3,10 +3,17 @@
 namespace GermBundle\Person;
 
 use Symfony\Component\Security\Core\Role\Role;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class RoleManager
 {
     private $config;
+    private $translator;
+
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
 
     public function setConfig($config)
     {
@@ -30,6 +37,17 @@ class RoleManager
                 return in_array($key, $roles);
             },
             ARRAY_FILTER_USE_KEY
+        );
+    }
+
+    public function getTranslations(array $roles = null)
+    {
+        $translator = $this->translator;
+        return array_map(
+            function ($roleString) use ($translator) {
+                return $translator->trans($roleString);
+            },
+            $this->getStrings($roles)
         );
     }
 
