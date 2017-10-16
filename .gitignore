@@ -21,3 +21,4 @@
 /web/js/*
 /web/css/*
 app/migrations/*data.php
+.idea/
