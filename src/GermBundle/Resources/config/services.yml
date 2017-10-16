@@ -40,12 +40,14 @@ services:
     GermBundle\Person\SearchTerms:
         class: GermBundle\Person\SearchTerms
         autowire: true
-        tags: [GermBundle\Person\AbstractSearchItem]
+        tags:
+            - { name: "GermBundle\\Person\\AbstractSearchItem" }
 
     GermBundle\Person\SearchRoles:
         class: GermBundle\Person\SearchRoles
         autowire: true
-        tags: [GermBundle\Person\AbstractSearchItem]
+        tags:
+            - { name: "GermBundle\\Person\\AbstractSearchItem" }
 
     GermBundle\Person\RoleManager:
         class: GermBundle\Person\RoleManager
