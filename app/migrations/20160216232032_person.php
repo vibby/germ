@@ -62,7 +62,10 @@ SQL
                 email VARCHAR(64) NULL,
                 roles VARCHAR(32)[] NOT NULL,
                 birthdate DATE NULL,
-                latlong point 
+                baptism_date DATE NULL,
+                membership_date DATE NULL,
+                membership_way VARCHAR(32) NULL,
+                latlong point
             );
 SQL
         );

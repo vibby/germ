@@ -45,6 +45,6 @@ security:
         - { path: ^/access/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/person/create, roles: ROLE_PERSON_CREATE }
         - { path: ^/person/delete, roles: ROLE_PERSON_DELETE }
-        - { path: ^/person/edit, roles: ROLE_PERSON_DELETE }
+        - { path: ^/person/edit, roles: ROLE_PERSON_EDIT }
         - { path: ^/person, roles: ROLE_PERSON_SEE }
         - { path: ^/, roles: IS_AUTHENTICATED_FULLY }

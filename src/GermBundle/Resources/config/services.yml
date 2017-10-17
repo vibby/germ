@@ -84,3 +84,9 @@ services:
         class: GermBundle\Model\Germ\ChurchSchema\ChurchFinder
         autowire: true
 
+    GermBundle\Type\PersonType:
+        class: GermBundle\Type\PersonType
+        autowire: true
+        tags:
+            - { name: form.type }
+
