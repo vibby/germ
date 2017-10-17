@@ -23,29 +23,26 @@ class PersonController extends Controller
 
     public function listAction(Request $request, $page, $search = null)
     {
-        $model = $this->get('pomm')['germ']
-            ->getModel('GermBundle\Model\Germ\PersonSchema\PersonModel');
-
+        $finder = $this->get('GermBundle\Model\Germ\PersonSchema\PersonFinder');
         if ($request->get('_format') != 'html') {
-            $output['persons'] = $model->findAll('order by lastname, firstname');
+            $output['persons'] = $finder->findAll();
         } else {
-            $searcher = $this->get('GermBundle\Person\Searcher');
+            $searcher = $this->get('GermBundle\Filter\Person\Searcher');
             if ($redirect = $searcher->handleRequest($request)) {
                 return $redirect;
             }
             $output['searchForm'] = $searcher->getForm()->createView();
             $paginator = $this->get('knp_paginator');
             $output['paginatedPersons'] = $paginator->paginate(
-                $searcher->getPaginationData($model),
+                [
+                    $finder,
+                    'paginateFilterQuery',
+                    [$searcher],
+                ],
                 $page,
                 min((int) $request->get('perPage', 30), 250)
             );
         }
-
-        // $authorizationChecker = $this->get('security.authorization_checker');
-        // if ($authorizationChecker->isGranted('ROLE_PERSON_CREATE')) {
-        //     $output['form'] = $this->buildPersonCreateForm()->createView();
-        // }
 
         $response = $this->render('GermBundle:Person:list.'.$request->get('_format').'.twig', $output);
 

@@ -2,7 +2,7 @@
 
 namespace GermBundle\Twig;
 
-use GermBundle\Person\SearchTerms;
+use GermBundle\Filter\Person\CriteriaTerms;
 use Symfony\Component\Security\Core\Role\RoleHierarchy;
 use Symfony\Component\Security\Core\Role\Role;
 use GermBundle\Person\RoleManager;
@@ -11,10 +11,9 @@ class PersonExtension extends \Twig_Extension
 {
     private $searchTerms;
     private $roleHierarchy;
-    private $coloredRoles;
     private $roleManager;
 
-    public function __construct(SearchTerms $searchTerms, RoleHierarchy $roleHierarchy, RoleManager $roleManager)
+    public function __construct(CriteriaTerms $searchTerms, RoleHierarchy $roleHierarchy, RoleManager $roleManager)
     {
         $this->searchTerms = $searchTerms;
         $this->roleHierarchy = $roleHierarchy;

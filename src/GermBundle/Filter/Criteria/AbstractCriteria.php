@@ -1,12 +1,12 @@
 <?php
 
-namespace GermBundle\Person;
+namespace GermBundle\Filter\Criteria;
 
 use Symfony\Component\Form\Form;
 use PommProject\Foundation\Where;
 use PommProject\ModelManager\Model\Projection;
 
-abstract class AbstractSearchCriteria
+abstract class AbstractCriteria
 {
     protected $data;
 

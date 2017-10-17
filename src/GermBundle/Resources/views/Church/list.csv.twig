@@ -1,0 +1,5 @@
+{% trans %}Name{% endtrans %};{% trans %}Phone{% endtrans %};{% trans %}Address{% endtrans %};{% trans %}Latitude{% endtrans %};{% trans %}Longitude{% endtrans %};{% trans %}Website{% endtrans %}
+
+{% for church in churches %}
+	{{ church.name }};{{ church.phone }};{{ church.address|replace({"\n":' ', "\r":' '}) }};{% if church.latlong %}{{ church.latlong.x }}{% endif %};{% if church.latlong %}{{ church.latlong.y }}{% endif %};{{ church.website_url }}
+{% endfor %}

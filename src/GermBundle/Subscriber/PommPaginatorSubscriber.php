@@ -5,23 +5,21 @@
 
 namespace GermBundle\Subscriber;
 
-use Symfony\Component\Finder\Finder;
+use GermBundle\Model\Germ\AbstractFinder;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Knp\Component\Pager\Event\ItemsEvent;
 use PommProject\Foundation\Where;
-use PommProject\ModelManager\Model\Model;
-use PommProject\ModelManager\Model\CollectionIterator;
 
-class PommSubscriber implements EventSubscriberInterface
+class PommPaginatorSubscriber implements EventSubscriberInterface
 {
     public function items(ItemsEvent $event)
     {
         if (isset($event->target[0])
             && isset($event->target[1])
-            && is_a($event->target[0], Model::class)
+            && is_a($event->target[0], AbstractFinder::class)
         ) {
-            $model = $event->target[0];
-            if (is_string($event->target[1]) && method_exists($model, $event->target[1])) {
+            $searcher = $event->target[0];
+            if (is_string($event->target[1]) && method_exists($searcher, $event->target[1])) {
                 $methodName = $event->target[1];
                 $parameters = array_merge(
                     $event->target[2],
@@ -30,11 +28,11 @@ class PommSubscriber implements EventSubscriberInterface
                         $event->getOffset()/$event->getLimit() + 1,
                     ]
                 );
-                list($event->count, $query) = call_user_func_array([$model, $methodName], $parameters);
+                list($event->count, $query) = call_user_func_array([$searcher, $methodName], $parameters);
             } elseif ($event->target[1] instanceOf Where) {
                 $where = $event->target[1];
-                $event->count = $model->countWhere($where);
-                $query = $model->paginateFindWhere(
+                $event->count = $searcher->countWhere($where);
+                $query = $searcher->paginateFindWhere(
                     $where,
                     $event->getLimit(),
                     $event->getOffset()/$event->getLimit() + 1

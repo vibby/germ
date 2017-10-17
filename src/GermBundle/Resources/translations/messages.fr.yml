@@ -30,9 +30,6 @@ Helder: Ancien
 Pastor: Pasteur
 User: Utilisateur
 Administrator: Administrateur
-0: 0
-1: 1
-2: 2
 Person was edited successuly: Personne modifiée avec succès
 Person was created successuly: Personne créée avec succès
 Create an access account: Créer un compte d’accès
@@ -69,6 +66,7 @@ Date from: Date du
 Duration: Durée
 Hours: Heures
 Minutes: Minutes
+0: 0
 1: 1
 2: 2
 3: 3
@@ -155,8 +153,15 @@ Treasurer: Trésorier
 Communication: Communication
 Dept. Director: Responsable de département
 Lastname Firstname: Nom Prénom
-'{0} No person|{1} 1 person|]1,Inf[ %count% persons': '{0} Aucune personne|]0,Inf[ %count% personnes'
+'{0} No person|{1} 1 person|]1,Inf[ %count% persons': '{0} Aucune personne|{1} 1 personne|]1,Inf[ %count% personnes'
 Person deleted: Personne supprimée
 Are you sure you want to remove this person ?: Êtes-vous sur de vouloir supprimer cette personne ?
 This action cannot be canceled.: Cette action ne peut pas être annulée.
 Cancel: Annuler
+Churches: Églises
+Church: Église
+New church: Nouvelle église
+'{0} No church|{1} 1 church|]1,Inf[ %count% churches': '{0} Aucune église|{1} 1 église|]1,Inf[ %count% églises'
+Latitude: Latitude
+Longitude: Longitude
+Website: Site internet

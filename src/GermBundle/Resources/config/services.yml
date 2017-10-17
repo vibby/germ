@@ -4,8 +4,8 @@ parameters:
     pomm_fos_user.user_model_class: GermBundle\Model\Germ\PersonSchema\AccountModel
 
 services:
-    GermBundle\Subscriber\PommSubscriber:
-        class: GermBundle\Subscriber\PommSubscriber
+    GermBundle\Subscriber\PommPaginatorSubscriber:
+        class: GermBundle\Subscriber\PommPaginatorSubscriber
         tags:
             - { name: knp_paginator.subscriber }
 
@@ -22,6 +22,13 @@ services:
         tags:
             - { name: twig.extension }
 
+    GermBundle\Twig\ChurchExtension:
+        class: GermBundle\Twig\ChurchExtension
+        autowire: true
+        public: false
+        tags:
+            - { name: twig.extension }
+
     GermBundle\Twig\RouteExtension:
         class: GermBundle\Twig\RouteExtension
         public: false
@@ -33,24 +40,47 @@ services:
         calls:
             - [setPomm, ['@pomm']]
 
-    GermBundle\Person\Searcher:
-        class: GermBundle\Person\Searcher
-        autowire: true
-
-    GermBundle\Person\SearchTerms:
-        class: GermBundle\Person\SearchTerms
+    GermBundle\Filter\Church\Searcher:
+        class: GermBundle\Filter\Church\Searcher
         autowire: true
         tags:
-            - { name: "GermBundle\\Person\\AbstractSearchItem" }
+            - { name: "GermBundle\\Filter\\AbstractSearcher" }
 
-    GermBundle\Person\SearchRoles:
-        class: GermBundle\Person\SearchRoles
+    GermBundle\Filter\Church\CriteriaTerms:
+        class: GermBundle\Filter\Church\CriteriaTerms
         autowire: true
         tags:
-            - { name: "GermBundle\\Person\\AbstractSearchItem" }
+            - { name: "GermBundle\\Filter\\Church\\Searcher" }
+
+    GermBundle\Filter\Person\Searcher:
+        class: GermBundle\Filter\Person\Searcher
+        autowire: true
+        tags:
+            - { name: "GermBundle\\Filter\\AbstractSearcher" }
+
+    GermBundle\Filter\Person\CriteriaTerms:
+        class: GermBundle\Filter\Person\CriteriaTerms
+        autowire: true
+        tags:
+            - { name: "GermBundle\\Filter\\Person\\Searcher" }
+
+    GermBundle\Filter\Person\CriteriaRoles:
+        class: GermBundle\Filter\Person\CriteriaRoles
+        autowire: true
+        tags:
+            - { name: "GermBundle\\Filter\\Person\\Searcher" }
 
     GermBundle\Person\RoleManager:
         class: GermBundle\Person\RoleManager
         calls:
             - [setConfig, ['%germ.roles%']]
         autowire: true
+
+    GermBundle\Model\Germ\PersonSchema\PersonFinder:
+        class: GermBundle\Model\Germ\PersonSchema\PersonFinder
+        autowire: true
+
+    GermBundle\Model\Germ\ChurchSchema\ChurchFinder:
+        class: GermBundle\Model\Germ\ChurchSchema\ChurchFinder
+        autowire: true
+

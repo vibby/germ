@@ -28,45 +28,55 @@ class Person extends AbstractMigration
     public function up()
     {
         $this->execute('CREATE SCHEMA "person"');
-        $this->execute('CREATE EXTENSION IF NOT EXISTS "uuid-ossp";');
-        $this->execute('CREATE TABLE "person"."account" (
-            id_person_account uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
-            username VARCHAR(255) NOT NULL,
-            username_canonical VARCHAR(255) NOT NULL UNIQUE,
-            email VARCHAR(255) NOT NULL,
-            email_canonical VARCHAR(255) NOT NULL UNIQUE,
-            enabled BOOLEAN NOT NULL DEFAULT FALSE,
-            salt VARCHAR(255) NOT NULL,
-            password VARCHAR(255) NOT NULL,
-            last_login TIMESTAMP WITHOUT TIME ZONE,
-            locked BOOLEAN NOT NULL DEFAULT FALSE,
-            expired BOOLEAN NOT NULL DEFAULT FALSE,
-            expires_at TIMESTAMP WITHOUT TIME ZONE,
-            confirmation_token VARCHAR(255),
-            password_requested_at TIMESTAMP WITHOUT TIME ZONE,
-            credentials_expired BOOLEAN NOT NULL DEFAULT FALSE,
-            credentials_expire_at TIMESTAMP WITHOUT TIME ZONE,
-            person_id uuid NOT NULL
-        );');
-        $this->execute('CREATE TABLE "person"."person" (
-            id_person_person uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
-            family_id uuid NULL,
-            firstname VARCHAR(32) NULL,
-            lastname VARCHAR(32) NOT NULL,
-            slug_canonical VARCHAR(255) NOT NULL UNIQUE,
-            phone VARCHAR(32)[] NULL,
-            address VARCHAR(256) NULL,
-            email VARCHAR(64) NULL,
-            roles VARCHAR(32)[] NOT NULL,
-            birthdate DATE NULL,
-            latlong point
-        );');
+        $this->execute(<<<SQL
+            CREATE TABLE "person"."account" (
+                id_person_account uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+                username VARCHAR(255) NOT NULL,
+                username_canonical VARCHAR(255) NOT NULL UNIQUE,
+                email VARCHAR(255) NOT NULL,
+                email_canonical VARCHAR(255) NOT NULL UNIQUE,
+                enabled BOOLEAN NOT NULL DEFAULT FALSE,
+                salt VARCHAR(255) NOT NULL,
+                password VARCHAR(255) NOT NULL,
+                last_login TIMESTAMP WITHOUT TIME ZONE,
+                locked BOOLEAN NOT NULL DEFAULT FALSE,
+                expired BOOLEAN NOT NULL DEFAULT FALSE,
+                expires_at TIMESTAMP WITHOUT TIME ZONE,
+                confirmation_token VARCHAR(255),
+                password_requested_at TIMESTAMP WITHOUT TIME ZONE,
+                credentials_expired BOOLEAN NOT NULL DEFAULT FALSE,
+                credentials_expire_at TIMESTAMP WITHOUT TIME ZONE,
+                person_id uuid NOT NULL
+            );
+SQL
+        );
+        $this->execute(<<<SQL
+            CREATE TABLE "person"."person" (
+                id_person_person uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+                family_id uuid NULL,
+                firstname VARCHAR(32) NULL,
+                lastname VARCHAR(32) NOT NULL,
+                slug_canonical VARCHAR(48) NOT NULL UNIQUE,
+                phone VARCHAR(32)[] NULL,
+                address VARCHAR(256) NULL,
+                email VARCHAR(64) NULL,
+                roles VARCHAR(32)[] NOT NULL,
+                birthdate DATE NULL,
+                latlong point 
+            );
+SQL
+        );
+        $this->execute(<<<SQL
+            CREATE TABLE "person"."church_link" (
+                person_id uuid REFERENCES "person"."person",
+                church_id uuid REFERENCES "church"."church"
+            );
+SQL
+        );
 
         $this->execute('ALTER TABLE "person"."person" ADD FOREIGN KEY ("family_id") REFERENCES "person"."person" ("id_person_person") ON DELETE SET NULL ON UPDATE CASCADE;');
-        $this->execute('ALTER TABLE "person"."account" ADD FOREIGN KEY ("person_id") REFERENCES "person"."person" ("id_person_person") ON DELETE CASCADE 
-            ON UPDATE CASCADE;');
+        $this->execute('ALTER TABLE "person"."account" ADD FOREIGN KEY ("person_id") REFERENCES "person"."person" ("id_person_person") ON DELETE CASCADE ON UPDATE CASCADE;');
 
-        $this->execute('CREATE EXTENSION IF NOT EXISTS "unaccent";');
         $this->execute(<<<SQL
             CREATE OR REPLACE FUNCTION "public".slugify(str TEXT)
             RETURNS text AS $$

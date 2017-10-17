@@ -1,15 +1,20 @@
 <?php
 
-namespace GermBundle\Person;
+namespace GermBundle\Filter\Criteria;
 
+use GermBundle\Filter\Criteria\AbstractCriteria;
 use Symfony\Component\Form\Form;
 use PommProject\Foundation\Where;
 use PommProject\ModelManager\Model\Projection;
 use Symfony\Component\Form\Extension\Core\Type\SearchType;
 
-class SearchTerms extends AbstractSearchCriteria
+abstract class AbstractCriteriaTerms extends AbstractCriteria
 {
     const COUNT_FIELD_NAME = 'terms_count';
+
+    abstract protected static function getLabel();
+
+    abstract protected static function getFields();
 
     public static function getUrlPrefix()
     {
@@ -34,7 +39,7 @@ class SearchTerms extends AbstractSearchCriteria
     public function alterForm(Form &$form)
     {
         $form->add(self::getUrlPrefix(), SearchType::class, [
-            'label' => 'Lastname Firstname',
+            'label' => static::getLabel(),
             'data' => $this->data,
             'required' => false,
             'render_optional_text' => false,
@@ -57,8 +62,13 @@ class SearchTerms extends AbstractSearchCriteria
     {
         $where = Where::create();
         foreach (explode(' ', $this->data) as $searchTerm) {
-            $where->orWhere(Where::createGroupCondition('LOWER(lastname)', 'LIKE', [sprintf('%s%%', strtolower($searchTerm))]));
-            $where->orWhere(Where::createGroupCondition('LOWER(firstname)', 'LIKE', [sprintf('%s%%', strtolower($searchTerm))]));
+            foreach (static::getFields() as $fieldName) {
+                $where->orWhere(Where::createGroupCondition(
+                    sprintf('LOWER(%s)', $fieldName),
+                    'LIKE',
+                    [sprintf('%s%%', strtolower($searchTerm))])
+                );
+            }
         }
 
         return $where;
@@ -69,14 +79,16 @@ class SearchTerms extends AbstractSearchCriteria
         $field = '';
         $countResultProjectionValues = [];
         foreach (explode(' ', $this->data) as $searchTerm) {
-            $field .= $field ? ' + ' : '(';
-            $condition = (string) Where::createGroupCondition('LOWER(lastname)', 'LIKE', [sprintf('%s%%', strtolower($searchTerm))]);
-            $countResultProjectionValues[] = sprintf('%s%%', strtolower($searchTerm));
-            $field .= 'case when '.$condition.' THEN 1 ELSE 0 END';
-            $field .= ' + ';
-            $condition = (string) Where::createGroupCondition('LOWER(firstname)', 'LIKE', [sprintf('%s%%', strtolower($searchTerm))]);
-            $countResultProjectionValues[] = sprintf('%s%%', strtolower($searchTerm));
-            $field .= 'case when '.$condition.' THEN 1 ELSE 0 END';
+            foreach (static::getFields() as $fieldName) {
+                $field .= $field ? ' + ' : '(';
+                $condition = (string) Where::createGroupCondition(
+                    sprintf('LOWER(%s)', $fieldName),
+                    'LIKE',
+                    [sprintf('%s%%', strtolower($searchTerm))]
+                );
+                $countResultProjectionValues[] = sprintf('%s%%', strtolower($searchTerm));
+                $field .= 'case when '.$condition.' THEN 1 ELSE 0 END';
+            }
         }
         $field .= ')';
         $projection->setField(self::COUNT_FIELD_NAME, $field);

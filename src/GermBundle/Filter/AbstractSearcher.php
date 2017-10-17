@@ -1,7 +1,8 @@
 <?php
 
-namespace GermBundle\Person;
+namespace GermBundle\Filter;
 
+use GermBundle\Filter\Criteria\AbstractCriteria;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
@@ -9,11 +10,10 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
-class Searcher
+abstract class AbstractSearcher
 {
     const URL_SEPARATOR = '/';
     const URL_NAMER = ':';
-    const ROUTE_NAME = 'germ_person_filter';
     const ROUTE_PARAMETER = 'filters';
 
     private $formFactory;
@@ -26,7 +26,7 @@ class Searcher
         $this->router = $router;
     }
 
-    public function addItem(AbstractSearchCriteria $criteria)
+    public function addItem(AbstractCriteria $criteria)
     {
         $this->criterias[] = $criteria;
     }
@@ -36,10 +36,10 @@ class Searcher
         return $this->criterias;
     }
 
-    public function getForm($request = null)
+    public function getForm(Request $request = null)
     {
         if (!$this->form) {
-            if ($request->get('filters')) {
+            if ($request->get(self::ROUTE_PARAMETER)) {
                 foreach (explode(self::URL_SEPARATOR, $request->get(self::ROUTE_PARAMETER)) as $filter) {
                     $namingPos = strpos($filter, self::URL_NAMER);
                     $namePrefix = substr($filter, 0, $namingPos);
@@ -96,18 +96,9 @@ class Searcher
                 }
             }
 
-            return new RedirectResponse($this->router->generate(self::ROUTE_NAME,[self::ROUTE_PARAMETER => implode(self::URL_SEPARATOR, $params)]));
+            return new RedirectResponse($this->router->generate(static::getRouteName(),[self::ROUTE_PARAMETER => implode(self::URL_SEPARATOR, $params)]));
         }
-
-        return;
     }
 
-    public function getPaginationData($model)
-    {
-        return [
-            $model,
-            'searchQuery',
-            [$this],
-        ];
-    }
+    abstract public static function getRouteName();
 }

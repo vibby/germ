@@ -1,7 +1,8 @@
 <?php
 
-namespace GermBundle\Person;
+namespace GermBundle\Filter\Person;
 
+use GermBundle\Filter\Criteria\AbstractCriteria;
 use Symfony\Component\Form\Form;
 use PommProject\Foundation\Where;
 use PommProject\ModelManager\Model\Projection;
@@ -10,12 +11,12 @@ use Symfony\Component\Security\Core\Role\RoleHierarchy;
 use Symfony\Component\Security\Core\Role\Role;
 use GermBundle\Person\RoleManager;
 
-class SearchRoles extends AbstractSearchCriteria
+class CriteriaRoles extends AbstractCriteria
 {
     const SEPARATOR = ',';
 
     private $roleHierarchy;
-    private $filterRoles;
+    private $roleManager;
 
     public function __construct(RoleHierarchy $roleHierarchy, RoleManager $roleManager)
     {
@@ -35,7 +36,7 @@ class SearchRoles extends AbstractSearchCriteria
 
     public function urlize($data)
     {
-        return implode(self::SEPARATOR, $this->roleManager->getStrings($data));
+        return $data ? implode(self::SEPARATOR, $this->roleManager->getStrings($data)) : '';
     }
 
     public function unurlize($data)

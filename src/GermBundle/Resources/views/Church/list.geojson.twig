@@ -1,0 +1,22 @@
+{
+	"type": "FeatureCollection",
+	"features": [
+		{% set started = false %}
+		{% for church in churches if church.latlong %}
+		{% if started %},{%  endif %}
+		{% set started = true %}
+		{
+			"type": "Feature",
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					{{ church.latlong.y }},
+					{{ church.latlong.x }}
+				]
+			},
+			"properties" : {
+			}
+		}
+		{% endfor %}
+	]
+}

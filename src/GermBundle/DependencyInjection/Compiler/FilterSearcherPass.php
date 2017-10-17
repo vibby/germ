@@ -2,25 +2,32 @@
 
 namespace GermBundle\DependencyInjection\Compiler;
 
+use GermBundle\Filter\AbstractSearcher;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Reference;
 
-class PersonSearcherPass implements CompilerPassInterface
+class FilterSearcherPass implements CompilerPassInterface
 {
-    const SERVICE_ALIAS = 'GermBundle\Person\Searcher';
-
     public function process(ContainerBuilder $container)
     {
+        $searcherServices = $container->findTaggedServiceIds(AbstractSearcher::class);
+
+        foreach (array_keys($searcherServices) as $idSearcher) {
+            $this->addCriterias($container, $idSearcher);
+        }
+    }
+
+    private function addCriterias(ContainerBuilder $container, $searcherService)
+    {
         // always first check if the primary service is defined
-        if (!$container->has(SELF::SERVICE_ALIAS)) {
+        if (!$container->has($searcherService)) {
             return;
         }
 
-        $definition = $container->findDefinition(SELF::SERVICE_ALIAS);
+        $definition = $container->findDefinition($searcherService);
 
-        // find all service IDs with the app.mail_transport tag
-        $taggedServices = $container->findTaggedServiceIds('GermBundle\Person\AbstractSearchItem');
+        $taggedServices = $container->findTaggedServiceIds($searcherService);
 
         foreach ($taggedServices as $id => $tags) {
             // add the transport service to the ChainTransport service
