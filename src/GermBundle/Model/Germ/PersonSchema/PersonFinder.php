@@ -7,6 +7,7 @@ use GermBundle\Model\Germ\AbstractFinder;
 use PommProject\Foundation\Pomm;
 use PommProject\Foundation\Where;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
 
 class PersonFinder extends AbstractFinder
 {
@@ -14,11 +15,13 @@ class PersonFinder extends AbstractFinder
 
     protected $model;
     private $user;
+    private $authorisationChecker;
 
-    public function __construct(Pomm $pomm, TokenStorage $tokenStorage)
+    public function __construct(Pomm $pomm, TokenStorage $tokenStorage, AuthorizationChecker $authorisationChecker)
     {
         $this->model = $pomm['germ']->getModel(self::getModelClassName());
         $this->user = $tokenStorage->getToken()->getUser();
+        $this->authorisationChecker = $authorisationChecker;
     }
 
     protected static function getModelClassName()
@@ -26,10 +29,10 @@ class PersonFinder extends AbstractFinder
         return PersonModel::class;
     }
 
-    public function alterWhere(Where $where, $limitToUserChurch = true, $withActive = true, $withDeleted = false)
+    public function alterWhere(Where $where, $withActive = true, $withDeleted = false)
     {
-        if ($limitToUserChurch) {
-//            $where->andWhere('church = ', $this->user->getPerson()->getChurch());
+        if (!$this->authorisationChecker->isGranted('ROLE_CHURCH_LIST')) {
+            $where->andWhere('church_id = $*', [$this->user['church_id']]);
         }
         if (!$withActive && !$withDeleted) {
             throw new \Exception('Cannot ask for deleted and undeleted persons');

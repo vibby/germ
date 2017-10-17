@@ -26,6 +26,9 @@
 				<th>{% trans %}Name{% endtrans %}</th>
 				<th>{% trans %}Phone{% endtrans %}</th>
 				<th>{% trans %}Address{% endtrans %}</th>
+				{% if is_granted('ROLE_CHURCH_LIST') %}
+					<th>{% trans %}Church{% endtrans %}</th>
+				{% endif %}
 			</tr>
 			{% for person in paginatedPersons.items %}
 				<tr>
@@ -49,6 +52,11 @@
 					<td>
 						{{ person.address|nl2br }}
 					</td>
+					{% if is_granted('ROLE_CHURCH_LIST') %}
+						<td>
+							{{ person.church_id }}
+						</td>
+					{% endif %}
 				</tr>
 			{% endfor %}
 		</table>

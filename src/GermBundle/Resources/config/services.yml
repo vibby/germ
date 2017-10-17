@@ -70,6 +70,12 @@ services:
         tags:
             - { name: "GermBundle\\Filter\\Person\\Searcher" }
 
+    GermBundle\Filter\Person\CriteriaChurch:
+        class: GermBundle\Filter\Person\CriteriaChurch
+        autowire: true
+        tags:
+            - { name: "GermBundle\\Filter\\Person\\Searcher" }
+
     GermBundle\Person\RoleManager:
         class: GermBundle\Person\RoleManager
         calls:

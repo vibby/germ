@@ -26,6 +26,8 @@
 				<th>{% trans %}Name{% endtrans %}</th>
 				<th>{% trans %}Phone{% endtrans %}</th>
 				<th>{% trans %}Address{% endtrans %}</th>
+				<th>{% trans %}Website{% endtrans %}</th>
+				<th></th>
 			</tr>
 			{% for church in paginatedChurches.items %}
 				<tr>
@@ -41,10 +43,20 @@
 						{% endif  %}
 					</td>
 					<td>
-						{{ church.phone|first }}
+						{{ church.phone }}
 					</td>
 					<td>
 						{{ church.address|nl2br }}
+					</td>
+					<td>
+						<a href="church.website_url">
+							{{ church.website_url }}
+						</a>
+					</td>
+					<td>
+						<a class="btn btn-default" href="{{ path('germ_person_filter', {'filters': 'church:' ~ church.slug_canonical }) }}">
+							{% trans %}See members{% endtrans %}
+						</a>
 					</td>
 				</tr>
 			{% endfor %}

@@ -49,4 +49,44 @@ class ChurchModel extends Model
             $suffix
         ));
     }
+
+    public function choiceAll()
+    {
+        $projection = new Projection(Church::class, ['name' => 'name', 'slug_canonical' => 'slug', 'id_church_church' => 'id_church_church']);
+        $churches = $this->query(strtr(
+            'select :projection from :relation where true order by name',
+            [
+                ':projection' => $projection->formatFieldsWithFieldAlias(),
+                ':relation'   => $this->getStructure()->getRelation(),
+            ]
+        ));
+
+        $choices = [];
+        foreach ($churches as $church) {
+            $choices[$church['name']] = $church['slug_canonical'];
+        }
+
+        return $choices;
+    }
+
+    public function findIdsFromSlugs(array $slugs)
+    {
+        $projection = new Projection(Church::class, ['id_church_church' => 'id_church_church']);
+        $where = Where::createWhereIn('slug_canonical', $slugs);
+        $churches = $this->query(strtr(
+            'select :projection from :relation where :where',
+            [
+                ':projection' => $projection->formatFieldsWithFieldAlias(),
+                ':relation'   => $this->getStructure()->getRelation(),
+                ':where'      => $where,
+            ]
+        ), $where->getValues());
+
+        $ids = [];
+        foreach ($churches as $church) {
+            $ids[] = $church['id_church_church'];
+        }
+
+        return $ids;
+    }
 }

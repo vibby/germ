@@ -8,21 +8,21 @@ abstract class AbstractFinder
 {
     abstract protected static function getModelClassName();
 
-    public function findWhere(Where $where, $limitToUserChurch = true, $withActive = true, $withDeleted = false)
+    public function findWhere(Where $where, $withActive = true, $withDeleted = false)
     {
-        $this->alterWhere($where, $limitToUserChurch, $withActive, $withDeleted);
+        $this->alterWhere($where, $withActive, $withDeleted);
 
         return $this->model->findWhere($where);
     }
 
-    public function countWhere(Where $where, $limitToUserChurch = true, $withActive = true, $withDeleted = false)
+    public function countWhere(Where $where, $withActive = true, $withDeleted = false)
     {
-        $this->alterWhere($where, $limitToUserChurch, $withActive, $withDeleted);
+        $this->alterWhere($where, $withActive, $withDeleted);
 
         return $this->model->countWhere($where);
     }
 
-    public function alterWhere(Where $where, $limitToUserChurch = true, $withActive = true, $withDeleted = false)
+    public function alterWhere(Where $where, $withActive = true, $withDeleted = false)
     {
         return $where;
     }
@@ -34,5 +34,10 @@ abstract class AbstractFinder
             $item_per_page,
             $page
         );
+    }
+
+    public function findAll()
+    {
+        return $this->model->findWhere($this->alterWhere(new Where()));
     }
 }

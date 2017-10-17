@@ -65,12 +65,13 @@ SQL
                 baptism_date DATE NULL,
                 membership_date DATE NULL,
                 membership_way VARCHAR(32) NULL,
-                latlong point
+                church_id uuid NOT NULL,
+                latlong point NULL
             );
 SQL
         );
         $this->execute(<<<SQL
-            CREATE TABLE "person"."church_link" (
+            CREATE TABLE "person"."person_church" (
                 person_id uuid REFERENCES "person"."person",
                 church_id uuid REFERENCES "church"."church"
             );
@@ -124,6 +125,7 @@ SQL
 
     public function down()
     {
+        $this->execute('DROP TABLE "person"."person_church";');
         $this->execute('DROP TABLE "person"."account";');
         $this->execute('DROP TABLE "person"."person";');
         $this->execute('DROP FUNCTION "person".person_slug();');

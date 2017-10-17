@@ -84,6 +84,9 @@ abstract class AbstractSearcher
                 if (strpos($criteria::getUrlPrefix(), self::URL_SEPARATOR) !== false) {
                     throw new \Exception(sprintf("Prefix cannot include reserved char for separator : «%s»", self::URL_NAMER), 1);
                 }
+                if (!isset($searchForm->getData()[$criteria::getFormName()])) {
+                    continue;
+                }
                 $valueUrlized = $criteria->urlize($searchForm->getData()[$criteria::getFormName()]);
                 if (strpos($valueUrlized, self::URL_SEPARATOR) !== false) {
                     throw new \Exception(sprintf("Value cannot include reserved char for separator : «%s». «%s» given", self::URL_SEPARATOR, $valueUrlized), 1);

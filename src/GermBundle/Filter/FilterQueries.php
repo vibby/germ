@@ -18,7 +18,7 @@ trait FilterQueries
             $projectionValues += $item->alterProjection($projection);
             $item->alterOrderBy($orderBy);
         }
-        $count = $this->countWhere($where);
+        $count = $finder->countWhere($where);
         $where = $finder->alterWhere($where);
 
         return [

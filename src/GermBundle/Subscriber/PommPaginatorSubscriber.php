@@ -18,8 +18,8 @@ class PommPaginatorSubscriber implements EventSubscriberInterface
             && isset($event->target[1])
             && is_a($event->target[0], AbstractFinder::class)
         ) {
-            $searcher = $event->target[0];
-            if (is_string($event->target[1]) && method_exists($searcher, $event->target[1])) {
+            $finder = $event->target[0];
+            if (is_string($event->target[1]) && method_exists($finder, $event->target[1])) {
                 $methodName = $event->target[1];
                 $parameters = array_merge(
                     $event->target[2],
@@ -28,11 +28,11 @@ class PommPaginatorSubscriber implements EventSubscriberInterface
                         $event->getOffset()/$event->getLimit() + 1,
                     ]
                 );
-                list($event->count, $query) = call_user_func_array([$searcher, $methodName], $parameters);
+                list($event->count, $query) = call_user_func_array([$finder, $methodName], $parameters);
             } elseif ($event->target[1] instanceOf Where) {
                 $where = $event->target[1];
-                $event->count = $searcher->countWhere($where);
-                $query = $searcher->paginateFindWhere(
+                $event->count = $finder->countWhere($where);
+                $query = $finder->paginateFindWhere(
                     $where,
                     $event->getLimit(),
                     $event->getOffset()/$event->getLimit() + 1

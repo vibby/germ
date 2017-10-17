@@ -59,6 +59,7 @@ where
 SQL;
         $projection = $this->createProjection()
             ->setField('roles', 'p.roles', 'varchar[]')
+            ->setField('church_id', 'p.church_id', 'varchar')
             ->setField('email', 'p.email', 'varchar')
             ->setField('id_person_person', 'p.id_person_person', 'varchar')
             ;
