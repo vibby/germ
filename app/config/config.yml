@@ -8,6 +8,7 @@ imports:
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: fr
+    locales: [fr, en, de]
     knp_paginator.template.pagination: MopaBootstrapBundle:Pagination:sliding.html.twig
     pomm_fos_user.connection_name: 'germ'
     germ.roles:
@@ -59,6 +60,8 @@ twig:
         format: d.m.Y, H:i:s
         interval_format: '%%h h'
         timezone: Europe/Paris
+    globals:
+        locales: %locales%
 
 framework:
     #esi:             ~

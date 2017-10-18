@@ -26,21 +26,10 @@ class Builder implements ContainerAwareInterface
         ]);
         $menu->addChild('Logout', [
             'route' => 'fos_user_security_logout',
+            'routeParameters' => [
+                '_locale' => $this->container->get('translator')->getLocale()
+            ],
         ]);
-
-        // // create another menu item
-        // $menu->addChild('Persons', [
-        //     'route' => 'persons_list',
-        //     'routeParameters' => ['id' => $blog->getId())
-        // ));
-        // // you can also add sub level's to your menu's as follows
-        // $menu['Persons']->addChild('List persons', [
-        //     'route' => 'persons_list',
-        // ));
-        // $menu['Persons']->addChild('Last person', [
-        //     'route' => 'persons_list',
-        //     'routeParameters' => ['id' => $person->getId())
-        // ));
 
         return $menu;
     }

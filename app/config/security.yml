@@ -37,12 +37,12 @@ security:
         main:
             anonymous: true
             form_login:
-                login_path: /access/login
-                check_path: /access/login_check
+                login_path: fos_user_security_login
+                check_path: fos_user_security_check
                 provider: fos_userbundle
                 csrf_token_generator: security.csrf.token_manager
             logout:
-                path: /access/logout
+                path: fos_user_security_logout
                 target: /
             remember_me:
                 secret:   "%secret%"
@@ -50,7 +50,7 @@ security:
                 path: /
 
     access_control:
-        - { path: ^/access/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/(en|fr|de)/access/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/person/create, roles: ROLE_PERSON_CREATE }
         - { path: ^/person/delete, roles: ROLE_PERSON_DELETE }
         - { path: ^/person/edit, roles: ROLE_PERSON_EDIT }

@@ -33,4 +33,16 @@ trait FilterQueries
             )
         ];
     }
+
+    public function findForListWhereSql(Where $where, $projection = null, $suffix = null)
+    {
+        if (!$projection) {
+            $projection = $this->createProjection();
+        }
+
+        return [
+            $this->getFindWhereSql($where, $projection, $suffix),
+            $projection
+        ];
+    }
 }

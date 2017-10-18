@@ -4,10 +4,17 @@ parameters:
     pomm_fos_user.user_model_class: GermBundle\Model\Germ\PersonSchema\AccountModel
 
 services:
-    GermBundle\Subscriber\PommPaginatorSubscriber:
-        class: GermBundle\Subscriber\PommPaginatorSubscriber
+    GermBundle\EventSubscriber\PommPaginatorSubscriber:
+        class: GermBundle\EventSubscriber\PommPaginatorSubscriber
+        public: false
         tags:
             - { name: knp_paginator.subscriber }
+
+    GermBundle\EventSubscriber\LocaleSubscriber:
+        class: GermBundle\EventSubscriber\LocaleSubscriber
+        public: false
+        tags:
+            - { name: kernel.event_subscriber }
 
     GermBundle\Twig\StringifyExtension:
         class: GermBundle\Twig\StringifyExtension

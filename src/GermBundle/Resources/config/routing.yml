@@ -3,17 +3,33 @@ germ_homepage:
     defaults: { _controller: GermBundle:Main:index }
 
 fos_user:
-    prefix:   /access
     resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+    prefix:   /{_locale}/access
+    defaults:
+        _locale: fr
+    requirements:
+        _locale: fr|en|de
 
 germ_church:
     resource: "@GermBundle/Resources/config/routing/church.yml"
-    prefix:   /church
+    prefix:   /{_locale}/church
+    defaults:
+        _locale: fr
+    requirements:
+        _locale: fr|en|de
 
 germ_person:
     resource: "@GermBundle/Resources/config/routing/person.yml"
-    prefix:   /person
+    prefix:   /{_locale}/person
+    defaults:
+        _locale: fr
+    requirements:
+        _locale: fr|en|de
 
 germ_event:
     resource: "@GermBundle/Resources/config/routing/event.yml"
-    prefix:   /event
+    prefix:   /{_locale}/event
+    defaults:
+        _locale: fr
+    requirements:
+        _locale: fr|en|de

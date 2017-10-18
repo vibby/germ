@@ -1,9 +1,6 @@
 <?php
 
-// file: ../symfony-standard/src/Acme/DemoBundle/Subscriber/PaginateDirectorySubscriber.php
-// requires // Symfony\Component\Finder\Finder
-
-namespace GermBundle\Subscriber;
+namespace GermBundle\EventSubscriber;
 
 use GermBundle\Model\Germ\AbstractFinder;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
