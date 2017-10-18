@@ -64,7 +64,7 @@ SQL
                 birthdate DATE NULL,
                 baptism_date DATE NULL,
                 membership_date DATE NULL,
-                membership_way VARCHAR(32) NULL,
+                membership_act VARCHAR(32) NULL,
                 church_id uuid NOT NULL,
                 is_deleted BOOLEAN NOT NULL DEFAULT FALSE,
                 latlong point NULL

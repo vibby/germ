@@ -95,6 +95,10 @@ services:
             - [setConfig, ['%germ.roles%']]
         autowire: true
 
+    GermBundle\Person\Membership:
+        class: GermBundle\Person\Membership
+        autowire: true
+
     GermBundle\Model\Germ\PersonSchema\PersonFinder:
         class: GermBundle\Model\Germ\PersonSchema\PersonFinder
         autowire: true

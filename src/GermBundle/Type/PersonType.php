@@ -12,18 +12,20 @@
 namespace GermBundle\Type;
 
 use Symfony\Component\Form;
-use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use GermBundle\Person\RoleManager;
 use Symfony\Component\Form\Extension\Core\Type;
+use GermBundle\Person\Membership;
 
 class PersonType extends Form\AbstractType
 {
     private $roleManager;
+    private $membership;
 
-    public function __construct(RoleManager $roleManager)
+    public function __construct(RoleManager $roleManager, Membership $membership)
     {
         $this->roleManager = $roleManager;
+        $this->membership = $membership;
     }
 
     /**
@@ -34,7 +36,16 @@ class PersonType extends Form\AbstractType
         return $builder
             ->add('firstname', Type\TextType::class)
             ->add('lastname', Type\TextType::class)
-            ->add('birthdate', Type\TextType::class, [
+            ->add('birthdate', Type\DateType::class, [
+                'required'  => false,
+                'render_optional_text' => false,
+            ])
+            ->add('membership_date', Type\DateType::class, [
+                'required'  => false,
+                'render_optional_text' => false,
+            ])
+            ->add('membership_act', Type\ChoiceType::class, [
+                'choices' => $this->membership->getActChoices(),
                 'required'  => false,
                 'render_optional_text' => false,
             ])

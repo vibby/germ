@@ -48,7 +48,7 @@ class Person extends RowStructure
             ->addField('birthdate', 'date')
             ->addField('baptism_date', 'date')
             ->addField('membership_date', 'date')
-            ->addField('membership_way', 'varchar')
+            ->addField('membership_act', 'varchar')
             ->addField('church_id', 'uuid')
             ->addField('is_deleted', 'bool')
             ->addField('latlong', 'point')

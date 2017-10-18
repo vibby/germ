@@ -2,6 +2,7 @@
 
 namespace GermBundle\Controller;
 
+use GermBundle\Type\PersonType;
 use PommProject\ModelManager\Model\Model;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -66,7 +67,16 @@ class PersonController extends Controller
         $accountModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\PersonSchema\AccountModel');
         $person = $this->getPersonOr404($personSlug);
 
-        $personForm = $this->buildPersonForm($person);
+        $personForm = $this->get('form.factory')->create(
+            PersonType::class,
+            $person,
+            [
+                'action' => $this->generateUrl(
+                    'germ_person_edit',
+                    ['personSlug' => $person->getSlugCanonical()]
+                )
+            ]
+        );
         $personForm->handleRequest($request);
         if ($personForm->isSubmitted() && $personForm->isValid()) {
             $personModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\PersonSchema\PersonModel');
@@ -127,14 +137,9 @@ class PersonController extends Controller
         );
     }
 
-    public function showAction(Request $request, $personSlug)
+    public function showAction($personSlug)
     {
-        $personModel = $this->get('pomm')['germ']
-            ->getModel('GermBundle\Model\Germ\PersonSchema\PersonModel');
-        $person = $personModel->findByPK(['id'=>$personSlug]);
-        if (!$person) {
-            throw $this->createNotFoundException('The person does not exist');
-        }
+        $person = $this->getPersonOr404($personSlug);
 
         return $this->render(
             'GermBundle:Person:show.html.twig',
@@ -152,6 +157,7 @@ class PersonController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $personModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\PersonSchema\PersonModel');
             $person = new Person();
+            $person->setChurchId($this->getUser()->getChurchId());
             foreach ($form->getData()->extract() as $key => $value) {
                 $method = 'set'.ucfirst($key);
                 $person->$method($value);
@@ -232,65 +238,27 @@ class PersonController extends Controller
         return $this->redirectToRoute('germ_person_edit', ['personSlug' => $personSlug]);
     }
 
-    private function buildPersonForm(Person $person, $isNew = false)
-    {
-        return $this->get('form.factory')
-            ->createNamedBuilder('Person', FormType::class, $person)
-            ->setAction($isNew ? $this->generateUrl('germ_person_create') : $this->generateUrl('germ_person_edit', ['personSlug' => $person->getSlugCanonical()]))
-            ->add('firstname', TextType::class)
-            ->add('lastname', TextType::class)
-            ->add('birthdate', TextType::class, [
-                'required'  => false,
-                'render_optional_text' => false,
-            ])
-            ->add('phone', CollectionType::class, array(
-                'entry_type'    => TextType::class,
-                'entry_options' => array(
-                    'required'  => false,
-                    'attr'      => array('class' => 'phone-number'),
-                    'label'     => false,
-                    'render_optional_text' => false,
-                ),
-                'allow_add'     =>true,
-                'allow_delete'  =>true,
-            ))
-            ->add('address', TextareaType::class, array(
-                'required' => false,
-                'render_optional_text' => false,
-            ))
-            ->add('latlong', TextType::class, array(
-                'required' => false,
-                'render_optional_text' => false,
-            ))
-            ->add('email', EmailType::class, array(
-                'required' => false,
-                'render_optional_text' => false,
-            ))
-            ->add('roles', CollectionType::class, [
-                'entry_type'   => ChoiceType::class,
-                'entry_options'  => array(
-                    'choices' => $this->get('GermBundle\Person\RoleManager')->getAssignable(),
-                    'label'   => false,
-                ),
-                'allow_add'     =>true,
-                'allow_delete'  =>true,
-            ])
-            ->getForm();
-    }
-
     private function buildPersonCreateForm()
     {
         $authorizationChecker = $this->get('security.authorization_checker');
         if ($authorizationChecker->isGranted('ROLE_PERSON_CREATE')) {
             $person = new Person();
-            $person->setFirstname('');
-            $person->setLastname('');
-            $person->setBirthdate('');
-            $person->setPhone([]);
-            $person->setAddress('');
-            $person->setEmail('');
-            $person->setLatlong('');
-            $form = $this->buildPersonForm($person, true);
+            $person->setFirstname(null);
+            $person->setLastname(null);
+            $person->setBirthdate(null);
+            $person->setMembershipDate(null);
+            $person->setMembershipAct(null);
+            $person->setPhone(null);
+            $person->setAddress(null);
+            $person->setEmail(null);
+            $person->setLatlong(null);
+            $form = $this->get('form.factory')->create(
+                PersonType::class,
+                $person,
+                [
+                    'action' => $this->generateUrl('germ_person_create')
+                ]
+            );
 
             return $form;
         }
