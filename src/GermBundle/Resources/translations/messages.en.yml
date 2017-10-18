@@ -29,7 +29,6 @@ Secretary: Secretary
 Helder: Helder
 Pastor: Pastor
 User: User
-Administrator: Administrator
 Person was edited successuly: Person was edited successuly
 Person was created successuly: Person was created successuly
 Create an access account: Create an access account
@@ -120,3 +119,6 @@ Baptism: Baptism
 Profession of faith: Profession of faith
 Recommendation letter: Recommendation letter
 Transfer: Transfer
+Baptism date: Baptism date
+System Administrator: System Administrator
+Federation staff: Federation staff

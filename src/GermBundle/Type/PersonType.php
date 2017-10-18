@@ -16,16 +16,26 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use GermBundle\Person\RoleManager;
 use Symfony\Component\Form\Extension\Core\Type;
 use GermBundle\Person\Membership;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use PommProject\Foundation\Pomm;
+use GermBundle\Model\Germ\ChurchSchema\ChurchModel;
 
 class PersonType extends Form\AbstractType
 {
     private $roleManager;
     private $membership;
+    private $tokenStorage;
 
-    public function __construct(RoleManager $roleManager, Membership $membership)
-    {
+    public function __construct(
+        RoleManager $roleManager,
+        Membership $membership,
+        AuthorizationCheckerInterface $authorizationChecker,
+        Pomm $pomm
+    ) {
         $this->roleManager = $roleManager;
         $this->membership = $membership;
+        $this->authorizationChecker = $authorizationChecker;
+        $this->churchModel = $pomm['germ']->getModel(ChurchModel::class);
     }
 
     /**
@@ -33,10 +43,14 @@ class PersonType extends Form\AbstractType
      */
     public function buildForm(Form\FormBuilderInterface $builder, array $options)
     {
-        return $builder
+        $builder
             ->add('firstname', Type\TextType::class)
             ->add('lastname', Type\TextType::class)
             ->add('birthdate', Type\DateType::class, [
+                'required'  => false,
+                'render_optional_text' => false,
+            ])
+            ->add('baptism_date', Type\DateType::class, [
                 'required'  => false,
                 'render_optional_text' => false,
             ])
@@ -81,6 +95,17 @@ class PersonType extends Form\AbstractType
                 'allow_add'     =>true,
                 'allow_delete'  =>true,
             ]);
+            if ($this->authorizationChecker->isGranted('ROLE_CHURCH_LIST')) {
+                $builder->add('church_id', Type\ChoiceType::class, [
+                    'choices' => $this->churchModel->choiceId(),
+                    'required'  => true,
+                    'render_optional_text' => false,
+                    'label' => 'Church',
+                    'choice_translation_domain' => false,
+                ]);
+            }
+
+        return $builder;
     }
 
     /**

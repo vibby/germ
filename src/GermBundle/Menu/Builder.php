@@ -26,9 +26,6 @@ class Builder implements ContainerAwareInterface
         ]);
         $menu->addChild('Logout', [
             'route' => 'fos_user_security_logout',
-            'routeParameters' => [
-                '_locale' => $this->container->get('translator')->getLocale()
-            ],
         ]);
 
         return $menu;

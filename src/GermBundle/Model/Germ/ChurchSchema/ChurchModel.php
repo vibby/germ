@@ -45,7 +45,7 @@ class ChurchModel extends Model
         ));
     }
 
-    public function choiceAll()
+    public function choiceSlug()
     {
         $projection = new Projection(Church::class, ['name' => 'name', 'slug_canonical' => 'slug', 'id_church_church' => 'id_church_church']);
         $churches = $this->query(strtr(
@@ -59,6 +59,25 @@ class ChurchModel extends Model
         $choices = [];
         foreach ($churches as $church) {
             $choices[$church['name']] = $church['slug_canonical'];
+        }
+
+        return $choices;
+    }
+
+    public function choiceId()
+    {
+        $projection = new Projection(Church::class, ['name' => 'name', 'slug_canonical' => 'slug', 'id_church_church' => 'id_church_church']);
+        $churches = $this->query(strtr(
+            'select :projection from :relation where true order by name',
+            [
+                ':projection' => $projection->formatFieldsWithFieldAlias(),
+                ':relation'   => $this->getStructure()->getRelation(),
+            ]
+        ));
+
+        $choices = [];
+        foreach ($churches as $church) {
+            $choices[$church['name']] = $church['id_church_church'];
         }
 
         return $choices;

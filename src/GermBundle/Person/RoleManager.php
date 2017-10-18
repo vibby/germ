@@ -4,15 +4,18 @@ namespace GermBundle\Person;
 
 use Symfony\Component\Security\Core\Role\Role;
 use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class RoleManager
 {
     private $config;
     private $translator;
+    protected $authorizationChecker;
 
-    public function __construct(TranslatorInterface $translator)
+    public function __construct(TranslatorInterface $translator, AuthorizationCheckerInterface $authorizationChecker)
     {
         $this->translator = $translator;
+        $this->authorizationChecker = $authorizationChecker;
     }
 
     public function setConfig($config)
@@ -77,7 +80,14 @@ class RoleManager
 
     public function getAssignable()
     {
-        return $this->formatChoice($this->config['assignable']);
+        $assignableRoles = [];
+        foreach ($this->config['assignable'] as $role => $roles) {
+            if ($this->authorizationChecker->isGranted($role)) {
+                $assignableRoles = array_merge($roles, $assignableRoles);
+            }
+        }
+
+        return $this->formatChoice(array_unique($assignableRoles));
     }
 
     private function formatChoice($roles)

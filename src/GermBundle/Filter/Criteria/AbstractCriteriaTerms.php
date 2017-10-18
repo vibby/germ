@@ -60,6 +60,9 @@ abstract class AbstractCriteriaTerms extends AbstractCriteria
 
     public function buildWhere()
     {
+        if (!$this->data) {
+            return null;
+        }
         $where = Where::create();
         foreach (explode(' ', $this->data) as $searchTerm) {
             foreach (static::getFields() as $fieldName) {
@@ -76,6 +79,9 @@ abstract class AbstractCriteriaTerms extends AbstractCriteria
 
     public function alterProjection(Projection &$projection)
     {
+        if (!$this->data) {
+            return [];
+        }
         $field = '';
         $countResultProjectionValues = [];
         foreach (explode(' ', $this->data) as $searchTerm) {
@@ -98,6 +104,9 @@ abstract class AbstractCriteriaTerms extends AbstractCriteria
 
     public function alterOrderBy(&$orderBy)
     {
+        if (!$this->data) {
+            return null;
+        }
         array_unshift($orderBy, self::COUNT_FIELD_NAME.' DESC');
     }
 }

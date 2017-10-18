@@ -157,10 +157,12 @@ class PersonController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $personModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\PersonSchema\PersonModel');
             $person = new Person();
-            $person->setChurchId($this->getUser()->getChurchId());
             foreach ($form->getData()->extract() as $key => $value) {
                 $method = 'set'.ucfirst($key);
                 $person->$method($value);
+            }
+            if (!$this->isGranted('ROLE_CHURCH_LIST')) {
+                $person->setChurchId($this->getUser()->getChurchId());
             }
             $personModel->insertOne($person);
             $translator = $this->get('translator');
@@ -248,9 +250,11 @@ class PersonController extends Controller
             $person->setBirthdate(null);
             $person->setMembershipDate(null);
             $person->setMembershipAct(null);
+            $person->setBaptismDate(null);
             $person->setPhone(null);
             $person->setAddress(null);
             $person->setEmail(null);
+            $person->setChurchId(null);
             $person->setLatlong(null);
             $form = $this->get('form.factory')->create(
                 PersonType::class,

@@ -51,7 +51,7 @@ class CriteriaChurch extends AbstractCriteria
         }
         $form->add(self::getFormName(), ChoiceType::class, [
             'label' => 'Church',
-            'choices' => $this->model->choiceAll(),
+            'choices' => $this->model->choiceSlug(),
             'choice_translation_domain' => false,
             'expanded' => true,
             'multiple' => true,

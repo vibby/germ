@@ -29,7 +29,6 @@ Secretary: Secrétaire
 Helder: Ancien
 Pastor: Pasteur
 User: Utilisateur
-Administrator: Administrateur
 Person was edited successuly: Personne modifiée avec succès
 Person was created successuly: Personne créée avec succès
 Create an access account: Créer un compte d’accès
@@ -120,3 +119,6 @@ Baptism: Baptême
 Profession of faith: Profession de foi
 Recommendation letter: Lettre de recommendation
 Transfer: Transfert
+Baptism date: Date de baptême
+System Administrator: Administrateur Système
+Federation staff: Équipe de fédération

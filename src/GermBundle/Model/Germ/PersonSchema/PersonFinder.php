@@ -40,7 +40,7 @@ class PersonFinder extends AbstractFinder
             $where->andWhere('church_id = $*', [$this->user['church_id']]);
         }
         if (!$this->authorisationChecker->isGranted('ROLE_PERSON_DELETED')) {
-            $where->andWhere('is_deleted = false');
+            $where->andWhere('is_deleted = $*', [0]);
         }
 
         return $where;
@@ -57,7 +57,7 @@ class PersonFinder extends AbstractFinder
 
     public function findOneBySlug($slug)
     {
-        $where = new Where('slug_canonical = $1', [':slug' => $slug]);
+        $where = new Where('slug_canonical = $*', [':slug' => $slug]);
         $where = $this->alterWhere($where);
 
         return $this->model->findWhere($where)->current();
