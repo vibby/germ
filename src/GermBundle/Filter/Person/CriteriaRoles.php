@@ -46,7 +46,7 @@ class CriteriaRoles extends AbstractCriteria
 
     public function alterForm(Form &$form)
     {
-        $form->add(self::getUrlPrefix(), ChoiceType::class, [
+        $form->add(self::getFormName(), ChoiceType::class, [
             'label' => 'Role',
             'choices' => $this->roleManager->getFilterChoices(),
             'expanded' => true,
@@ -68,15 +68,5 @@ class CriteriaRoles extends AbstractCriteria
         }
 
         return $where;
-    }
-
-    public function alterProjection(Projection &$projection)
-    {
-        return [];
-    }
-
-    public function alterOrderBy(&$orderBy)
-    {
-        return;
     }
 }

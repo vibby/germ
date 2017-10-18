@@ -2,6 +2,7 @@
 
 namespace GermBundle\Controller;
 
+use PommProject\ModelManager\Model\Model;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -174,17 +175,31 @@ class PersonController extends Controller
     public function removeAction($personSlug)
     {
         $person = $this->getPersonOr404($personSlug);
+        $person['is_deleted'] = true;
+        /** @var Model $personModel */
         $personModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\PersonSchema\PersonModel');
-        $personModel->deleteOne($person);
+        $personModel->updateOne($person);
         $this->get('session')->getFlashBag()->add('success', 'Person deleted');
 
         return $this->redirectToRoute('germ_person_list');
     }
 
+    public function recreateAction($personSlug)
+    {
+        $person = $this->getPersonOr404($personSlug);
+        $person['is_deleted'] = false;
+        /** @var Model $personModel */
+        $personModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\PersonSchema\PersonModel');
+        $personModel->updateOne($person);
+        $this->get('session')->getFlashBag()->add('success', 'Person created');
+
+        return $this->redirectToRoute('germ_person_edit', ['personSlug' => $person->getSlugCanonical()]);
+    }
+
     private function getPersonOr404($personSlug)
     {
-        $personModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\PersonSchema\PersonModel');
-        $person = $personModel->findWhere(new Where('slug_canonical = $1', [':slug' => $personSlug]))->current();
+        $finder = $this->get('GermBundle\Model\Germ\PersonSchema\PersonFinder');
+        $person = $finder->findOneBySlug($personSlug);
         if (!$person) {
             throw $this->createNotFoundException('The person does not exist');
         }

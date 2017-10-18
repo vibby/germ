@@ -31,7 +31,7 @@
 				{% endif %}
 			</tr>
 			{% for person in paginatedPersons.items %}
-				<tr>
+				<tr {% if person.is_deleted %}class="danger"{% endif %}>
 					<td style="font-size: 1.6em;">
 						{% if is_granted('ROLE_PERSON_EDIT') %}
 							<a href="{{ path('germ_person_edit', {'personSlug': person.slug_canonical}) }}" data-toggle="tooltip" data-placement="left" title="{% trans with {'%name%': person} %}Edit %name%{% endtrans %}">

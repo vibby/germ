@@ -66,6 +66,7 @@ SQL
                 membership_date DATE NULL,
                 membership_way VARCHAR(32) NULL,
                 church_id uuid NOT NULL,
+                is_deleted BOOLEAN NOT NULL DEFAULT FALSE,
                 latlong point NULL
             );
 SQL

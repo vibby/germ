@@ -64,6 +64,12 @@ services:
         tags:
             - { name: "GermBundle\\Filter\\Person\\Searcher" }
 
+    GermBundle\Filter\Person\CriteriaStatus:
+        class: GermBundle\Filter\Person\CriteriaStatus
+        autowire: true
+        tags:
+            - { name: "GermBundle\\Filter\\Person\\Searcher" }
+
     GermBundle\Filter\Person\CriteriaRoles:
         class: GermBundle\Filter\Person\CriteriaRoles
         autowire: true

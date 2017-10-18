@@ -20,13 +20,25 @@ abstract class AbstractCriteria
 
     abstract public function buildWhere();
 
-    abstract public function alterProjection(Projection &$projection);
+    public function alterProjection(Projection &$projection)
+    {
+        return [];
+    }
 
-    abstract public function alterOrderBy(&$orderBy);
+    public function alterOrderBy(&$orderBy)
+    {
+        return;
+    }
+    
+    public function urlize($data)
+    {
+        return $data;
+    }
 
-    abstract public function unurlize($data);
-
-    abstract public function urlize($data);
+    public function unurlize($data)
+    {
+        return $data;
+    }
 
     abstract public static function getUrlPrefix();
 

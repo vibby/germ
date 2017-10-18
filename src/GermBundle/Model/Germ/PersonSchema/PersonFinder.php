@@ -55,4 +55,11 @@ class PersonFinder extends AbstractFinder
         }
         return $this->findWhere($where);
     }
+    public function findOneBySlug($slug)
+    {
+        $where = new Where('slug_canonical = $1', [':slug' => $slug]);
+        $where = $this->alterWhere($where);
+
+        return $this->model->findWhere($where)->current();
+    }
 }

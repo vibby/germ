@@ -5,33 +5,37 @@ namespace GermBundle\Filter\Person;
 use GermBundle\Filter\Criteria\AbstractCriteria;
 use Symfony\Component\Form\Form;
 use PommProject\Foundation\Where;
+use PommProject\ModelManager\Model\Projection;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Security\Core\Role\RoleHierarchy;
+use Symfony\Component\Security\Core\Role\Role;
+use GermBundle\Person\RoleManager;
 use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
 use PommProject\Foundation\Pomm;
 use GermBundle\Model\Germ\ChurchSchema\ChurchModel;
 
-class CriteriaChurch extends AbstractCriteria
+class CriteriaStatus extends AbstractCriteria
 {
     const SEPARATOR = ',';
 
     private $authorisationChecker;
     private $model;
+    protected $data = [0];
 
     public function __construct(AuthorizationChecker $authorisationChecker, Pomm $pomm)
     {
         $this->authorisationChecker = $authorisationChecker;
-        /** @var ChurchModel model */
         $this->model = $pomm['germ']->getModel(ChurchModel::class);
     }
 
     public static function getUrlPrefix()
     {
-        return 'church';
+        return 'deleted';
     }
 
     public static function getFormName()
     {
-        return 'church';
+        return 'deleted';
     }
 
     public function urlize($data)
@@ -50,9 +54,8 @@ class CriteriaChurch extends AbstractCriteria
             return;
         }
         $form->add(self::getFormName(), ChoiceType::class, [
-            'label' => 'Church',
-            'choices' => $this->model->choiceAll(),
-            'choice_translation_domain' => false,
+            'label' => 'Status',
+            'choices' => ['Active' => 0, 'Deleted' => 1],
             'expanded' => true,
             'multiple' => true,
             'data' => $this->data,
@@ -68,11 +71,12 @@ class CriteriaChurch extends AbstractCriteria
             return null;
         }
 
-        $churchIds = $this->model->findIdsFromSlugs($this->data);
-
         $where = Where::create();
-        foreach ($churchIds as $churchId) {
-            $where->orWhere(Where::create('church_id = $*', [$churchId]));
+        if ($this->data == [1]) {
+            $where->orWhere(Where::create('is_deleted = true'));
+        }
+        if ($this->data == [0]) {
+            $where->orWhere(Where::create('is_deleted = false'));
         }
 
         return $where;
@@ -80,6 +84,6 @@ class CriteriaChurch extends AbstractCriteria
 
     private function checkAccess()
     {
-        return $this->authorisationChecker->isGranted('ROLE_CHURCH_READ');
+        return $this->authorisationChecker->isGranted('ROLE_PERSON_DELETED');
     }
 }

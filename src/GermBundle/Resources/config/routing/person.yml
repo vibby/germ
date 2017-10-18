@@ -19,6 +19,10 @@ germ_person_remove:
     path:     /remove/{personSlug}
     defaults: { _controller: GermBundle:Person:remove }
 
+germ_person_recreate:
+    path:     /recreate/{personSlug}
+    defaults: { _controller: GermBundle:Person:recreate  }
+
 germ_person_create:
     path:     /create
     defaults: { _controller: GermBundle:Person:create }

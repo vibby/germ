@@ -46,14 +46,17 @@ class AccountModel extends Model
         return $this->findWhere($where);
     }
 
-    public function findUserWhere(Where $where) {
+    public function findUserWhere(Where $where)
+    {
         $sql = <<<SQL
 select
     :projection
 from
     :user_relation r
 right join
-    :person_relation p ON p.id_person_person = r.person_id
+    :person_relation p 
+    ON p.id_person_person = r.person_id
+    AND p.is_deleted = false
 where
     :condition
 SQL;
@@ -75,10 +78,6 @@ SQL;
                 ':condition' => $where,
             ]
         );
-
-        // foreach ($this->query($sql, $where->getValues(), $projection) as $person) {
-        //     dump($person);die;
-        // }
 
         return $this->query($sql, $where->getValues(), $projection);
     }

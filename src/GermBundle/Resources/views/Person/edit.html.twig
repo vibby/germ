@@ -10,29 +10,34 @@
 			{{ form_widget(form) }}
 			<button class="btn btn-primary" type="submit">{% trans %}Save{% endtrans %}</button>
 			{% if mode == 'edit' %}
-				<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confirmRemoveModal">
-					{% trans %}Remove person{% endtrans %}
-				</button>
+				{% if form.vars.value.is_deleted %}
+					<a href="{{ path('germ_person_recreate', {'personSlug': form.vars.value.slug_canonical}) }}" class="btn btn-danger">
+						{% trans %}Recreate person{% endtrans %}
+					</a>
+				{% else %}
+					<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confirmRemoveModal">
+						{% trans %}Remove person{% endtrans %}
+					</button>
 
-				<!-- Modal -->
-				<div class="modal fade" id="confirmRemoveModal" tabindex="-1" role="dialog" aria-labelledby="confirmRemoveModalLabel">
-					<div class="modal-dialog" role="document">
-						<div class="modal-content">
-							<div class="modal-header">
-								<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-								<h4 class="modal-title" id="myModalLabel">{% trans %}Remove person{% endtrans %}</h4>
-							</div>
-							<div class="modal-body">
-								{% trans %}Are you sure you want to remove this person ?{% endtrans %} {% trans %}This action cannot be canceled.{% endtrans %}
-							</div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-default" data-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
-								<a href="{{ path('germ_person_remove', {'personSlug': form.vars.value.slug_canonical}) }}" class="btn btn-danger">{% trans %}Remove person{% endtrans %}</a>
+					<!-- Modal -->
+					<div class="modal fade" id="confirmRemoveModal" tabindex="-1" role="dialog" aria-labelledby="confirmRemoveModalLabel">
+						<div class="modal-dialog" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+									<h4 class="modal-title" id="myModalLabel">{% trans %}Remove person{% endtrans %}</h4>
+								</div>
+								<div class="modal-body">
+									{% trans %}Are you sure you want to remove this person ?{% endtrans %} {% trans %}This action cannot be canceled.{% endtrans %}
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-default" data-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
+									<a href="{{ path('germ_person_remove', {'personSlug': form.vars.value.slug_canonical}) }}" class="btn btn-danger">{% trans %}Remove person{% endtrans %}</a>
+								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-
+				{% endif %}
 			{% endif %}
 			{{ form_end(form) }}
 		</div>

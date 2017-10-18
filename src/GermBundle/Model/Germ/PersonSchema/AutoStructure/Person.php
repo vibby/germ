@@ -50,6 +50,7 @@ class Person extends RowStructure
             ->addField('membership_date', 'date')
             ->addField('membership_way', 'varchar')
             ->addField('church_id', 'uuid')
+            ->addField('is_deleted', 'bool')
             ->addField('latlong', 'point')
             ;
     }
