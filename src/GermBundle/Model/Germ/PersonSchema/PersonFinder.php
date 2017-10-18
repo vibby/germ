@@ -24,23 +24,22 @@ class PersonFinder extends AbstractFinder
         $this->authorisationChecker = $authorisationChecker;
     }
 
+    public function getDefaultOrderBy()
+    {
+        return ['lastname', 'firstname'];
+    }
+
     protected static function getModelClassName()
     {
         return PersonModel::class;
     }
 
-    public function alterWhere(Where $where, $withActive = true, $withDeleted = false)
+    public function alterWhere(Where $where)
     {
         if (!$this->authorisationChecker->isGranted('ROLE_CHURCH_LIST')) {
             $where->andWhere('church_id = $*', [$this->user['church_id']]);
         }
-        if (!$withActive && !$withDeleted) {
-            throw new \Exception('Cannot ask for deleted and undeleted persons');
-        }
-        if ($withActive && !$withActive) {
-            $where->andWhere('is_deleted = true');
-        }
-        if (!$withActive && $withActive) {
+        if (!$this->authorisationChecker->isGranted('ROLE_PERSON_DELETED')) {
             $where->andWhere('is_deleted = false');
         }
 
@@ -55,11 +54,22 @@ class PersonFinder extends AbstractFinder
         }
         return $this->findWhere($where);
     }
+
     public function findOneBySlug($slug)
     {
         $where = new Where('slug_canonical = $1', [':slug' => $slug]);
         $where = $this->alterWhere($where);
 
         return $this->model->findWhere($where)->current();
+    }
+
+    public function findForListWhere(Where $where = null)
+    {
+        if (!$where) {
+            $where = new Where();
+        }
+        $where = $this->alterWhere($where);
+
+        return $this->model->findForListWhere($where);
     }
 }

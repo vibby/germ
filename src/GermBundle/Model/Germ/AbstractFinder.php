@@ -22,7 +22,7 @@ abstract class AbstractFinder
         return $this->model->countWhere($where);
     }
 
-    public function alterWhere(Where $where, $withActive = true, $withDeleted = false)
+    public function alterWhere(Where $where)
     {
         return $where;
     }
@@ -40,4 +40,6 @@ abstract class AbstractFinder
     {
         return $this->model->findWhere($this->alterWhere(new Where()));
     }
+
+    abstract public function getDefaultOrderBy();
 }

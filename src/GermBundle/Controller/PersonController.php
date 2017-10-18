@@ -26,7 +26,7 @@ class PersonController extends Controller
     {
         $finder = $this->get('GermBundle\Model\Germ\PersonSchema\PersonFinder');
         if ($request->get('_format') != 'html') {
-            $output['persons'] = $finder->findAll();
+            $output['persons'] = $finder->findForListWhere();
         } else {
             $searcher = $this->get('GermBundle\Filter\Person\Searcher');
             if ($redirect = $searcher->handleRequest($request)) {

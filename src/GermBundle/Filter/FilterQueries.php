@@ -12,7 +12,7 @@ trait FilterQueries
         $where = Where::create();
         $projection = $this->createProjection();
         $projectionValues = [];
-        $orderBy = $this->getDefaultOrderBy();
+        $orderBy = $finder->getDefaultOrderBy();
         foreach ($searcher->getCriterias() as $item) {
             $where->andWhere($item->buildWhere());
             $projectionValues += $item->alterProjection($projection);
@@ -21,10 +21,11 @@ trait FilterQueries
         $count = $finder->countWhere($where);
         $where = $finder->alterWhere($where);
 
+        list($sql, $projection) = $this->findForListWhereSql($where, $projection, 'order by '.implode(', ', $orderBy));
         return [
             $count,
             $this->paginateQuery(
-                $this->getFindWhereSql($where, $projection, 'order by '.implode(', ', $orderBy)),
+                $sql,
                 array_merge($projectionValues, $where->getValues()),
                 $count,
                 $item_per_page,

@@ -36,11 +36,6 @@ class ChurchModel extends Model
         $this->flexible_entity_class = '\GermBundle\Model\Germ\ChurchSchema\Church';
     }
 
-    public function getDefaultOrderBy()
-    {
-        return ['name'];
-    }
-
     public function findAll($suffix = '')
     {
         return $this->traitFindAll(sprintf(

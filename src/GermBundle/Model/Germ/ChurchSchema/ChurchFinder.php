@@ -17,6 +17,11 @@ class ChurchFinder extends AbstractFinder
         $this->model = $pomm['germ']->getModel(self::getModelClassName());
     }
 
+    public function getDefaultOrderBy()
+    {
+        return ['name'];
+    }
+    
     protected static function getModelClassName()
     {
         return ChurchModel::class;
