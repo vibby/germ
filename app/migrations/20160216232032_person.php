@@ -46,7 +46,7 @@ class Person extends AbstractMigration
                 password_requested_at TIMESTAMP WITHOUT TIME ZONE,
                 credentials_expired BOOLEAN NOT NULL DEFAULT FALSE,
                 credentials_expire_at TIMESTAMP WITHOUT TIME ZONE,
-                person_id uuid NOT NULL
+                person_id uuid NOT NULL UNIQUE
             );
 SQL
         );
@@ -82,25 +82,6 @@ SQL
         $this->execute('ALTER TABLE "person"."person" ADD FOREIGN KEY ("family_id") REFERENCES "person"."person" ("id_person_person") ON DELETE SET NULL ON UPDATE CASCADE;');
         $this->execute('ALTER TABLE "person"."account" ADD FOREIGN KEY ("person_id") REFERENCES "person"."person" ("id_person_person") ON DELETE CASCADE ON UPDATE CASCADE;');
 
-        $this->execute(<<<SQL
-            CREATE OR REPLACE FUNCTION "public".slugify(str TEXT)
-            RETURNS text AS $$
-            BEGIN
-                RETURN regexp_replace(
-                   lower(translate(str,
-                     'äëïöüáéíóúâêîûôåãõàèìòùřšěčůńýśćłęążźĄŃÝŚĆŁĘÄËÏÖÜÁÉÍÓÚÂÊÎÛÔÅÃÕÀÈÌÒÙŘŠĚČŮŻŹß ²ø®',
-                     'aeiouaeiouaeiouaaoaeioursecunyscleazzANYSCLEAEIOUAEIOUAEIOUAAOAEIOURSECUZzs-2dR'
-                     -- missing chars will be removed
-                   )),
-                   -- strip all others chars than [^a-z0-9 \-]
-                   '[^a-z0-9 \-]',
-                   '',
-                   'g'
-                );
-            END;
-            $$ LANGUAGE plpgsql;
-SQL
-        );
         $this->execute(<<<SQL
             CREATE OR REPLACE FUNCTION "person".person_slug()
             RETURNS trigger AS $$

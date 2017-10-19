@@ -38,11 +38,35 @@ class Church extends AbstractMigration
             latlong point,
             website_url VARCHAR(128) 
         );');
+
+        $this->execute(<<<SQL
+            CREATE OR REPLACE FUNCTION "church".church_slug()
+            RETURNS trigger AS $$
+            BEGIN
+                IF NEW.slug_canonical IS NULL or NEW.slug_canonical='' THEN
+                    NEW.slug_canonical = public.slugify(NEW.name);
+                END IF;
+                RETURN NEW;
+            END;
+            $$ LANGUAGE plpgsql;
+SQL
+        );
+
+        $this->execute(<<<SQL
+            CREATE TRIGGER "church_slug"
+              BEFORE INSERT OR UPDATE
+              ON "church"."church"
+              FOR EACH ROW
+              EXECUTE PROCEDURE "church".church_slug();
+SQL
+        );
+
     }
 
     public function down()
     {
         $this->execute('DROP TABLE "church"."church";');
+        $this->execute('DROP FUNCTION "church".church_slug();');
         $this->execute('DROP SCHEMA "church";');
     }
 }

@@ -4,12 +4,10 @@ namespace GermBundle\Model\Germ\ChurchSchema;
 
 use GermBundle\Filter\FilterQueries;
 use PommProject\ModelManager\Model\Model;
-use PommProject\ModelManager\Model\ModelTrait\ReadQueries;
 use PommProject\ModelManager\Model\Projection;
 use PommProject\ModelManager\Model\ModelTrait\WriteQueries;
 use PommProject\Foundation\Where;
 use GermBundle\Model\Germ\ChurchSchema\AutoStructure\Church as ChurchStructure;
-use GermBundle\Model\Germ\ChurchSchema\Church;
 
 /**
  * ChurchModel
@@ -20,7 +18,7 @@ use GermBundle\Model\Germ\ChurchSchema\Church;
  */
 class ChurchModel extends Model
 {
-    use ReadQueries;
+    use WriteQueries;
     use FilterQueries;
 
     /**

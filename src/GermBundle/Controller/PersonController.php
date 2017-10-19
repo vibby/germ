@@ -94,16 +94,17 @@ class PersonController extends Controller
                 if ($accountForm->isSubmitted() && $accountForm->isValid()) {
                     $accountModel->updateOne($account, array_keys($accountForm->getData()->extract()));
                     $this->get('session')->getFlashBag()->add('success', 'Person updated');
-                    return $this->redirectToRoute('germ_person_edit', ['personSlug' => $person->getId()]);
+                    return $this->redirectToRoute('germ_person_edit', ['personSlug' => $person->getSlugCanonical()]);
                 }
                 $accountForm = $accountForm->createView();
 
                 $passwordForm = $this->buildPasswordForm($account);
+
                 $passwordForm->handleRequest($request);
                 if ($passwordForm->isSubmitted() && $passwordForm->isValid()) {
-                    $accountModel->updateOne($account, array_keys($passwordForm->getData()->extract()));
+                    $accountModel->updateOne($account, ['password']);
                     $this->get('session')->getFlashBag()->add('success', 'Person updated');
-                    return $this->redirectToRoute('germ_person_edit', ['personSlug' => $person->getId()]);
+                    return $this->redirectToRoute('germ_person_edit', ['personSlug' => $person->getSlugCanonical()]);
                 }
                 $passwordForm = $passwordForm->createView();
             } else {
@@ -117,7 +118,7 @@ class PersonController extends Controller
             if ($accountCreateForm->isSubmitted() && $accountCreateForm->isValid()) {
                 $accountModel->insertOne($account, array_keys($accountCreateForm->getData()->extract()));
                 $this->get('session')->getFlashBag()->add('success', 'Person updated');
-                return $this->redirectToRoute('germ_person_edit', ['personSlug' => $person->getId()]);
+                return $this->redirectToRoute('germ_person_edit', ['personSlug' => $person->getSlugCanonical()]);
             }
             $accountCreateForm = $accountCreateForm->createView();
 
