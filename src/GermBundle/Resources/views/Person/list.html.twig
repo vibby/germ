@@ -47,7 +47,7 @@
 						{% endfor %}
 					</td>
 					<td>
-						{{ person.phone|first }}
+						<a href="tel:{{ person.phone|first }}">{{ person.phone|first }}</a>
 					</td>
 					<td>
 						{{ person.address|nl2br }}

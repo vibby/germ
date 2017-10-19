@@ -36,15 +36,27 @@ class Church extends AbstractMigration
             phone VARCHAR(32) NULL,
             address VARCHAR(256) NULL,
             latlong point,
-            website_url VARCHAR(128) 
+            website_url VARCHAR(128)
         );');
 
         $this->execute(<<<SQL
             CREATE OR REPLACE FUNCTION "church".church_slug()
             RETURNS trigger AS $$
+            DECLARE slug varchar(48); suffix int := 0;
             BEGIN
                 IF NEW.slug_canonical IS NULL or NEW.slug_canonical='' THEN
-                    NEW.slug_canonical = public.slugify(NEW.name);
+                    slug = public.slugify(NEW.name);
+                    IF ((SELECT COUNT(*) FROM church.church WHERE slug_canonical = slug) = 0) THEN
+                        NEW.slug_canonical = slug;
+                        RETURN NEW;
+                    END IF;
+                    LOOP
+                        IF ((SELECT COUNT(*) FROM church.church WHERE slug_canonical = slug || suffix) = 0) THEN
+                            NEW.slug_canonical = slug || suffix;
+                            RETURN NEW;
+                        END IF;
+                        suffix := suffix + 1;
+                    END LOOP;
                 END IF;
                 RETURN NEW;
             END;

@@ -29,6 +29,6 @@ SQL
 
     public function down()
     {
-        $this->execute('DROP FUNCTION "public".slugify();');
+        $this->execute('DROP FUNCTION IF EXISTS "public".slugify();');
     }
 }

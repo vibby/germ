@@ -53,9 +53,11 @@ class CriteriaChurch extends AbstractCriteria
             'label' => 'Church',
             'choices' => $this->model->choiceSlug(),
             'choice_translation_domain' => false,
-            'expanded' => true,
+            'expanded' => false,
             'multiple' => true,
+            'render_optional_text' => false,
             'data' => $this->data,
+            'required' => false,
         ]);
     }
 

@@ -3,6 +3,8 @@
 namespace GermBundle\Command;
 
 use Faker\Factory;
+use GermBundle\Model\Germ\ChurchSchema\Church;
+use GermBundle\Model\Germ\ChurchSchema\ChurchModel;
 use GermBundle\Model\Germ\PersonSchema\Account;
 use GermBundle\Model\Germ\PersonSchema\AccountModel;
 use GermBundle\Model\Germ\PersonSchema\Person;
@@ -25,15 +27,49 @@ class GenerateFakeDataCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        if ($this->getContainer()->getParameter("kernel.environment") == 'prod') {
+            throw new \Exception("This command cannot be executed on PROD environment", 1);
+        }
         $pommSession = $this->getContainer()->get('pomm')['germ'];
-        $pommSession->registerClientPooler(new FakerPooler(Factory::create()));
+
+        // Fix data
+        $churchModel = $pommSession->getModel(ChurchModel::class);
+        $church = new Church();
+        $church->setName('Nantes');
+        $churchModel->insertOne($church);
+
+        $personModel = $pommSession->getModel(PersonModel::class);
+        $adminPerson = new Person();
+        $adminPerson->setFirstname('Admin')
+            ->setLastname('Test')
+            ->setEmail('admin@germ.fr')
+            ->setRoles(['ROLE_ADMIN'])
+            ->setChurchId($church['id_church_church'])
+        ;
+        $personModel->insertOne($adminPerson);
+
+        $accountModel = $pommSession->getModel(AccountModel::class);
+        $adminAccount = new Account();
+        $adminAccount->setEnabled(true);
+        $adminAccount->setUsername('Admin');
+        $adminAccount->setUsernameCanonical('Admin');
+        $adminAccount->setEmail('admin@germ.fr');
+        $adminAccount->setEmailCanonical('admin@germ.fr');
+        // password is «test»
+        $adminAccount->setPassword('LJQRDmbG37bHbZTi0oTH4td8L6mHU7kecPoX2zw8SDwWFpBcT11bQqx+FjOYvfSyP8BdZhwYlUB/kTp1RR31Qg==');
+        $adminAccount->setSalt('5cmq15n0q0w0go4ogcc0co444ocw4oc');
+        $adminAccount->setPersonId($adminPerson['id_person_person']);
+        $accountModel->insertOne($adminAccount);
+
+        // Generated data
+        $pommSession->registerClientPooler(new FakerPooler(Factory::create('fr_FR')));
 
         $pommSession->getFaker('church.church')->getRowDefinition()
             ->unsetDefinition('id_church_church')
             ->setFormatterType('name', 'city')
             ->setFormatterType('phone', 'phoneNumber')
         ;
-        $churches = $pommSession->getFaker('church.church')->save(93);
+        $churches = $pommSession->getFaker('church.church')->save(76);
         $churchIds = array_map(
             function ($church) { return $church['id_church_church'];},
             $churches
@@ -74,7 +110,7 @@ class GenerateFakeDataCommand extends ContainerAwareCommand
             ->setFormatterType('church_id', 'randomElement', [$churchIds])
         ;
 
-        $persons = $pommSession->getFaker('person.person')->save(1219);
+        $persons = $pommSession->getFaker('person.person')->save(7512);
 
         $accountModel = $pommSession->getModel(AccountModel::class);
         foreach ($persons as $person) {
@@ -91,28 +127,5 @@ class GenerateFakeDataCommand extends ContainerAwareCommand
             $accountModel->insertOne($account);
             unset($account);
         }
-
-        $personModel = $pommSession->getModel(PersonModel::class);
-        $adminPerson = new Person();
-        $adminPerson->setFirstname('Admin')
-            ->setLastname('Testeur')
-            ->setEmail('admin@germ.fr')
-            ->setRoles(['ROLE_ADMIN'])
-            ->setChurchId($churchIds[0])
-        ;
-        $personModel->insertOne($adminPerson);
-
-        $accountModel = $pommSession->getModel(AccountModel::class);
-        $adminAccount = new Account();
-        $adminAccount->setEnabled(true);
-        $adminAccount->setUsername('Admin');
-        $adminAccount->setUsernameCanonical('Admin');
-        $adminAccount->setEmail('admin@germ.fr');
-        $adminAccount->setEmailCanonical('admin@germ.fr');
-        // password is «test»
-        $adminAccount->setPassword('LJQRDmbG37bHbZTi0oTH4td8L6mHU7kecPoX2zw8SDwWFpBcT11bQqx+FjOYvfSyP8BdZhwYlUB/kTp1RR31Qg==');
-        $adminAccount->setSalt('5cmq15n0q0w0go4ogcc0co444ocw4oc');
-        $adminAccount->setPersonId($adminPerson['id_person_person']);
-        $accountModel->insertOne($adminAccount);
     }
 }

@@ -85,9 +85,21 @@ SQL
         $this->execute(<<<SQL
             CREATE OR REPLACE FUNCTION "person".person_slug()
             RETURNS trigger AS $$
+            DECLARE slug varchar(48); suffix int := 0;
             BEGIN
                 IF NEW.slug_canonical IS NULL or NEW.slug_canonical='' THEN
-                    NEW.slug_canonical = public.slugify(NEW.firstname || ' ' || NEW.lastname);
+                    slug = public.slugify(NEW.firstname || ' ' || NEW.lastname);
+                    IF ((SELECT COUNT(*) FROM person.person WHERE slug_canonical = slug) = 0) THEN
+                        NEW.slug_canonical = slug;
+                        RETURN NEW;
+                    END IF;
+                    LOOP
+                        IF ((SELECT COUNT(*) FROM person.person WHERE slug_canonical = slug || suffix) = 0) THEN
+                            NEW.slug_canonical = slug || suffix;
+                            RETURN NEW;
+                        END IF;
+                        suffix := suffix + 1;
+                    END LOOP;
                 END IF;
                 RETURN NEW;
             END;
