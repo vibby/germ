@@ -37,8 +37,6 @@ class Account extends RowStructure
             ->setRelation('person.account')
             ->setPrimaryKey(['id_person_account'])
             ->addField('id_person_account', 'uuid')
-            ->addField('username', 'varchar')
-            ->addField('username_canonical', 'varchar')
             ->addField('email', 'varchar')
             ->addField('email_canonical', 'varchar')
             ->addField('enabled', 'bool')

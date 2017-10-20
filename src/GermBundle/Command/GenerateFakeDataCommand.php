@@ -23,7 +23,7 @@ class GenerateFakeDataCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('germ:generate_fake_data')
+            ->setName('germ:generate-fake-data')
             ->setDescription('Generate many data for dev and tests. Not allowed on production')
             ->setHelp('This command allows you to generate many data : churches and persons. For testing and work with data for developing without real data.')
             ->addOption('persons', 'p', InputOption::VALUE_REQUIRED, 'Number of person to generate', 1086)

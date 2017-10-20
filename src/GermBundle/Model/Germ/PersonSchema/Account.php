@@ -16,7 +16,13 @@ class Account extends User
 {
 	public $keyForId = 'id_person_account';
 
-    public function getId() {
+    public function getId()
+    {
         return $this->get($this->keyForId);
+    }
+
+    public function getUsername()
+    {
+        return '';
     }
 }

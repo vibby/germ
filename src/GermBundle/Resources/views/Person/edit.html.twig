@@ -45,16 +45,6 @@
 {% endblock %}
 
 {% block content_right %}
-	{% if accountForm is defined and accountForm %}
-		<div class="panel panel-default">
-			<div class="panel-body">
-	  			{{ form_start(accountForm) }}
-				{{ form_widget(accountForm) }}
-				<button class="btn btn-primary" type="submit">{% trans %}Save{% endtrans %}</button>
-				{{ form_end(accountForm) }}
-  		  	</div>
-		</div>
-	{% endif %}
 	{% if passwordForm is defined and passwordForm %}
 		<div class="panel panel-default">
 			<div class="panel-body">
@@ -75,11 +65,11 @@
 			</div>
 		</div>
 	{% endif %}
-	{% if accountCreateForm is defined and not accountCreateForm and not accountForm %}
-		<a class="btn btn-default" href="{{ path('germ_person_account_enable', {'personSlug': form.vars.value.id}) }}" data-toggle="tooltip" data-placement="left" title="{% trans %}The person will be able to connect this application{% endtrans %}">{% trans %}Activate account{% endtrans %}</a>
+	{% if accountCreateForm is defined and not accountCreateForm and not passwordForm %}
+		<a class="btn btn-default" href="{{ path('germ_person_account_enable', {'personSlug': form.vars.value.slug_canonical}) }}" data-toggle="tooltip" data-placement="left" title="{% trans %}The person will be able to connect this application{% endtrans %}">{% trans %}Activate account{% endtrans %}</a>
 	{% endif %}
-	{% if accountForm is defined and accountForm %}
-		<a class="btn btn-default btn-warning" href="{{ path('germ_person_account_disable', {'personSlug': form.vars.value.id}) }}" data-toggle="tooltip" data-placement="left" title="{% trans %}The person wont be able to connect this application{% endtrans %}">{% trans %}Desactivate account{% endtrans %}</a>
+	{% if passwordForm is defined and passwordForm %}
+		<a class="btn btn-default btn-warning" href="{{ path('germ_person_account_disable', {'personSlug': form.vars.value.slug_canonical}) }}" data-toggle="tooltip" data-placement="left" title="{% trans %}The person wont be able to connect this application{% endtrans %}">{% trans %}Desactivate account{% endtrans %}</a>
 	{% endif %}
 {% endblock %}
 

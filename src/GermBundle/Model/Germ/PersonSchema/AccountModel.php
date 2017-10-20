@@ -57,13 +57,19 @@ right join
     :person_relation p 
     ON p.id_person_person = r.person_id
     AND p.is_deleted = false
+right join
+    :church_relation c 
+    ON c.id_church_church = p.church_id
 where
     :condition
 SQL;
         $projection = $this->createProjection()
             ->setField('roles', 'p.roles', 'varchar[]')
             ->setField('church_id', 'p.church_id', 'varchar')
+            ->setField('church_name', 'c.name', 'varchar')
             ->setField('email', 'p.email', 'varchar')
+            ->setField('username', 'p.slug_canonical', 'varchar')
+            ->setField('username_canonical', 'p.slug_canonical', 'varchar')
             ->setField('id_person_person', 'p.id_person_person', 'varchar')
             ;
 
@@ -73,6 +79,10 @@ SQL;
                 ':user_relation'   => $this->getStructure()->getRelation(),
                 ':person_relation' => $this->getSession()
                     ->getModel('\GermBundle\Model\Germ\PersonSchema\PersonModel')
+                    ->getStructure()
+                    ->getRelation(),
+                ':church_relation' => $this->getSession()
+                    ->getModel('\GermBundle\Model\Germ\ChurchSchema\ChurchModel')
                     ->getStructure()
                     ->getRelation(),
                 ':condition' => $where,

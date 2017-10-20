@@ -89,15 +89,6 @@ class PersonController extends Controller
         $account = $accountModel->findWhere("person_id = $*", [$person->getId()])->current();
         if ($account) {
             if ($account->getEnabled()) {
-                $accountForm = $this->buildAccountForm($account);
-                $accountForm->handleRequest($request);
-                if ($accountForm->isSubmitted() && $accountForm->isValid()) {
-                    $accountModel->updateOne($account, array_keys($accountForm->getData()->extract()));
-                    $this->get('session')->getFlashBag()->add('success', 'Person updated');
-                    return $this->redirectToRoute('germ_person_edit', ['personSlug' => $person->getSlugCanonical()]);
-                }
-                $accountForm = $accountForm->createView();
-
                 $passwordForm = $this->buildPasswordForm($account);
 
                 $passwordForm->handleRequest($request);
@@ -108,7 +99,6 @@ class PersonController extends Controller
                 }
                 $passwordForm = $passwordForm->createView();
             } else {
-                $accountForm = null;
                 $passwordForm = null;
             }
             $accountCreateForm = null;
@@ -121,8 +111,6 @@ class PersonController extends Controller
                 return $this->redirectToRoute('germ_person_edit', ['personSlug' => $person->getSlugCanonical()]);
             }
             $accountCreateForm = $accountCreateForm->createView();
-
-            $accountForm = null;
             $passwordForm = null;
         }
 
@@ -131,7 +119,6 @@ class PersonController extends Controller
             array(
                 'mode' => 'edit',
                 'form' => $personForm,
-                'accountForm' => $accountForm,
                 'passwordForm' => $passwordForm,
                 'accountCreateForm' => $accountCreateForm,
             )
@@ -217,8 +204,9 @@ class PersonController extends Controller
 
     private function getAccountOr404($personSlug)
     {
+        $person = $this->getPersonOr404($personSlug);
         $accountModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\PersonSchema\AccountModel');
-        $account = $accountModel->findWhere("person_id = $*", [$personSlug])->current();
+        $account = $accountModel->findWhere("person_id = $*", [$person->getId()])->current();
         if (!$account) {
             throw $this->createNotFoundException('The account does not exist');
         }
@@ -271,33 +259,16 @@ class PersonController extends Controller
         return null;
     }
 
-    private function buildAccountForm(Account $account)
+    private function buildAccountCreateForm(Person $person)
     {
-        return $this->get('form.factory')
-            ->createNamedBuilder('Account', FormType::class, $account)
-            ->add('username', TextType::class, [
-                'label' => 'form.username',
-                'translation_domain' => 'FOSUserBundle'
-            ])
-            ->add('email', null, [
-                'label' => 'form.email',
-                'translation_domain' => 'FOSUserBundle',
-                'required' => true,
-            ])
-            ->getForm();
-    }
+        $account = new Account();
+        $account->setEmail($person->getEmail());
 
-    private function buildAccountCreateForm(Account $account = null)
-    {
-        if (!$account) {
-            $account = new Account();
-            $account->setUsername('');
-            $account->setEmail('');
-        }
         return $this->get('form.factory')
             ->createNamedBuilder('Account', FormType::class, $account)
-            ->add('username', null, array('label' => 'form.username', 'translation_domain' => 'FOSUserBundle'))
-            ->add('email', null, array('label' => 'form.email', 'translation_domain' => 'FOSUserBundle'))
+            ->add('email', null, [
+                'label' => 'form.email', 'translation_domain' => 'FOSUserBundle',
+            ])
             ->add('plainPassword', LegacyFormHelper::getType('Symfony\Component\Form\Extension\Core\Type\RepeatedType'), array(
                 'type' => LegacyFormHelper::getType('Symfony\Component\Form\Extension\Core\Type\PasswordType'),
                 'options' => array('translation_domain' => 'FOSUserBundle'),

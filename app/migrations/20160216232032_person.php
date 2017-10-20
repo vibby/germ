@@ -31,8 +31,6 @@ class Person extends AbstractMigration
         $this->execute(<<<SQL
             CREATE TABLE "person"."account" (
                 id_person_account uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
-                username VARCHAR(255) NOT NULL,
-                username_canonical VARCHAR(255) NOT NULL UNIQUE,
                 email VARCHAR(255) NOT NULL,
                 email_canonical VARCHAR(255) NOT NULL UNIQUE,
                 enabled BOOLEAN NOT NULL DEFAULT FALSE,
