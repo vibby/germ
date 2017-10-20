@@ -21,9 +21,11 @@ class Builder implements ContainerAwareInterface
         if ($this->container->get('security.authorization_checker')->isGranted('ROLE_PERSON_LIST')) {
             $menu->addChild('Persons', ['route' => 'germ_person_list']);
         }
-        $menu->addChild('Events', [
-            'route' => 'germ_event_list',
-        ]);
+        if ($this->container->get('security.authorization_checker')->isGranted('ROLE_EVENT_LIST')) {
+            $menu->addChild('Events', [
+                'route' => 'germ_event_list',
+            ]);
+        }
         $menu->addChild('Logout', [
             'route' => 'fos_user_security_logout',
         ]);
