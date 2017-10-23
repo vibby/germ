@@ -4,6 +4,14 @@ parameters:
     pomm_fos_user.user_model_class: GermBundle\Model\Germ\PersonSchema\AccountModel
 
 services:
+    GermBundle\Security\UserManager:
+        class: GermBundle\Security\UserManager
+        arguments:
+            - "@fos_user.util.password_updater"
+            - "@fos_user.util.canonical_fields_updater"
+        calls:
+            - [setPommModel, ["@pomm_fos_user_bundle.model_manager"]]
+
     GermBundle\EventSubscriber\PommPaginatorSubscriber:
         class: GermBundle\EventSubscriber\PommPaginatorSubscriber
         public: false

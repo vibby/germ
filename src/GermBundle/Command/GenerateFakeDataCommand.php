@@ -26,7 +26,7 @@ class GenerateFakeDataCommand extends ContainerAwareCommand
             ->setName('germ:generate-fake-data')
             ->setDescription('Generate many data for dev and tests. Not allowed on production')
             ->setHelp('This command allows you to generate many data : churches and persons. For testing and work with data for developing without real data.')
-            ->addOption('persons', 'p', InputOption::VALUE_REQUIRED, 'Number of person to generate', 1086)
+            ->addOption('persons', 'p', InputOption::VALUE_REQUIRED, 'Number of person to generate', 1082)
             ->addOption('churches', 'c', InputOption::VALUE_REQUIRED, 'Number of churches to generate', 14)
         ;
     }
@@ -40,6 +40,7 @@ class GenerateFakeDataCommand extends ContainerAwareCommand
         $output->writeln('Generating fixed data in database : ');
 
         $this->pommSession = $this->getContainer()->get('pomm')['germ'];
+        $this->accountModel = $this->pommSession->getModel(AccountModel::class);
 
         // Fix data
         $churchModel = $this->pommSession->getModel(ChurchModel::class);
@@ -49,22 +50,23 @@ class GenerateFakeDataCommand extends ContainerAwareCommand
             $churchModel->insertOne($church);
         }
         $this->createPerson('Test', 'Admin', $church, 'admin@germ.fr', ['ROLE_ADMIN']);
+        $this->createPerson('Test', 'Fédération', $church, 'federation@germ.fr', ['ROLE_FEDERATION']);
         $this->createPerson('Test', 'Secrétaire', $church, 'secretaire@germ.fr', ['ROLE_SECRETARY']);
-        $this->createPerson('Test', 'Directeur-de-département', $church, 'directeur@germ.fr', ['ROLE_DEPT_DIRECTOR']);
+        $this->createPerson('Test', 'Directeur', $church, 'directeur@germ.fr', ['ROLE_DEPT_DIRECTOR']);
         $this->createPerson('Test', 'Membre', $church, 'membre@germ.fr');
 
         // Generated data
-        $output->writeln('Generating ramdom data in database : ');
+        $output->writeln('Generating random data in database : ');
         $this->pommSession->registerClientPooler(new FakerPooler(Factory::create('fr_FR')));
         $this->defineChurchFaker();
-        $churches = $this->pommSession->getFaker('church.church')->save($input->getOption('churches'));
+        $churches = $this->pommSession->getFaker('church.church')->save((int) $input->getOption('churches'));
 
         $churchIds = array_map(
             function ($church) { return $church['id_church_church'];},
             $churches
         );
         $this->definePersonFaker($churchIds);
-        $persons = $this->pommSession->getFaker('person.person')->save($input->getOption('persons'));
+        $persons = $this->pommSession->getFaker('person.person')->save((int) $input->getOption('persons'));
         foreach ($persons as $person) {
             $this->createAssociatedAccount($person);
         }
@@ -73,10 +75,6 @@ class GenerateFakeDataCommand extends ContainerAwareCommand
 
     private function createAssociatedAccount($person)
     {
-        if (!$this->accountModel) {
-            $this->accountModel = $this->pommSession->getModel(AccountModel::class);
-        }
-
         $account = new Account();
         $account->setEnabled(true);
         // password is «test»
@@ -86,6 +84,7 @@ class GenerateFakeDataCommand extends ContainerAwareCommand
         $account->setEmailCanonical($person['email']);
         $account->setPersonId($person['id_person_person']);
         $this->accountModel->insertOne($account);
+        unset($account);
     }
 
     private function defineChurchFaker()
@@ -94,6 +93,8 @@ class GenerateFakeDataCommand extends ContainerAwareCommand
             ->unsetDefinition('id_church_church')
             ->setFormatterType('name', 'city')
             ->setFormatterType('phone', 'phoneNumber')
+            ->setDefinition('latlong', function(\Faker\Generator $generator) { return '('.$generator->longitude(45, 50).', '.$generator->latitude(0, 5).')'; })
+            ->setDefinition('address', function(\Faker\Generator $generator) { return $generator->streetAddress()."\n".$generator->postcode().' '.$generator->city(); })
         ;
     }
 
@@ -152,6 +153,9 @@ class GenerateFakeDataCommand extends ContainerAwareCommand
             )
             ->setFormatterType('email', 'email')
             ->setFormatterType('church_id', 'randomElement', [$churchIds])
+            ->setDefinition('latlong', function(\Faker\Generator $generator) { return '('.$generator->longitude(45, 50).', '.$generator->latitude(0, 5).')'; })
+            ->setDefinition('address', function(\Faker\Generator $generator) { return $generator->streetAddress()."\n".$generator->postcode().' '.$generator->city(); })
+            ->setDefinition('phone', function(\Faker\Generator $generator) { return [$generator->phoneNumber()]; })
         ;
     }
 

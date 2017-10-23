@@ -38,6 +38,8 @@ class AccountSaver extends AbstractSaver
         if (isset($accountData['email'])) {
             $person['email'] = $accountData['email'];
             $this->personModel->updateOne($person, ['email']);
+        } else {
+            $accountData['email'] = $person['email'];
         }
         $account = self::buildEntity($accountData);
         $account['password'] = $this->encoder->encodePassword($account, $accountData['plainPassword']);

@@ -132,7 +132,7 @@ fos_user:
         address:        noreply@germ.fr
         sender_name:    Germ
     service:
-        user_manager: pomm_fos_user_bundle.user_manager
+        user_manager: GermBundle\Security\UserManager
 
 knp_paginator:
     page_range: 15                     # default page range used in pagination control

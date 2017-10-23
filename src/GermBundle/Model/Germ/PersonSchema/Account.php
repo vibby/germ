@@ -21,8 +21,8 @@ class Account extends User
         return $this->get($this->keyForId);
     }
 
-    public function getUsername()
+    public function __toString()
     {
-        return '';
+        return $this->getUsername();
     }
 }

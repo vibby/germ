@@ -55,16 +55,7 @@ class PersonController extends Controller
         $accountModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\PersonSchema\AccountModel');
         $person = $this->getPersonOr404($personSlug);
 
-        $personForm = $this->get('form.factory')->create(
-            PersonType::class,
-            $person,
-            [
-                'action' => $this->generateUrl(
-                    'germ_person_edit',
-                    ['personSlug' => $person->getSlugCanonical()]
-                )
-            ]
-        );
+        $personForm = $this->get('form.factory')->create(PersonType::class, $person);
         $personForm->handleRequest($request);
         if ($personForm->isSubmitted() && $personForm->isValid()) {
             $personModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\PersonSchema\PersonModel');
@@ -128,13 +119,7 @@ class PersonController extends Controller
 
     public function createAction(Request $request)
     {
-        $form = $this->get('form.factory')->create(
-            PersonType::class,
-            null,
-            [
-                'action' => $this->generateUrl('germ_person_create')
-            ]
-        );
+        $form = $this->get('form.factory')->create(PersonType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $person = $this->get('GermBundle\Model\Germ\Person\PersonSaver')->create($form->getData());

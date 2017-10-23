@@ -48,6 +48,7 @@ class AccountType extends Form\AbstractType
             'widget_checkbox_label' => 'widget',
             'mapped' => false,
             'required' =>false,
+            'translation_domain' =>false,
         ]);
     }
 
