@@ -15,10 +15,12 @@ class ChurchType extends Form\AbstractType
     public function buildForm(Form\FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('name', Type\TextType::class, array(
+                'required'  => true,
+                'render_optional_text' => false,
+            ))
             ->add('phone', Type\TextType::class, array(
                 'required'  => false,
-                'attr'      => array('class' => 'phone-number'),
-                'label'     => false,
                 'render_optional_text' => false,
             ))
             ->add('address', Type\TextareaType::class, array(

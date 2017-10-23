@@ -2,6 +2,8 @@
 
 namespace GermBundle\Model\Germ;
 
+use PommProject\Foundation\Pomm;
+
 abstract class AbstractSaver
 {
     protected $model;
@@ -9,7 +11,7 @@ abstract class AbstractSaver
     public function __construct(
         Pomm $pomm
     ) {
-        $this->model = $pomm['germ']->getModel(self::getModelClassName());
+        $this->model = $pomm['germ']->getModel(static::getModelClassName());
     }
 
     abstract protected static function getModelClassName();
@@ -30,6 +32,14 @@ abstract class AbstractSaver
         } else {
             throw \Exception('Cannot understand data to object conversion');
         }
+
+        return $entity;
+    }
+
+    public function create($data)
+    {
+        $entity = self::buildEntity($data);
+        $this->model->insertOne($entity);
 
         return $entity;
     }

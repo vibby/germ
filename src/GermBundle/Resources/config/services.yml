@@ -53,6 +53,10 @@ services:
         tags:
             - { name: "GermBundle\\Filter\\AbstractSearcher" }
 
+    GermBundle\Model\Germ\Church\ChurchSaver:
+        class: GermBundle\Model\Germ\Church\ChurchSaver
+        autowire: true
+
     GermBundle\Filter\Church\CriteriaTerms:
         class: GermBundle\Filter\Church\CriteriaTerms
         autowire: true

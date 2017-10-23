@@ -11,13 +11,14 @@
 	</a>
 	<a class="btn btn-default" href="{{ path('germ_church_list', {_format: 'geojson'}) }}">
 		{% trans %}Export GeoJson{% endtrans %}
-	</a> {% trans %}to be used on{% endtrans %} <a target="_blank" href="http://geojson.io">geojson.io</a></li>
-	{{ form(searchForm) }}
+	</a> {% trans %}to be used on{% endtrans %} <a target="_blank" href="http://geojson.io">geojson.io</a>
+	<hr />
 	<h2>
 		{% transchoice paginatedChurches.totalItemCount %}
 		    {0} No church|{1} 1 church|]1,Inf[ %count% churches
 		{% endtranschoice %}
 	</h2>
+	{{ form(searchForm) }}
 	{{ knp_pagination_render(paginatedChurches) }}
 	{% include 'GermBundle:Pagination:perPage.html.twig' with {'paginated': paginatedChurches} %}
 	{% if paginatedChurches.count %}

@@ -4,7 +4,7 @@ namespace GermBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-
+use GermBundle\Type\ChurchType;
 use GermBundle\Model\Germ\ChurchSchema\Church;
 use PommProject\Foundation\Where;
 
@@ -53,50 +53,45 @@ class ChurchController extends Controller
     public function editAction(Request $request, $churchSlug)
     {
         $church = $this->getChurchOr404($churchSlug);
-        $churchForm = $this->buildchurchForm($church);
+        $churchForm = $this->get('form.factory')->create(ChurchType::class,$church);
         $churchForm->handleRequest($request);
-
         if ($churchForm->isSubmitted() && $churchForm->isValid()) {
             $churchModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\ChurchSchema\ChurchModel');
             $churchModel->updateOne($church, array_keys($churchForm->getData()->extract()));
-            $this->get('session')->getFlashBag()->add('success', 'church updated');
-            return $this->redirectToRoute('germ_church_edit', ['churcheslug' => $church->getSlugCanonical()]);
+            $this->get('session')->getFlashBag()->add('success', 'Church updated');
+
+            return $this->redirectToRoute('germ_church_edit', ['churchSlug' => $church->getSlugCanonical()]);
         }
-        $churchForm = $churchForm->createView();
 
         return $this->render(
             'GermBundle:Church:edit.html.twig',
             array(
                 'mode' => 'edit',
-                'form' => $churchForm,
+                'form' => $churchForm->createView(),
+                'church' => $church,
             )
         );
     }
 
     public function createAction(Request $request)
     {
-        $form = $this->createFormBuilder(churchType);
-        $form->handleRequest($request);
+        $churchForm = $this->get('form.factory')->create(ChurchType::class);
+        $churchForm->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($churchForm->isSubmitted() && $churchForm->isValid()) {
             $churchModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\ChurchSchema\ChurchModel');
-            $church = new church();
-            foreach ($form->getData()->extract() as $key => $value) {
-                $method = 'set'.ucfirst($key);
-                $church->$method($value);
-            }
-            $churchModel->insertOne($church);
+            $church = $this->get('GermBundle\Model\Germ\Church\ChurchSaver')->create($churchForm->getData());
             $translator = $this->get('translator');
-            $this->get('session')->getFlashBag()->add('success', $translator->trans('church created'));
+            $this->get('session')->getFlashBag()->add('success', $translator->trans('Church created'));
 
-            return $this->redirectToRoute('germ_church_edit', ['churcheslug' => $church->getSlugCanonical()]);
+            return $this->redirectToRoute('germ_church_edit', ['churchSlug' => $church->getSlugCanonical()]);
         }
 
         return $this->render(
             'GermBundle:Church:edit.html.twig',
             array(
                 'mode' => 'create',
-                'form' => $form->createView(),
+                'form' => $churchForm->createView(),
             )
         );
     }
