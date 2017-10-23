@@ -28,7 +28,7 @@
 									<h4 class="modal-title" id="myModalLabel">{% trans %}Remove person{% endtrans %}</h4>
 								</div>
 								<div class="modal-body">
-									{% trans %}Are you sure you want to remove this person ?{% endtrans %} {% trans %}This action cannot be canceled.{% endtrans %}
+									{% trans %}Are you sure you want to remove this person ?{% endtrans %} {% trans %}This action can be canceled by admin only.{% endtrans %}
 								</div>
 								<div class="modal-footer">
 									<button type="button" class="btn btn-default" data-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
@@ -45,30 +45,20 @@
 {% endblock %}
 
 {% block content_right %}
-	{% if passwordForm is defined and passwordForm %}
+	{% if accountForm is defined and account is defined and (not account or account.enabled) %}
 		<div class="panel panel-default">
 			<div class="panel-body">
-				{{ form_start(passwordForm) }}
-				{{ form_widget(passwordForm) }}
+				{{ form_start(accountForm) }}
+				{{ form_widget(accountForm) }}
 				<button class="btn btn-primary" type="submit">{% trans %}Save{% endtrans %}</button>
-				{{ form_end(passwordForm) }}
+				{{ form_end(accountForm) }}
 			</div>
 		</div>
 	{% endif %}
-	{% if accountCreateForm is defined and accountCreateForm %}
-		<div class="panel panel-default">
-			<div class="panel-body">
-				{{ form_start(accountCreateForm) }}
-				{{ form_widget(accountCreateForm) }}
-				<button class="btn btn-primary" type="submit">{% trans %}Save{% endtrans %}</button>
-				{{ form_end(accountCreateForm) }}
-			</div>
-		</div>
-	{% endif %}
-	{% if accountCreateForm is defined and not accountCreateForm and not passwordForm %}
+	{% if account is defined and account and not account.enabled %}
 		<a class="btn btn-default" href="{{ path('germ_person_account_enable', {'personSlug': form.vars.value.slug_canonical}) }}" data-toggle="tooltip" data-placement="left" title="{% trans %}The person will be able to connect this application{% endtrans %}">{% trans %}Activate account{% endtrans %}</a>
 	{% endif %}
-	{% if passwordForm is defined and passwordForm %}
+	{% if account is defined and account and account.enabled %}
 		<a class="btn btn-default btn-warning" href="{{ path('germ_person_account_disable', {'personSlug': form.vars.value.slug_canonical}) }}" data-toggle="tooltip" data-placement="left" title="{% trans %}The person wont be able to connect this application{% endtrans %}">{% trans %}Desactivate account{% endtrans %}</a>
 	{% endif %}
 {% endblock %}

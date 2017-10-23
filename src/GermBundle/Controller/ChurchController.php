@@ -13,7 +13,7 @@ class ChurchController extends Controller
 
     public function listAction(Request $request, $page, $search = null)
     {
-        $finder = $this->get('GermBundle\Model\Germ\ChurchSchema\ChurchFinder');
+        $finder = $this->get('GermBundle\Model\Germ\Church\ChurchFinder');
         if ($request->get('_format') != 'html') {
             $output['churches'] = $finder->findAll();
         } else {

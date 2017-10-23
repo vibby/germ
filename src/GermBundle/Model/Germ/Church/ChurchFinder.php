@@ -1,9 +1,10 @@
 <?php
 
-namespace GermBundle\Model\Germ\ChurchSchema;
+namespace GermBundle\Model\Germ\Church;
 
 use GermBundle\Filter\FilterFinder;
 use GermBundle\Model\Germ\AbstractFinder;
+use GermBundle\Model\Germ\ChurchSchema\ChurchModel;
 use PommProject\Foundation\Pomm;
 
 class ChurchFinder extends AbstractFinder

@@ -24,6 +24,8 @@ class RemoveAllDataCommand extends ContainerAwareCommand
             throw new \Exception("This command cannot be executed on PROD environment", 1);
         }
 
+        $output->write('Removing all data in database : ');
+
         /** @var Session $pommSession */
         $pommSession = $this->getContainer()->get('pomm')['germ'];
         $pommSession->getConnection()->executeAnonymousQuery(<<<SQL

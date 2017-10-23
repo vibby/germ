@@ -1,9 +1,10 @@
 <?php
 
-namespace GermBundle\Model\Germ\PersonSchema;
+namespace GermBundle\Model\Germ\Person;
 
 use GermBundle\Filter\FilterFinder;
 use GermBundle\Model\Germ\AbstractFinder;
+use GermBundle\Model\Germ\PersonSchema\PersonModel;
 use PommProject\Foundation\Pomm;
 use PommProject\Foundation\Where;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;

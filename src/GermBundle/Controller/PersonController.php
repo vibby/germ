@@ -2,30 +2,18 @@
 
 namespace GermBundle\Controller;
 
+use GermBundle\Type\AccountType;
 use GermBundle\Type\PersonType;
 use PommProject\ModelManager\Model\Model;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-
-use GermBundle\Model\Germ\PersonSchema\Person;
-use GermBundle\Model\Germ\PersonSchema\Account;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\FormType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use FOS\UserBundle\Util\LegacyFormHelper;
-use PommProject\Foundation\Where;
 
 class PersonController extends Controller
 {
 
     public function listAction(Request $request, $page, $search = null)
     {
-        $finder = $this->get('GermBundle\Model\Germ\PersonSchema\PersonFinder');
+        $finder = $this->get('GermBundle\Model\Germ\Person\PersonFinder');
         if ($request->get('_format') != 'html') {
             $output['persons'] = $finder->findForListWhere();
         } else {
@@ -87,31 +75,32 @@ class PersonController extends Controller
         $personForm = $personForm->createView();
 
         $account = $accountModel->findWhere("person_id = $*", [$person->getId()])->current();
-        if ($account) {
-            if ($account->getEnabled()) {
-                $passwordForm = $this->buildPasswordForm($account);
+        $accountForm = $this->get('form.factory')->create(AccountType::class, $account, ['person' => $person]);
+        $accountForm->handleRequest($request);
+        if ($accountForm->isSubmitted() && $accountForm->isValid()) {
+            $saver = $this->get('GermBundle\Model\Germ\Person\AccountSaver');
+            $saver->insertOrUpdate($accountForm->getData(), $person);
+            $accountRequest = $request->request->get('account');
+            if (isset($accountRequest['sendEmail'])) {
+                $mailer = $this->get('mailer');
+                $message = (new \Swift_Message('Votre compte d’église'))
+                    ->setFrom('no-reply@germ.fr')
+                    ->setTo($person['email'])
+                    ->setBody(
+                        $this->renderView(
+                            'GermBundle:Emails:newPassword.html.twig',
+                            [
+                                'person' => $person,
+                                'password' => $accountRequest['plainPassword']['first'],
+                            ]
+                        ),
+                        'text/html'
+                    );
+                $mailer->send($message);
+            }
+            $this->get('session')->getFlashBag()->add('success', 'Person updated');
 
-                $passwordForm->handleRequest($request);
-                if ($passwordForm->isSubmitted() && $passwordForm->isValid()) {
-                    $accountModel->updateOne($account, ['password']);
-                    $this->get('session')->getFlashBag()->add('success', 'Person updated');
-                    return $this->redirectToRoute('germ_person_edit', ['personSlug' => $person->getSlugCanonical()]);
-                }
-                $passwordForm = $passwordForm->createView();
-            } else {
-                $passwordForm = null;
-            }
-            $accountCreateForm = null;
-        } else {
-            $accountCreateForm = $this->buildAccountCreateForm();
-            $accountCreateForm->handleRequest($request);
-            if ($accountCreateForm->isSubmitted() && $accountCreateForm->isValid()) {
-                $accountModel->insertOne($account, array_keys($accountCreateForm->getData()->extract()));
-                $this->get('session')->getFlashBag()->add('success', 'Person updated');
-                return $this->redirectToRoute('germ_person_edit', ['personSlug' => $person->getSlugCanonical()]);
-            }
-            $accountCreateForm = $accountCreateForm->createView();
-            $passwordForm = null;
+            return $this->redirectToRoute('germ_person_edit', ['personSlug' => $person->getSlugCanonical()]);
         }
 
         return $this->render(
@@ -119,8 +108,8 @@ class PersonController extends Controller
             array(
                 'mode' => 'edit',
                 'form' => $personForm,
-                'passwordForm' => $passwordForm,
-                'accountCreateForm' => $accountCreateForm,
+                'accountForm' => $accountForm->createView(),
+                'account' => $account,
             )
         );
     }
@@ -139,20 +128,16 @@ class PersonController extends Controller
 
     public function createAction(Request $request)
     {
-        $form = $this->buildPersonCreateForm();
+        $form = $this->get('form.factory')->create(
+            PersonType::class,
+            null,
+            [
+                'action' => $this->generateUrl('germ_person_create')
+            ]
+        );
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
-            $personModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\PersonSchema\PersonModel');
-            $person = new Person();
-            foreach ($form->getData()->extract() as $key => $value) {
-                $method = 'set'.ucfirst($key);
-                $person->$method($value);
-            }
-            if (!$this->isGranted('ROLE_CHURCH_LIST')) {
-                $person->setChurchId($this->getUser()->getChurchId());
-            }
-            $personModel->insertOne($person);
+            $person = $this->get('GermBundle\Model\Germ\Person\PersonSaver')->create($form->getData());
             $translator = $this->get('translator');
             $this->get('session')->getFlashBag()->add('success', $translator->trans('Person created'));
 
@@ -194,7 +179,7 @@ class PersonController extends Controller
 
     private function getPersonOr404($personSlug)
     {
-        $finder = $this->get('GermBundle\Model\Germ\PersonSchema\PersonFinder');
+        $finder = $this->get('GermBundle\Model\Germ\Person\PersonFinder');
         $person = $finder->findOneBySlug($personSlug);
         if (!$person) {
             throw $this->createNotFoundException('The person does not exist');
@@ -227,69 +212,5 @@ class PersonController extends Controller
             'Account was ' . ($enable ? 'enabled' : 'disabled') . ' successuly'
         );
         return $this->redirectToRoute('germ_person_edit', ['personSlug' => $personSlug]);
-    }
-
-    private function buildPersonCreateForm()
-    {
-        $authorizationChecker = $this->get('security.authorization_checker');
-        if ($authorizationChecker->isGranted('ROLE_PERSON_CREATE')) {
-            $person = new Person();
-            $person->setFirstname(null);
-            $person->setLastname(null);
-            $person->setBirthdate(null);
-            $person->setMembershipDate(null);
-            $person->setMembershipAct(null);
-            $person->setBaptismDate(null);
-            $person->setPhone(null);
-            $person->setAddress(null);
-            $person->setEmail(null);
-            $person->setChurchId(null);
-            $person->setLatlong(null);
-            $form = $this->get('form.factory')->create(
-                PersonType::class,
-                $person,
-                [
-                    'action' => $this->generateUrl('germ_person_create')
-                ]
-            );
-
-            return $form;
-        }
-
-        return null;
-    }
-
-    private function buildAccountCreateForm(Person $person)
-    {
-        $account = new Account();
-        $account->setEmail($person->getEmail());
-
-        return $this->get('form.factory')
-            ->createNamedBuilder('Account', FormType::class, $account)
-            ->add('email', null, [
-                'label' => 'form.email', 'translation_domain' => 'FOSUserBundle',
-            ])
-            ->add('plainPassword', LegacyFormHelper::getType('Symfony\Component\Form\Extension\Core\Type\RepeatedType'), array(
-                'type' => LegacyFormHelper::getType('Symfony\Component\Form\Extension\Core\Type\PasswordType'),
-                'options' => array('translation_domain' => 'FOSUserBundle'),
-                'first_options' => array('label' => 'form.new_password'),
-                'second_options' => array('label' => 'form.new_password_confirmation'),
-                'invalid_message' => 'fos_user.password.mismatch',
-            ))
-            ->getForm();
-    }
-
-    private function buildPasswordForm(Account $account)
-    {
-        return $this->get('form.factory')
-            ->createNamedBuilder('Account', FormType::class, $account)
-            ->add('plainPassword', LegacyFormHelper::getType('Symfony\Component\Form\Extension\Core\Type\RepeatedType'), array(
-                'type' => LegacyFormHelper::getType('Symfony\Component\Form\Extension\Core\Type\PasswordType'),
-                'options' => array('translation_domain' => 'FOSUserBundle'),
-                'first_options' => array('label' => 'form.new_password'),
-                'second_options' => array('label' => 'form.new_password_confirmation'),
-                'invalid_message' => 'fos_user.password.mismatch',
-            ))
-            ->getForm();
     }
 }

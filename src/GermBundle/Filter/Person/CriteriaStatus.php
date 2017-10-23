@@ -55,7 +55,7 @@ class CriteriaStatus extends AbstractCriteria
         }
         $form->add(self::getFormName(), ChoiceType::class, [
             'label' => 'Status',
-            'choices' => ['Active' => 0, 'Deleted' => 1],
+            'choices' => ['Active' => 0, 'Removed' => 1],
             'expanded' => true,
             'multiple' => true,
             'data' => $this->data,

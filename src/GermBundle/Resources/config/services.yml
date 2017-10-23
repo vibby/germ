@@ -99,12 +99,20 @@ services:
         class: GermBundle\Person\Membership
         autowire: true
 
-    GermBundle\Model\Germ\PersonSchema\PersonFinder:
-        class: GermBundle\Model\Germ\PersonSchema\PersonFinder
+    GermBundle\Model\Germ\Person\PersonFinder:
+        class: GermBundle\Model\Germ\Person\PersonFinder
         autowire: true
 
-    GermBundle\Model\Germ\ChurchSchema\ChurchFinder:
-        class: GermBundle\Model\Germ\ChurchSchema\ChurchFinder
+    GermBundle\Model\Germ\Church\ChurchFinder:
+        class: GermBundle\Model\Germ\Church\ChurchFinder
+        autowire: true
+
+    GermBundle\Model\Germ\Person\PersonSaver:
+        class: GermBundle\Model\Germ\Person\PersonSaver
+        autowire: true
+
+    GermBundle\Model\Germ\Person\AccountSaver:
+        class: GermBundle\Model\Germ\Person\AccountSaver
         autowire: true
 
     GermBundle\Type\PersonType:
@@ -113,3 +121,8 @@ services:
         tags:
             - { name: form.type }
 
+    GermBundle\Type\AccountType:
+        class: GermBundle\Type\AccountType
+        autowire: true
+        tags:
+            - { name: form.type }

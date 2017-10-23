@@ -1,14 +1,5 @@
 <?php
 
-/*
- * This file is part of the Symfony package.
- *
- * (c) Fabien Potencier <fabien@symfony.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace GermBundle\Type;
 
 use Symfony\Component\Form;
@@ -24,7 +15,6 @@ class PersonType extends Form\AbstractType
 {
     private $roleManager;
     private $membership;
-    private $tokenStorage;
 
     public function __construct(
         RoleManager $roleManager,
@@ -46,15 +36,15 @@ class PersonType extends Form\AbstractType
         $builder
             ->add('firstname', Type\TextType::class)
             ->add('lastname', Type\TextType::class)
-            ->add('birthdate', Type\DateType::class, [
+            ->add('birthdate', Type\BirthdayType::class, [
                 'required'  => false,
                 'render_optional_text' => false,
             ])
-            ->add('baptism_date', Type\DateType::class, [
+            ->add('baptism_date', Type\BirthdayType::class, [
                 'required'  => false,
                 'render_optional_text' => false,
             ])
-            ->add('membership_date', Type\DateType::class, [
+            ->add('membership_date', Type\BirthdayType::class, [
                 'required'  => false,
                 'render_optional_text' => false,
             ])

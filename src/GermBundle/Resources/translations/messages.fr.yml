@@ -41,7 +41,7 @@ Account was enabled successuly : Compte activé avec succès
 The person will be able to connect this application: Cette personne pourra se connecter à cette application
 Activate account: Activer le compte associé
 Person was removed successuly: Personne supprimée avec succès
-Remove person: Supprimer la personne
+Remove person: Sortir cette personne
 The person will be complety removed: La personne sera complétement supprimée
 Remove definitely: Supprimer définitevement
 Caution ! You are about to definitevly remove this person. All those data will be lost: Attention ! Vous êtes sur le point de supprimer définitivement une personne. Ces données seront définitevement perdues
@@ -92,9 +92,9 @@ Communication: Communication
 Dept. Director: Responsable de département
 Lastname Firstname: Nom Prénom
 '{0} No person|{1} 1 person|]1,Inf[ %count% persons': '{0} Aucune personne|{1} 1 personne|]1,Inf[ %count% personnes'
-Person deleted: Personne supprimée
-Are you sure you want to remove this person ?: Êtes-vous sur de vouloir supprimer cette personne ?
-This action cannot be canceled.: Cette action ne peut pas être annulée.
+Person deleted: Personne sortie
+Are you sure you want to remove this person ?: Êtes-vous sur de vouloir sortir cette personne ?
+This action can be canceled by admin only.: Cette action ne peut être annulée que par un administrateur.
 Cancel: Annuler
 Churches: Églises
 Church: Église
@@ -106,9 +106,9 @@ Website: Site internet
 See members: Voir les membres
 Status: Statut
 Active: Actif
-Deleted: Supprimé
+Removed: Sorti
 Recreate person: Recréer la personne
-Email address: Adresse email
+Email address: Adresse de courriel
 Password: Mot de passe
 Log me in: Connexion
 Remember me: Se souvenir de moi
@@ -122,3 +122,5 @@ Transfer: Transfert
 Baptism date: Date de baptême
 System Administrator: Administrateur Système
 Federation staff: Équipe de fédération
+"Send an email with connection access to :email_adress:": "Envoyer un courriel avec les accès à l’adresse de courriel :email_adress:"
+Send an email with connection access: Envoyer un courriel avec les accès à cette adresse de courriel

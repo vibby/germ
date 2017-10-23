@@ -36,6 +36,9 @@ class GenerateFakeDataCommand extends ContainerAwareCommand
         if ($this->getContainer()->getParameter("kernel.environment") == 'prod') {
             throw new \Exception("This command cannot be executed on PROD environment", 1);
         }
+        $this->output = $output;
+        $output->writeln('Generating fixed data in database : ');
+
         $this->pommSession = $this->getContainer()->get('pomm')['germ'];
 
         // Fix data
@@ -51,6 +54,7 @@ class GenerateFakeDataCommand extends ContainerAwareCommand
         $this->createPerson('Test', 'Membre', $church, 'membre@germ.fr');
 
         // Generated data
+        $output->writeln('Generating ramdom data in database : ');
         $this->pommSession->registerClientPooler(new FakerPooler(Factory::create('fr_FR')));
         $this->defineChurchFaker();
         $churches = $this->pommSession->getFaker('church.church')->save($input->getOption('churches'));
@@ -64,9 +68,10 @@ class GenerateFakeDataCommand extends ContainerAwareCommand
         foreach ($persons as $person) {
             $this->createAssociatedAccount($person);
         }
+        $output->writeln('Done');
     }
 
-    private function createAssociatedAccount(array $person)
+    private function createAssociatedAccount($person)
     {
         if (!$this->accountModel) {
             $this->accountModel = $this->pommSession->getModel(AccountModel::class);
@@ -74,11 +79,11 @@ class GenerateFakeDataCommand extends ContainerAwareCommand
 
         $account = new Account();
         $account->setEnabled(true);
-        $account->setEmail($person['email']);
-        $account->setEmailCanonical($person['email']);
         // password is «test»
         $account->setPassword('LJQRDmbG37bHbZTi0oTH4td8L6mHU7kecPoX2zw8SDwWFpBcT11bQqx+FjOYvfSyP8BdZhwYlUB/kTp1RR31Qg==');
         $account->setSalt('5cmq15n0q0w0go4ogcc0co444ocw4oc');
+        $account->setEmail($person['email']);
+        $account->setEmailCanonical($person['email']);
         $account->setPersonId($person['id_person_person']);
         $this->accountModel->insertOne($account);
     }
@@ -162,19 +167,8 @@ class GenerateFakeDataCommand extends ContainerAwareCommand
                 ->setRoles($role)
                 ->setChurchId($church['id_church_church']);
             $personModel->insertOne($person);
-
-            if ($email) {
-                $accountModel = $pommSession->getModel(AccountModel::class);
-                $account = new Account();
-                $account->setEnabled(true);
-                $account->setEmail($email);
-                $account->setEmailCanonical($email);
-                // password is «test»
-                $account->setPassword('LJQRDmbG37bHbZTi0oTH4td8L6mHU7kecPoX2zw8SDwWFpBcT11bQqx+FjOYvfSyP8BdZhwYlUB/kTp1RR31Qg==');
-                $account->setSalt('5cmq15n0q0w0go4ogcc0co444ocw4oc');
-                $account->setPersonId($person['id_person_person']);
-                $accountModel->insertOne($account);
-            }
+            $this->createAssociatedAccount($person);
+            $this->output->writeln(sprintf('  - %s created with password «%s»', $person->getEmail(), 'test'));
         }
     }
 }

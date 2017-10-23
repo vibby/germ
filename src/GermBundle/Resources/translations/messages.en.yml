@@ -94,7 +94,7 @@ Lastname Firstname: Lastname Firstname
 '{0} No person|{1} 1 person|]1,Inf[ %count% persons': '{0} No person|{1} 1 person|]1,Inf[ %count% persons'
 Person deleted: Person deleted
 Are you sure you want to remove this person ?: Are you sure you want to remove this person ?
-This action cannot be canceled.: This action cannot be canceled.
+This action can be canceled by admin only.: This action can be canceled by admin only.
 Cancel: Cancel
 Churches: Churches
 Church: Church
@@ -122,3 +122,5 @@ Transfer: Transfer
 Baptism date: Baptism date
 System Administrator: System Administrator
 Federation staff: Federation staff
+"Send an email with connection access to :email_adress:": "Send an email with connection access to :email_adress:"
+Send an email with connection access: Send an email with connection access
