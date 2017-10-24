@@ -138,3 +138,9 @@ services:
         autowire: true
         tags:
             - { name: form.type }
+
+    GermBundle\Email\Mailer:
+        class: GermBundle\Email\Mailer
+        autowire: true
+        calls:
+            - [setEmailFrom, ["%germ.email.from%"]]

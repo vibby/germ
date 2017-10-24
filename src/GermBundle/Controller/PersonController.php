@@ -73,21 +73,11 @@ class PersonController extends Controller
             $saver->insertOrUpdate($accountForm->getData(), $person);
             $accountRequest = $request->request->get('account');
             if (isset($accountRequest['sendEmail'])) {
-                $mailer = $this->get('mailer');
-                $message = (new \Swift_Message('Votre compte d’église'))
-                    ->setFrom('no-reply@germ.fr')
-                    ->setTo($person['email'])
-                    ->setBody(
-                        $this->renderView(
-                            'GermBundle:Emails:newPassword.html.twig',
-                            [
-                                'person' => $person,
-                                'password' => $accountRequest['plainPassword']['first'],
-                            ]
-                        ),
-                        'text/html'
-                    );
-                $mailer->send($message);
+                $emailer = $this->get('GermBundle\Email\Emailer');
+                $emailer->sendEmailChangePassword([
+                    'person' => $person,
+                    'password' => $accountRequest['plainPassword']['first'],
+                ]);
             }
             $this->get('session')->getFlashBag()->add('success', 'Person updated');
 

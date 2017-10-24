@@ -54,6 +54,7 @@ parameters:
             - ROLE_ELDER
             - ROLE_DIACONATE
             - ROLE_DEPT_DIRECTOR
+    germ.email.from: no-reply@germ.fr
 
 # Twig Configuration
 twig:
