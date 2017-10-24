@@ -54,7 +54,7 @@ SQL
                 family_id uuid NULL,
                 firstname VARCHAR(32) NULL,
                 lastname VARCHAR(32) NOT NULL,
-                slug_canonical VARCHAR(48) NOT NULL UNIQUE,
+                slug VARCHAR(48) NOT NULL UNIQUE,
                 phone VARCHAR(32)[] NULL,
                 address VARCHAR(256) NULL,
                 email VARCHAR(64) NULL,
@@ -83,17 +83,17 @@ SQL
         $this->execute(<<<SQL
             CREATE OR REPLACE FUNCTION "person".person_slug()
             RETURNS trigger AS $$
-            DECLARE slug varchar(48); suffix int := 0;
+            DECLARE newslug varchar(48); suffix int := 0;
             BEGIN
-                IF NEW.slug_canonical IS NULL or NEW.slug_canonical='' THEN
-                    slug = public.slugify(NEW.firstname || ' ' || NEW.lastname);
-                    IF ((SELECT COUNT(*) FROM person.person WHERE slug_canonical = slug) = 0) THEN
-                        NEW.slug_canonical = slug;
+                IF NEW.slug IS NULL or NEW.slug='' THEN
+                    newslug = public.slugify(NEW.firstname || ' ' || NEW.lastname);
+                    IF ((SELECT COUNT(*) FROM person.person p WHERE p.slug = newslug) = 0) THEN
+                        NEW.slug = newslug;
                         RETURN NEW;
                     END IF;
                     LOOP
-                        IF ((SELECT COUNT(*) FROM person.person WHERE slug_canonical = slug || suffix) = 0) THEN
-                            NEW.slug_canonical = slug || suffix;
+                        IF ((SELECT COUNT(*) FROM person.person p WHERE p.slug = newslug || suffix) = 0) THEN
+                            NEW.slug = newslug || suffix;
                             RETURN NEW;
                         END IF;
                         suffix := suffix + 1;

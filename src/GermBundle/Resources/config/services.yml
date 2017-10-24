@@ -12,6 +12,10 @@ services:
         calls:
             - [setPommModel, ["@pomm_fos_user_bundle.model_manager"]]
 
+    GermBundle\Security\Canonicalizer:
+        class: GermBundle\Security\Canonicalizer
+        public: false
+
     GermBundle\EventSubscriber\PommPaginatorSubscriber:
         class: GermBundle\EventSubscriber\PommPaginatorSubscriber
         public: false

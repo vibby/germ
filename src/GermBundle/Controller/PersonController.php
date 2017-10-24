@@ -61,7 +61,8 @@ class PersonController extends Controller
             $personModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\PersonSchema\PersonModel');
             $personModel->updateOne($person, array_keys($personForm->getData()->extract()));
             $this->get('session')->getFlashBag()->add('success', 'Person updated');
-            return $this->redirectToRoute('germ_person_edit', ['personSlug' => $person->getSlugCanonical()]);
+
+            return $this->redirectToRoute('germ_person_edit', ['personSlug' => $person->getSlug()]);
         }
         $personForm = $personForm->createView();
 
@@ -73,15 +74,15 @@ class PersonController extends Controller
             $saver->insertOrUpdate($accountForm->getData(), $person);
             $accountRequest = $request->request->get('account');
             if (isset($accountRequest['sendEmail'])) {
-                $emailer = $this->get('GermBundle\Email\Emailer');
-                $emailer->sendEmailChangePassword([
-                    'person' => $person,
-                    'password' => $accountRequest['plainPassword']['first'],
-                ]);
+                $emailer = $this->get('GermBundle\Email\Mailer');
+                $emailer->sendEmailChangePassword(
+                    $person,
+                    $accountRequest['plainPassword']['first']
+                );
             }
             $this->get('session')->getFlashBag()->add('success', 'Person updated');
 
-            return $this->redirectToRoute('germ_person_edit', ['personSlug' => $person->getSlugCanonical()]);
+            return $this->redirectToRoute('germ_person_edit', ['personSlug' => $person->getSlug()]);
         }
 
         return $this->render(
@@ -116,7 +117,7 @@ class PersonController extends Controller
             $translator = $this->get('translator');
             $this->get('session')->getFlashBag()->add('success', $translator->trans('Person created'));
 
-            return $this->redirectToRoute('germ_person_edit', ['personSlug' => $person->getSlugCanonical()]);
+            return $this->redirectToRoute('germ_person_edit', ['personSlug' => $person->getSlug()]);
         }
 
         return $this->render(
@@ -149,7 +150,7 @@ class PersonController extends Controller
         $personModel->updateOne($person);
         $this->get('session')->getFlashBag()->add('success', 'Person created');
 
-        return $this->redirectToRoute('germ_person_edit', ['personSlug' => $person->getSlugCanonical()]);
+        return $this->redirectToRoute('germ_person_edit', ['personSlug' => $person->getSlug()]);
     }
 
     private function getPersonOr404($personSlug)

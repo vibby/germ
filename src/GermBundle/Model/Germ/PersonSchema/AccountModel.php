@@ -68,8 +68,8 @@ SQL;
             ->setField('church_id', 'p.church_id', 'varchar')
             ->setField('church_name', 'c.name', 'varchar')
             ->setField('email', 'p.email', 'varchar')
-            ->setField('username', 'p.slug_canonical', 'varchar')
-            ->setField('username_canonical', 'p.slug_canonical', 'varchar')
+            ->setField('username', 'p.slug', 'varchar')
+            ->setField('username_canonical', 'p.slug', 'varchar')
             ->setField('id_person_person', 'p.id_person_person', 'varchar')
             ;
 

@@ -45,7 +45,7 @@ class ChurchModel extends Model
 
     public function choiceSlug()
     {
-        $projection = new Projection(Church::class, ['name' => 'name', 'slug_canonical' => 'slug', 'id_church_church' => 'id_church_church']);
+        $projection = new Projection(Church::class, ['name' => 'name', 'slug' => 'slug', 'id_church_church' => 'id_church_church']);
         $churches = $this->query(strtr(
             'select :projection from :relation where true order by name',
             [
@@ -56,7 +56,7 @@ class ChurchModel extends Model
 
         $choices = [];
         foreach ($churches as $church) {
-            $choices[$church['name']] = $church['slug_canonical'];
+            $choices[$church['name']] = $church['slug'];
         }
 
         return $choices;
@@ -64,7 +64,7 @@ class ChurchModel extends Model
 
     public function choiceId()
     {
-        $projection = new Projection(Church::class, ['name' => 'name', 'slug_canonical' => 'slug', 'id_church_church' => 'id_church_church']);
+        $projection = new Projection(Church::class, ['name' => 'name', 'slug' => 'slug', 'id_church_church' => 'id_church_church']);
         $churches = $this->query(strtr(
             'select :projection from :relation where true order by name',
             [
@@ -84,7 +84,7 @@ class ChurchModel extends Model
     public function findIdsFromSlugs(array $slugs)
     {
         $projection = new Projection(Church::class, ['id_church_church' => 'id_church_church']);
-        $where = Where::createWhereIn('slug_canonical', $slugs);
+        $where = Where::createWhereIn('slug', $slugs);
         $churches = $this->query(strtr(
             'select :projection from :relation where :where',
             [

@@ -32,7 +32,7 @@ class Church extends AbstractMigration
         $this->execute('CREATE TABLE "church"."church" (
             id_church_church uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
             name VARCHAR(32) NOT NULL,
-            slug_canonical VARCHAR(32) NOT NULL UNIQUE,
+            slug VARCHAR(32) NOT NULL UNIQUE,
             phone VARCHAR(32) NULL,
             address VARCHAR(256) NULL,
             latlong point,
@@ -42,17 +42,17 @@ class Church extends AbstractMigration
         $this->execute(<<<SQL
             CREATE OR REPLACE FUNCTION "church".church_slug()
             RETURNS trigger AS $$
-            DECLARE slug varchar(48); suffix int := 0;
+            DECLARE newslug varchar(48); suffix int := 0;
             BEGIN
-                IF NEW.slug_canonical IS NULL or NEW.slug_canonical='' THEN
-                    slug = public.slugify(NEW.name);
-                    IF ((SELECT COUNT(*) FROM church.church WHERE slug_canonical = slug) = 0) THEN
-                        NEW.slug_canonical = slug;
+                IF NEW.slug IS NULL or NEW.slug='' THEN
+                    newslug = public.slugify(NEW.name);
+                    IF ((SELECT COUNT(*) FROM church.church c WHERE c.slug = newslug) = 0) THEN
+                        NEW.slug = newslug;
                         RETURN NEW;
                     END IF;
                     LOOP
-                        IF ((SELECT COUNT(*) FROM church.church WHERE slug_canonical = slug || suffix) = 0) THEN
-                            NEW.slug_canonical = slug || suffix;
+                        IF ((SELECT COUNT(*) FROM church.church c WHERE c.slug = newslug || suffix) = 0) THEN
+                            NEW.slug = newslug || suffix;
                             RETURN NEW;
                         END IF;
                         suffix := suffix + 1;

@@ -38,7 +38,7 @@ class Church extends RowStructure
             ->setPrimaryKey(['id_church_church'])
             ->addField('id_church_church', 'uuid')
             ->addField('name', 'varchar')
-            ->addField('slug_canonical', 'varchar')
+            ->addField('slug', 'varchar')
             ->addField('phone', 'varchar')
             ->addField('address', 'varchar')
             ->addField('latlong', 'point')

@@ -60,7 +60,7 @@ class ChurchController extends Controller
             $churchModel->updateOne($church, array_keys($churchForm->getData()->extract()));
             $this->get('session')->getFlashBag()->add('success', 'Church updated');
 
-            return $this->redirectToRoute('germ_church_edit', ['churchSlug' => $church->getSlugCanonical()]);
+            return $this->redirectToRoute('germ_church_edit', ['churchSlug' => $church->getSlug()]);
         }
 
         return $this->render(
@@ -84,7 +84,7 @@ class ChurchController extends Controller
             $translator = $this->get('translator');
             $this->get('session')->getFlashBag()->add('success', $translator->trans('Church created'));
 
-            return $this->redirectToRoute('germ_church_edit', ['churchSlug' => $church->getSlugCanonical()]);
+            return $this->redirectToRoute('germ_church_edit', ['churchSlug' => $church->getSlug()]);
         }
 
         return $this->render(
@@ -109,7 +109,7 @@ class ChurchController extends Controller
     private function getChurchOr404($churcheslug)
     {
         $churchModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\ChurchSchema\ChurchModel');
-        $church = $churchModel->findWhere(new Where('slug_canonical = $1', [':slug' => $churcheslug]))->current();
+        $church = $churchModel->findWhere(new Where('slug = $1', [':slug' => $churcheslug]))->current();
         if (!$church) {
             throw $this->createNotFoundException('The church does not exist');
         }

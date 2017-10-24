@@ -35,9 +35,9 @@
 				<tr {% if person.is_deleted %}class="danger"{% endif %}>
 					<td style="font-size: 1.6em;">
 						{% if is_granted('ROLE_PERSON_EDIT') %}
-							<a href="{{ path('germ_person_edit', {'personSlug': person.slug_canonical}) }}" data-toggle="tooltip" data-placement="left" title="{% trans with {'%name%': person} %}Edit %name%{% endtrans %}">
+							<a href="{{ path('germ_person_edit', {'personSlug': person.slug}) }}" data-toggle="tooltip" data-placement="left" title="{% trans with {'%name%': person} %}Edit %name%{% endtrans %}">
 						{% elseif is_granted('ROLE_PERSON_SEE') %}
-							<a href="{{ path('germ_person_show', {'personSlug': person.slug_canonical}) }}">
+							<a href="{{ path('germ_person_show', {'personSlug': person.slug}) }}">
 						{% endif %}
 							{{ person|highlightPerson() }}
 						{% if is_granted('ROLE_PERSON_EDIT') or is_granted('ROLE_PERSON_SEE') %}

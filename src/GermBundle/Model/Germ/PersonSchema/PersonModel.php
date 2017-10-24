@@ -64,8 +64,8 @@ SQL;
         }
 
         $projection->setField('church_name', 'c.name', 'varchar');
-        $projection->unsetField('slug_canonical');
-        $projection->setField('slug_canonical', 'p.slug_canonical', 'varchar');
+        $projection->unsetField('slug');
+        $projection->setField('slug', 'p.slug', 'varchar');
         $projection->unsetField('phone');
         $projection->setField('phone', 'p.phone', 'varchar');
         $projection->unsetField('address');

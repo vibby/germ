@@ -34,9 +34,9 @@
 				<tr>
 					<td style="font-size: 1.6em;">
 						{% if is_granted('ROLE_PERSON_EDIT') %}
-							<a href="{{ path('germ_church_edit', {'churchSlug': church.slug_canonical}) }}" data-toggle="tooltip" data-placement="left" title="{% trans with {'%name%': church} %}Edit %name%{% endtrans %}">
+							<a href="{{ path('germ_church_edit', {'churchSlug': church.slug}) }}" data-toggle="tooltip" data-placement="left" title="{% trans with {'%name%': church} %}Edit %name%{% endtrans %}">
 						{% elseif is_granted('ROLE_PERSON_SEE') %}
-							<a href="{{ path('germ_church_show', {'churchSlug': church.slug_canonical}) }}">
+							<a href="{{ path('germ_church_show', {'churchSlug': church.slug}) }}">
 						{% endif %}
 							{{ church|highlightChurch() }}
 						{% if is_granted('ROLE_PERSON_EDIT') or is_granted('ROLE_PERSON_SEE') %}
@@ -55,7 +55,7 @@
 						</a>
 					</td>
 					<td>
-						<a class="btn btn-default" href="{{ path('germ_person_filter', {'filters': 'church:' ~ church.slug_canonical }) }}">
+						<a class="btn btn-default" href="{{ path('germ_person_filter', {'filters': 'church:' ~ church.slug }) }}">
 							{% trans %}See members{% endtrans %}
 						</a>
 					</td>

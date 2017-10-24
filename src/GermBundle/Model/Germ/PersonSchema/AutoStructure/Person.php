@@ -40,7 +40,7 @@ class Person extends RowStructure
             ->addField('family_id', 'uuid')
             ->addField('firstname', 'varchar')
             ->addField('lastname', 'varchar')
-            ->addField('slug_canonical', 'varchar')
+            ->addField('slug', 'varchar')
             ->addField('roles', 'varchar[]')
             ->addField('phone', 'varchar[]')
             ->addField('address', 'varchar')
