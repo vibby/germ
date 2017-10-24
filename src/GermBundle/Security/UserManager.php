@@ -14,7 +14,6 @@ class UserManager extends BaseUserManager
         } else {
             $this->updatePassword($user);
             $this->pommModel->insertOne($user);
-            $this->user = $user;
         }
     }
 }

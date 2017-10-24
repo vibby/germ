@@ -80,7 +80,6 @@ class GenerateFakeDataCommand extends ContainerAwareCommand
         // password is «test»
         $account->setPassword('LJQRDmbG37bHbZTi0oTH4td8L6mHU7kecPoX2zw8SDwWFpBcT11bQqx+FjOYvfSyP8BdZhwYlUB/kTp1RR31Qg==');
         $account->setSalt('5cmq15n0q0w0go4ogcc0co444ocw4oc');
-        $account->setEmail($person['email']);
         $account->setEmailCanonical($person['email']);
         $account->setPersonId($person['id_person_person']);
         $this->accountModel->insertOne($account);

@@ -32,7 +32,6 @@ class Person extends AbstractMigration
             CREATE TABLE "person"."account" (
                 id_person_account uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
                 enabled BOOLEAN NOT NULL DEFAULT FALSE,
-                email VARCHAR(64) NOT NULL UNIQUE,
                 email_canonical VARCHAR(64) NOT NULL UNIQUE,
                 salt VARCHAR(255) NOT NULL,
                 password VARCHAR(255) NOT NULL,

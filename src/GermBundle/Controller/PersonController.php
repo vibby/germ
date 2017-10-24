@@ -58,8 +58,8 @@ class PersonController extends Controller
         $personForm = $this->get('form.factory')->create(PersonType::class, $person);
         $personForm->handleRequest($request);
         if ($personForm->isSubmitted() && $personForm->isValid()) {
-            $personModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\PersonSchema\PersonModel');
-            $personModel->updateOne($person, array_keys($personForm->getData()->extract()));
+            $personSaver = $this->get('GermBundle\Model\Germ\Person\PersonSaver');
+            $personSaver->update($person);
             $this->get('session')->getFlashBag()->add('success', 'Person updated');
 
             return $this->redirectToRoute('germ_person_edit', ['personSlug' => $person->getSlug()]);
