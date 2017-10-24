@@ -1,7 +1,7 @@
 {% extends 'GermBundle::base.html.twig' %}
 
 {% block content_main %}
-	{% if is_granted('ROLE_PERSON_CREATE') %}
+	{% if is_granted('ROLE_CHURCH_CREATE') %}
 		<a class="btn btn-primary" href="{{ path('germ_church_create') }}">
 			{% trans %}New church{% endtrans %}
 		</a>
@@ -33,15 +33,16 @@
 			{% for church in paginatedChurches.items %}
 				<tr>
 					<td style="font-size: 1.6em;">
-						{% if is_granted('ROLE_PERSON_EDIT') %}
+						{% if is_granted('ROLE_CHURCH_EDIT') %}
 							<a href="{{ path('germ_church_edit', {'churchSlug': church.slug}) }}" data-toggle="tooltip" data-placement="left" title="{% trans with {'%name%': church} %}Edit %name%{% endtrans %}">
-						{% elseif is_granted('ROLE_PERSON_SEE') %}
+						{% elseif is_granted('ROLE_CHURCH_SEE') %}
 							<a href="{{ path('germ_church_show', {'churchSlug': church.slug}) }}">
 						{% endif %}
 							{{ church|highlightChurch() }}
-						{% if is_granted('ROLE_PERSON_EDIT') or is_granted('ROLE_PERSON_SEE') %}
+						{% if is_granted('ROLE_CHURCH_EDIT') or is_granted('ROLE_CHURCH_SEE') %}
 							</a>
-						{% endif  %}
+						{% endif  %}<br />
+						<a href="{{ path('germ_person_filter', {'filters': 'church:' ~ church.slug }) }}" class="badge">{{ church.members_count }} {% trans %}Members{% endtrans %}</a>
 					</td>
 					<td>
 						<a href="tel:{{ church.phone }}">{{ church.phone }}</a>

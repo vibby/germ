@@ -152,9 +152,15 @@ class GenerateFakeDataCommand extends ContainerAwareCommand
             )
             ->setFormatterType('email', 'email')
             ->setFormatterType('church_id', 'randomElement', [$churchIds])
-            ->setDefinition('latlong', function(\Faker\Generator $generator) { return '('.$generator->longitude(45, 50).', '.$generator->latitude(0, 5).')'; })
-            ->setDefinition('address', function(\Faker\Generator $generator) { return $generator->streetAddress()."\n".$generator->postcode().' '.$generator->city(); })
-            ->setDefinition('phone', function(\Faker\Generator $generator) { return [$generator->phoneNumber()]; })
+            ->setDefinition('latlong', function(\Faker\Generator $generator) {
+                return '('.$generator->longitude(45, 50).', '.$generator->latitude(0, 5).')';
+            })
+            ->setDefinition('address', function(\Faker\Generator $generator) {
+                return $generator->streetAddress()."\n".$generator->postcode().' '.$generator->city();
+            })
+            ->setDefinition('phone', function(\Faker\Generator $generator) {
+                return [$generator->phoneNumber()];
+            })
         ;
     }
 

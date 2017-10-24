@@ -106,7 +106,7 @@ Website: Website
 See members: See members
 Status: Status
 Active: Active
-Deleted: Deleted
+Removed: Removed
 Recreate person: Recreate person
 Email address: Email address
 Password: Password
@@ -136,3 +136,4 @@ You are receiving this email because an administrator of your church created an 
 (Your email): (Your email)
 "Password:": "Password"
 Greetings: Greetings
+Members: Members

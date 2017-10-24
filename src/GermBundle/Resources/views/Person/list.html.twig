@@ -55,7 +55,13 @@
 					</td>
 					{% if is_granted('ROLE_CHURCH_LIST') %}
 						<td>
+							{% if is_granted('ROLE_CHURCH_EDIT') %}
+								<a href="{{ path('germ_church_edit', {'churchSlug': person.church_slug}) }}" data-toggle="tooltip" data-placement="left" title="{% trans with {'%name%': person.church_name} %}Edit %name%{% endtrans %}">
+							{% endif %}
 							{{ person.church_name }}
+							{% if is_granted('ROLE_CHURCH_EDIT') %}
+								</a>
+							{% endif %}
 						</td>
 					{% endif %}
 				</tr>

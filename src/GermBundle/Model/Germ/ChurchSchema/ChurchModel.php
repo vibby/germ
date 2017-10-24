@@ -83,6 +83,7 @@ class ChurchModel extends Model
 
     public function findIdsFromSlugs(array $slugs)
     {
+
         $projection = new Projection(Church::class, ['id_church_church' => 'id_church_church']);
         $where = Where::createWhereIn('slug', $slugs);
         $churches = $this->query(strtr(
@@ -100,5 +101,18 @@ class ChurchModel extends Model
         }
 
         return $ids;
+    }
+
+    public function findForListWhereSql(Where $where, $projection = null, $suffix = null)
+    {
+        if (!$projection) {
+            $projection = $this->createProjection();
+        }
+        $projection->setField('members_count', '(SELECT COUNT(*) FROM person.person WHERE person.church_id = church.id_church_church)', 'int');
+
+        return [
+            $this->getFindWhereSql($where, $projection, $suffix),
+            $projection
+        ];
     }
 }
