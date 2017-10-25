@@ -15,6 +15,7 @@ class PersonType extends Form\AbstractType
 {
     private $roleManager;
     private $membership;
+    private $authorizationChecker;
 
     public function __construct(
         RoleManager $roleManager,
@@ -43,17 +44,19 @@ class PersonType extends Form\AbstractType
             ->add('baptism_date', Type\BirthdayType::class, [
                 'required'  => false,
                 'render_optional_text' => false,
-            ])
-            ->add('membership_date', Type\BirthdayType::class, [
-                'required'  => false,
-                'render_optional_text' => false,
-            ])
-            ->add('membership_act', Type\ChoiceType::class, [
-                'choices' => $this->membership->getActChoices(),
-                'required'  => false,
-                'render_optional_text' => false,
-            ])
-            ->add('phone', Type\CollectionType::class, array(
+            ]);
+            if ($this->authorizationChecker->isGranted('ROLE_PERSON_EDIT')) {
+                $builder->add('membership_date', Type\BirthdayType::class, [
+                    'required' => false,
+                    'render_optional_text' => false,
+                ])
+                ->add('membership_act', Type\ChoiceType::class, [
+                    'choices' => $this->membership->getActChoices(),
+                    'required' => false,
+                    'render_optional_text' => false,
+                ]);
+            }
+            $builder->add('phone', Type\CollectionType::class, array(
                 'entry_type'    => Type\TextType::class,
                 'entry_options' => array(
                     'required'  => false,
@@ -75,16 +78,18 @@ class PersonType extends Form\AbstractType
             ->add('email', Type\EmailType::class, array(
                 'required' => false,
                 'render_optional_text' => false,
-            ))
-            ->add('roles', Type\CollectionType::class, [
-                'entry_type'   => Type\ChoiceType::class,
-                'entry_options'  => array(
-                    'choices' => $this->roleManager->getAssignable(),
-                    'label'   => false,
-                ),
-                'allow_add'     =>true,
-                'allow_delete'  =>true,
-            ]);
+            ));
+            if ($this->authorizationChecker->isGranted('ROLE_PERSON_EDIT')) {
+                $builder->add('roles', Type\CollectionType::class, [
+                    'entry_type'   => Type\ChoiceType::class,
+                    'entry_options'  => array(
+                        'choices' => $this->roleManager->getAssignable(),
+                        'label'   => false,
+                    ),
+                    'allow_add'     =>true,
+                    'allow_delete'  =>true,
+                ]);
+            }
             if ($this->authorizationChecker->isGranted('ROLE_CHURCH_LIST')) {
                 $builder->add('church_id', Type\ChoiceType::class, [
                     'choices' => $this->churchModel->choiceId(),

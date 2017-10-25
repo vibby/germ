@@ -26,6 +26,9 @@ class Builder implements ContainerAwareInterface
                 'route' => 'germ_event_list',
             ]);
         }
+        $menu->addChild('My account', [
+            'route' => 'germ_person_edit_myself',
+        ]);
         $menu->addChild('Logout', [
             'route' => 'fos_user_security_logout',
         ]);

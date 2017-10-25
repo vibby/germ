@@ -50,8 +50,11 @@ class PersonController extends Controller
         return $response;
     }
 
-    public function editAction(Request $request, $personSlug)
+    public function editAction(Request $request, $personSlug = null)
     {
+        if (!$personSlug) {
+            $personSlug = $this->getUser()->getUsername();
+        }
         $accountModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\PersonSchema\AccountModel');
         $person = $this->getPersonOr404($personSlug);
 

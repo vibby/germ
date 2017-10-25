@@ -15,6 +15,10 @@ germ_person_edit:
     path:     /edit/{personSlug}
     defaults: { _controller: GermBundle:Person:edit }
 
+germ_person_edit_myself:
+    path:     /edit_myself
+    defaults: { _controller: GermBundle:Person:edit }
+
 germ_person_remove:
     path:     /remove/{personSlug}
     defaults: { _controller: GermBundle:Person:remove }
