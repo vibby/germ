@@ -11,7 +11,7 @@ Le périmètre fonctionnel devrait couvrir la liste des membres, le carnet d’a
 ### Prérequis
 
 - Installer et configurer Git, avec un compte Github
-- Installer et configurer docker
+- Installer et configurer docker et docker-compose
 
 ### Installation
 
