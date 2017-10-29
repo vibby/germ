@@ -22,7 +22,7 @@ class ChurchFinder extends AbstractFinder
     {
         return ['name'];
     }
-    
+
     protected static function getModelClassName()
     {
         return ChurchModel::class;

@@ -27,6 +27,10 @@ class ChurchType extends Form\AbstractType
                 'required' => false,
                 'render_optional_text' => false,
             ))
+            ->add('website_url', Type\TextType::class, array(
+                'required' => false,
+                'render_optional_text' => false,
+            ))
             ->add('latlong', Type\TextType::class, array(
                 'required' => false,
                 'render_optional_text' => false,
