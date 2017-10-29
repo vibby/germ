@@ -20,6 +20,8 @@ services:
       - "8095:80"
     links:
       - germ-php-fpm
+    expose:
+      - 8095
 
   germ-php-fpm:
     build:
