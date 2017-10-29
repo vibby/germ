@@ -22,7 +22,8 @@ services:
       - germ-php-fpm
 
   germ-php-fpm:
-    image: allansimon/php7-fpm-postgresql
+    build:
+      context: ./php-fpm
     container_name: germ-php-fpm
     ports:
       - 9000:9000
