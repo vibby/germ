@@ -95,6 +95,7 @@ class PersonController extends Controller
                 'form' => $personForm,
                 'accountForm' => $accountForm->createView(),
                 'account' => $account,
+                'user' => $this->getUser()
             )
         );
     }
@@ -136,6 +137,11 @@ class PersonController extends Controller
     {
         $person = $this->getPersonOr404($personSlug);
         $person['is_deleted'] = true;
+        if ($this->getUser()['person_id'] === $person['id']) {
+            $this->get('session')->getFlashBag()->add('error', 'You cannot remove yourself');
+
+            return $this->redirectToRoute('germ_person_list');
+        }
         /** @var Model $personModel */
         $personModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\PersonSchema\PersonModel');
         $personModel->updateOne($person);
@@ -177,11 +183,19 @@ class PersonController extends Controller
         return $account;
     }
 
-    public function accountActivationAction(Request $request, $personSlug, $enable)
+    public function accountActivationAction($personSlug, $enable)
     {
         $account = $this->getAccountOr404($personSlug);
+        $redirectRoute = $this->redirectToRoute('germ_person_edit', ['personSlug' => $personSlug]);
         if ($account->getEnabled() === $enable) {
-            throw $this->createNotFoundException('The account is already ' . ($enable ? 'enabled' : 'disabled'));
+            $this->get('session')->getFlashBag()->add('error', 'The account is already ' . ($enable ? 'enabled' : 'disabled'));
+
+            return $redirectRoute;
+        }
+        if ($this->getUser()['id'] === $account['id']) {
+            $this->get('session')->getFlashBag()->add('error', 'You cannot activate or deactivate yourself');
+
+            return $redirectRoute;
         }
         $account->setEnabled($enable);
         $accountModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\PersonSchema\AccountModel');
@@ -190,6 +204,6 @@ class PersonController extends Controller
             'success',
             'Account was ' . ($enable ? 'enabled' : 'disabled') . ' successuly'
         );
-        return $this->redirectToRoute('germ_person_edit', ['personSlug' => $personSlug]);
+        return $redirectRoute;
     }
 }
