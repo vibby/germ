@@ -14,7 +14,12 @@
 					<a href="{{ path('germ_person_recreate', {'personSlug': form.vars.value.slug}) }}" class="btn btn-danger">
 						{% trans %}Recreate person{% endtrans %}
 					</a>
-				{% elseif account is not user %}
+				{% endif %}
+				{% if account is defined and account and account == currentAccount %}
+					<button type="button" class="btn btn-danger disabled">
+						{% trans %}You cannot remove yourself{% endtrans %}
+					</button>
+				{% else %}
 					<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confirmRemoveModal">
 						{% trans %}Remove person{% endtrans %}
 					</button>
@@ -55,11 +60,16 @@
 			</div>
 		</div>
 	{% endif %}
-	{% if account is not user and account is defined and account and not account.enabled %}
-		<a class="btn btn-default" href="{{ path('germ_person_account_enable', {'personSlug': form.vars.value.slug}) }}" data-toggle="tooltip" data-placement="left" title="{% trans %}The person will be able to connect this application{% endtrans %}">{% trans %}Activate account{% endtrans %}</a>
-	{% endif %}
-	{% if account is not user and account is defined and account and account.enabled %}
-		<a class="btn btn-default btn-warning" href="{{ path('germ_person_account_disable', {'personSlug': form.vars.value.slug}) }}" data-toggle="tooltip" data-placement="left" title="{% trans %}The person wont be able to connect this application{% endtrans %}">{% trans %}Desactivate account{% endtrans %}</a>
+	{% if account is defined and account %}
+		{% if account == currentAccount %}
+			<button type="button" class="btn btn-danger disabled">
+				{% trans %}You cannot deactivate your account{% endtrans %}
+			</button>
+		{% elseif not account.enabled %}
+			<a class="btn btn-default" href="{{ path('germ_person_account_enable', {'personSlug': form.vars.value.slug}) }}" data-toggle="tooltip" data-placement="left" title="{% trans %}The person will be able to connect this application{% endtrans %}">{% trans %}Activate account{% endtrans %}</a>
+		{% elseif account.enabled %}
+			<a class="btn btn-default btn-warning" href="{{ path('germ_person_account_disable', {'personSlug': form.vars.value.slug}) }}" data-toggle="tooltip" data-placement="left" title="{% trans %}The person wont be able to connect this application{% endtrans %}">{% trans %}Desactivate account{% endtrans %}</a>
+		{% endif %}
 	{% endif %}
 {% endblock %}
 

@@ -52,7 +52,7 @@ class PersonType extends Form\AbstractType
             ])
             ->add('membership_act', Type\ChoiceType::class, [
                 'choices' => $this->membership->getActChoices(),
-                'required' => false,
+                'required' => true,
                 'render_optional_text' => false,
             ]);
         }

@@ -95,7 +95,7 @@ class PersonController extends Controller
                 'form' => $personForm,
                 'accountForm' => $accountForm->createView(),
                 'account' => $account,
-                'user' => $this->getUser()
+                'currentAccount' => $this->getUser()
             )
         );
     }
