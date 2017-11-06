@@ -17,6 +17,8 @@ services:
       - ..:/var/www/germ:ro
       - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
       - ../var/log/nginx:/var/log/nginx
+      - "./app/letsencrypt/www:/var/www/letsencrypt"
+      - "./app/letsencrypt/etc:/etc/letsencrypt"
     ports:
       - "8095:80"
     links:
@@ -36,5 +38,12 @@ services:
       - ./php-fpm/php-ini-overrides.ini:/etc/php/7.1/cli/conf.d/99-overrides.ini:ro
     links:
       - germ-postgres
+
+  germ-cerbot:
+    image: certbot/certbot
+    volumes:
+      - "./app/letsencrypt/www:/var/www/letsencrypt"
+      - "./app/letsencrypt/etc:/etc/letsencrypt"
+
 
 # FOR DNS problems, see here : https://development.robinwinslow.uk/2016/06/23/fix-docker-networking-dns/
