@@ -14,6 +14,7 @@ parameters:
     germ.roles:
         strings:
             ROLE_SECRETARY: Secretary
+            ROLE_FIRST_ELDER: 'First elder'
             ROLE_ELDER: Elder
             ROLE_DEACON: Deacon
             ROLE_DEACONESS: Deaconess
