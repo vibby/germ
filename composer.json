@@ -1,8 +1,8 @@
 {
-    "name": "symfony/framework-standard-edition",
+    "name": "vibby/germ",
     "license": "MIT",
     "type": "project",
-    "description": "The \"Symfony Standard Edition\" distribution",
+    "description": "The Germ project. A manager for churches, designed for members at any level.",
     "autoload": {
         "psr-4": {
             "": "src/"
