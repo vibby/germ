@@ -10,7 +10,7 @@
 			{{ form_widget(form) }}
 			<button class="btn btn-primary" type="submit">{% trans %}Save{% endtrans %}</button>
 			{% if church is defined %}
-				<a class="btn btn-default" href="{{ path('germ_church_filter', {'filters': 'church:' ~ church.slug }) }}">
+				<a class="btn btn-default" href="{{ path('germ_person_filter', {'filters': 'church:' ~ church.slug }) }}">
 					{% trans %}See members{% endtrans %}
 				</a>
 			{% endif %}

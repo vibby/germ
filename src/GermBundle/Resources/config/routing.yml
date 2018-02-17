@@ -33,3 +33,11 @@ germ_event:
         _locale: fr
     requirements:
         _locale: fr|en|de
+
+germ_census:
+    resource: "@GermBundle/Resources/config/routing/census.yml"
+    prefix:   /{_locale}/census
+    defaults:
+        _locale: fr
+    requirements:
+        _locale: fr|en|de

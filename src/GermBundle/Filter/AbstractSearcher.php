@@ -18,6 +18,7 @@ abstract class AbstractSearcher
 
     private $formFactory;
     private $form;
+    private $router;
     private $criterias = [];
 
     public function __construct(FormFactoryInterface $formFactory, RouterInterface $router)

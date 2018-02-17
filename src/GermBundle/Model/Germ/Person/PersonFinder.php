@@ -54,9 +54,9 @@ class PersonFinder extends AbstractFinder
     public function findByRole(Array $role)
     {
         $where = new Where();
-        if ($role) {
-            $where->andWhereIn('role', $role);
-        }
+        $where->andWhereIn('role', $role);
+        $where = $this->alterWhere($where);
+
         return $this->findWhere($where);
     }
 
