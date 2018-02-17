@@ -38,7 +38,6 @@ services:
 
     GermBundle\Twig\PersonExtension:
         class: GermBundle\Twig\PersonExtension
-        autowire: true
         public: false
         tags:
             - { name: twig.extension }
@@ -63,6 +62,12 @@ services:
 
     GermBundle\Filter\Church\Searcher:
         class: GermBundle\Filter\Church\Searcher
+        autowire: true
+        tags:
+            - { name: "GermBundle\\Filter\\AbstractSearcher" }
+
+    GermBundle\Filter\Census\Searcher:
+        class: GermBundle\Filter\Census\Searcher
         autowire: true
         tags:
             - { name: "GermBundle\\Filter\\AbstractSearcher" }
@@ -107,6 +112,12 @@ services:
         tags:
             - { name: "GermBundle\\Filter\\Person\\Searcher" }
 
+    GermBundle\Filter\Person\CriteriaChurch2:
+        class: GermBundle\Filter\Person\CriteriaChurch
+        autowire: true
+        tags:
+            - { name: "GermBundle\\Filter\\Census\\Searcher" }
+
     GermBundle\Person\RoleManager:
         class: GermBundle\Person\RoleManager
         calls:
@@ -123,6 +134,14 @@ services:
 
     GermBundle\Model\Germ\Church\ChurchFinder:
         class: GermBundle\Model\Germ\Church\ChurchFinder
+        autowire: true
+
+    GermBundle\Model\Germ\Census\CensusFinder:
+        class: GermBundle\Model\Germ\Census\CensusFinder
+        autowire: true
+
+    GermBundle\Model\Germ\Census\CensusSaver:
+        class: GermBundle\Model\Germ\Census\CensusSaver
         autowire: true
 
     GermBundle\Model\Germ\Person\PersonSaver:
@@ -150,3 +169,9 @@ services:
         autowire: true
         calls:
             - [setEmailFrom, ["%germ.email.from%"]]
+
+    GermBundle\Type\CensusType:
+        class: GermBundle\Type\CensusType
+        autowire: true
+        tags:
+            - { name: form.type }
