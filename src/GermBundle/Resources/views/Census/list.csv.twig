@@ -1,0 +1,5 @@
+{% trans %}Church{% endtrans %};{% trans %}Date{% endtrans %};{% trans %}Count{% endtrans %}
+
+{% for census in censuses %}
+    {{ census.church_id }};{{ census.date|date('Y-m-d') }};{{ census.count }}
+{% endfor %}

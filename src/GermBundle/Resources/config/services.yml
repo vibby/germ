@@ -43,6 +43,13 @@ services:
         tags:
             - { name: twig.extension }
 
+    GermBundle\Twig\CensusExtension:
+        class: GermBundle\Twig\CensusExtension
+        autowire: true
+        public: false
+        tags:
+            - { name: twig.extension }
+
     GermBundle\Twig\ChurchExtension:
         class: GermBundle\Twig\ChurchExtension
         autowire: true
