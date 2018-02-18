@@ -38,6 +38,7 @@ services:
 
     GermBundle\Twig\PersonExtension:
         class: GermBundle\Twig\PersonExtension
+        autowire: true
         public: false
         tags:
             - { name: twig.extension }

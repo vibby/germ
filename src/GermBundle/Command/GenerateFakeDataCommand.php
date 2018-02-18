@@ -70,6 +70,8 @@ class GenerateFakeDataCommand extends ContainerAwareCommand
         foreach ($persons as $person) {
             $this->createAssociatedAccount($person);
         }
+        $this->defineCensusFaker($churchIds);
+        $this->pommSession->getFaker('church.census')->save(((int) $input->getOption('churches'))*100);
         $output->writeln('Done');
     }
 
@@ -94,6 +96,16 @@ class GenerateFakeDataCommand extends ContainerAwareCommand
             ->setFormatterType('phone', 'phoneNumber')
             ->setDefinition('latlong', function(\Faker\Generator $generator) { return '('.$generator->longitude(45, 50).', '.$generator->latitude(0, 5).')'; })
             ->setDefinition('address', function(\Faker\Generator $generator) { return $generator->streetAddress()."\n".$generator->postcode().' '.$generator->city(); })
+        ;
+    }
+
+    private function defineCensusFaker($churchIds)
+    {
+        $this->pommSession->getFaker('church.census')->getRowDefinition()
+            ->unsetDefinition('id_church_census')
+            ->setFormatterType('church_id', 'randomElement', [$churchIds])
+            ->setFormatterType('date', 'dateTime')
+            ->setFormatterType('count', 'numberBetween', [40, 300])
         ;
     }
 

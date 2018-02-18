@@ -12,7 +12,7 @@ Name: Nom
 Birthdate: Date de naissance
 Person: Personne
 Person updated: Personne enregistrée
-Person created: Personne c
+Person created: Personne créée
 Address: Adresse
 Phone: Téléphone
 Save: Enregistrer
@@ -148,6 +148,7 @@ You cannot remove yourself: Vous ne pouvez vous sortir vous-même
 Census: Recensement
 Censuses: Recensement
 New census: Nouveau recensement
+Census created: Recensement créé
 '{0} No census|{1} 1 census|]1,Inf[ %count% censuses': '{0} Aucun recensement|{1} 1 recensement|]1,Inf[ %count% recensements'
 Date: Date
 Count: Compte

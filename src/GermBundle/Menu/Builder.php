@@ -18,7 +18,9 @@ class Builder implements ContainerAwareInterface
         if ($this->container->get('security.authorization_checker')->isGranted('ROLE_CHURCH_LIST')) {
             $menu->addChild('Churches', ['route' => 'germ_church_list']);
         }
-        if ($this->container->get('security.authorization_checker')->isGranted('ROLE_CENSUS_LIST')) {
+        if ($this->container->get('security.authorization_checker')->isGranted('ROLE_LOCAL_CENSUS_LIST')
+            || $this->container->get('security.authorization_checker')->isGranted('ROLE_CENSUS_LIST')
+        ) {
             $menu->addChild('Census', ['route' => 'germ_census_list']);
         }
         if ($this->container->get('security.authorization_checker')->isGranted('ROLE_PERSON_LIST')) {
