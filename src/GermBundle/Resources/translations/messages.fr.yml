@@ -48,7 +48,7 @@ Caution ! You are about to definitevly remove this person. All those data will b
 add_item: Ajouter
 remove_item: Supprimer
 __name__label__: __name__label__
-Password: Mot de passe
+"Password": Mot de passe
 Account password form: Changer le mot de passe
 Account was edited successuly: Compte modifié avec succès
 Account was created successuly: Compte créé avec succès
@@ -77,17 +77,14 @@ Item per page: Résultats par page
 Search: Recherche
 Filter: Filtrer
 Role: Fonction
-Secretary: Secrétaire
 First elder: Premier ancien
 Elder: Ancien
-Pastor: Pasteur
 Administrator: Administrateur
 Diaconate: Diaconat
 Deacon: Diacre
 Deaconess: Diaconesse
 'First deacon': Premier diacre
 'First deaconess': Première diaconesse
-'Dept. Director': Directeur de département
 Treasurer: Trésorier
 Communication: Communication
 Dept. Director: Responsable de département

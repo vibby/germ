@@ -18,6 +18,12 @@ services:
             - "@fos_user.util.username_canonicalizer"
             - "@fos_user.util.email_canonicalizer"
 
+#    security.role_hierarchy:
+#        alias: Symfony\Component\Security\Core\Role\RoleHierarchy
+#
+#    pomm:
+#        alias: PommProject\Foundation\Pomm
+
     GermBundle\EventSubscriber\PommPaginatorSubscriber:
         class: GermBundle\EventSubscriber\PommPaginatorSubscriber
         public: false
@@ -76,6 +82,7 @@ services:
 
     GermBundle\Filter\Census\Searcher:
         class: GermBundle\Filter\Census\Searcher
+        public: true
         autowire: true
         tags:
             - { name: "GermBundle\\Filter\\AbstractSearcher" }
@@ -137,14 +144,17 @@ services:
         autowire: true
 
     GermBundle\Model\Germ\Person\PersonFinder:
+        public: true
         class: GermBundle\Model\Germ\Person\PersonFinder
         autowire: true
 
     GermBundle\Model\Germ\Church\ChurchFinder:
+        public: true
         class: GermBundle\Model\Germ\Church\ChurchFinder
         autowire: true
 
     GermBundle\Model\Germ\Census\CensusFinder:
+        public: true
         class: GermBundle\Model\Germ\Census\CensusFinder
         autowire: true
 
