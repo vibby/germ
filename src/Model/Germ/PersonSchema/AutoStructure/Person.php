@@ -5,7 +5,7 @@
  * generation.
  */
 
-namespace GermBundle\Model\Germ\PersonSchema\AutoStructure;
+namespace Germ\Model\Germ\PersonSchema\AutoStructure;
 
 use PommProject\ModelManager\Model\RowStructure;
 

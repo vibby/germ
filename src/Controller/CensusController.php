@@ -1,11 +1,11 @@
 <?php
 
-namespace GermBundle\Controller;
+namespace Germ\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use GermBundle\Type\CensusType;
-use GermBundle\Model\Germ\ChurchSchema\Census;
+use Germ\Type\CensusType;
+use Germ\Model\Germ\ChurchSchema\Census;
 use PommProject\Foundation\Where;
 
 class CensusController extends Controller
@@ -13,11 +13,11 @@ class CensusController extends Controller
 
     public function listAction(Request $request, $page, $search = null)
     {
-        $finder = $this->get('GermBundle\Model\Germ\Census\CensusFinder');
+        $finder = $this->get('Germ\Model\Germ\Census\CensusFinder');
         if ($request->get('_format') != 'html') {
             $output['censuses'] = $finder->findAll();
         } else {
-            $searcher = $this->get('GermBundle\Filter\Census\Searcher');
+            $searcher = $this->get('Germ\Filter\Census\Searcher');
             if ($redirect = $searcher->handleRequest($request)) {
                 return $redirect;
             }
@@ -34,7 +34,7 @@ class CensusController extends Controller
             );
         }
 
-        $response = $this->render('GermBundle:Census:list.'.$request->get('_format').'.twig', $output);
+        $response = $this->render('Germ:Census:list.'.$request->get('_format').'.twig', $output);
 
         if ($request->get('_format') != 'html') {
             $response->headers->set(
@@ -56,7 +56,7 @@ class CensusController extends Controller
         $censusForm = $this->get('form.factory')->create(CensusType::class,$census);
         $censusForm->handleRequest($request);
         if ($censusForm->isSubmitted() && $censusForm->isValid()) {
-            $censusModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\ChurchSchema\CensusModel');
+            $censusModel = $this->get('pomm')['germ']->getModel('Germ\Model\Germ\ChurchSchema\CensusModel');
             $censusModel->updateOne($census, array_keys($censusForm->getData()->extract()));
             $this->get('session')->getFlashBag()->add('success', 'Census updated');
 
@@ -64,7 +64,7 @@ class CensusController extends Controller
         }
 
         return $this->render(
-            'GermBundle:Census:edit.html.twig',
+            'Germ:Census:edit.html.twig',
             array(
                 'mode' => 'edit',
                 'form' => $censusForm->createView(),
@@ -79,8 +79,8 @@ class CensusController extends Controller
         $censusForm->handleRequest($request);
 
         if ($censusForm->isSubmitted() && $censusForm->isValid()) {
-            $censusModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\ChurchSchema\CensusModel');
-            $census = $this->get('GermBundle\Model\Germ\Census\CensusSaver')->create($censusForm->getData());
+            $censusModel = $this->get('pomm')['germ']->getModel('Germ\Model\Germ\ChurchSchema\CensusModel');
+            $census = $this->get('Germ\Model\Germ\Census\CensusSaver')->create($censusForm->getData());
             $translator = $this->get('translator');
             $this->get('session')->getFlashBag()->add('success', $translator->trans('Census created'));
 
@@ -88,7 +88,7 @@ class CensusController extends Controller
         }
 
         return $this->render(
-            'GermBundle:Census:edit.html.twig',
+            'Germ:Census:edit.html.twig',
             array(
                 'mode' => 'create',
                 'form' => $censusForm->createView(),
@@ -99,7 +99,7 @@ class CensusController extends Controller
     public function removeAction($censusId)
     {
         $census = $this->getCensusOr404($censusId);
-        $censusModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\ChurchSchema\CensusModel');
+        $censusModel = $this->get('pomm')['germ']->getModel('Germ\Model\Germ\ChurchSchema\CensusModel');
         $censusModel->deleteOne($census);
         $this->get('session')->getFlashBag()->add('success', 'Census deleted');
 
@@ -108,7 +108,7 @@ class CensusController extends Controller
 
     private function getCensusOr404($censusId)
     {
-        $censusModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\ChurchSchema\CensusModel');
+        $censusModel = $this->get('pomm')['germ']->getModel('Germ\Model\Germ\ChurchSchema\CensusModel');
         $census = $censusModel->findWhere(new Where('id_church_census = $1', [':id' => $censusId]))->current();
         if (!$census) {
             throw $this->createNotFoundException('The census does not exist');

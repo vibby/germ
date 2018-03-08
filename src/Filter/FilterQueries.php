@@ -1,8 +1,8 @@
 <?php
 
-namespace GermBundle\Filter;
+namespace Germ\Filter;
 
-use GermBundle\Model\Germ\AbstractFinder;
+use Germ\Model\Germ\AbstractFinder;
 use PommProject\Foundation\Where;
 
 trait FilterQueries

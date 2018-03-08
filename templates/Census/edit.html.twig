@@ -1,0 +1,26 @@
+{% extends 'Germ::base.html.twig' %}
+
+{% block main_width %}6{% endblock %}
+{% block right_width %}6{% endblock %}
+
+{% block content_main %}
+	<div class="panel panel-default">
+		<div class="panel-body">
+			{{ form_start(form) }}
+			{{ form_widget(form) }}
+			<button class="btn btn-primary" type="submit">{% trans %}Save{% endtrans %}</button>
+			{% if church is defined %}
+				<a class="btn btn-default" href="{{ path('germ_person_filter', {'filters': 'church:' ~ church.slug }) }}">
+					{% trans %}See members{% endtrans %}
+				</a>
+			{% endif %}
+			{{ form_end(form) }}
+		</div>
+	</div>
+{% endblock %}
+
+{% block content_right %}
+{% endblock %}
+
+{% block foot_script %}
+{% endblock foot_script %}

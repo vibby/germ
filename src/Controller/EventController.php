@@ -1,10 +1,10 @@
 <?php
 
-namespace GermBundle\Controller;
+namespace Germ\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use GermBundle\Model\Germ\EventSchema\Event;
+use Germ\Model\Germ\EventSchema\Event;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\DateIntervalType;
@@ -19,14 +19,14 @@ class EventController extends Controller
 
     public function listAction(Request $request)
     {
-        $model = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\EventSchema\EventModel');
+        $model = $this->get('pomm')['germ']->getModel('Germ\Model\Germ\EventSchema\EventModel');
         $events = $model->findAll('order by date_from desc');
 
-        $model = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\EventSchema\EventTypeModel');
+        $model = $this->get('pomm')['germ']->getModel('Germ\Model\Germ\EventSchema\EventTypeModel');
         $eventTypes = $model->findAll();
 
         return $this->render(
-            'GermBundle:Event:list.html.twig',
+            'Germ:Event:list.html.twig',
             array(
                 'events'     => $events,
                 'eventTypes' => $eventTypes,
@@ -42,13 +42,13 @@ class EventController extends Controller
         $eventForm = $this->buildEventForm($event);
         $eventForm->handleRequest($request);
         if ($eventForm->isSubmitted() && $eventForm->isValid()) {
-            $eventModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\EventSchema\EventModel');
+            $eventModel = $this->get('pomm')['germ']->getModel('Germ\Model\Germ\EventSchema\EventModel');
             $propeties = $eventForm->getData()->extract();
             unset($propeties['event_type_name']);
             unset($propeties['event_type_layout']);
             unset($propeties['location_name']);
             //dump($propeties);die;
-            $eventModel = $this->get('pomm')['germ']->getModelLayer('GermBundle\Model\Germ\EventSchema\EventModelLayer');
+            $eventModel = $this->get('pomm')['germ']->getModelLayer('Germ\Model\Germ\EventSchema\EventModelLayer');
             $eventModel->saveEvent($event, array_keys($propeties));
             $this->get('session')->getFlashBag()->add('success', 'Event updated');
             return $this->redirectToRoute('germ_event_edit', ['eventId' => $event->getId()]);
@@ -56,7 +56,7 @@ class EventController extends Controller
         $eventForm = $eventForm->createView();
 
         return $this->render(
-            'GermBundle:Event:edit.html.twig',
+            'Germ:Event:edit.html.twig',
             array(
                 'mode' => 'edit',
                 'form' => $eventForm,
@@ -67,14 +67,14 @@ class EventController extends Controller
     public function showAction(Request $request, $eventId)
     {
         $eventModel = $this->get('pomm')['germ']
-            ->getModel('GermBundle\Model\Germ\EventSchema\EventModel');
+            ->getModel('Germ\Model\Germ\EventSchema\EventModel');
         $event = $this->getEventOr404($eventId);
         if (!$event) {
             throw $this->createNotFoundException('The event does not exist');
         }
 
         return $this->render(
-            'GermBundle:Event:show.html.twig',
+            'Germ:Event:show.html.twig',
             array(
                 'event' => $event,
             )
@@ -89,7 +89,7 @@ class EventController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $eventModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\EventSchema\EventModel');
+            $eventModel = $this->get('pomm')['germ']->getModel('Germ\Model\Germ\EventSchema\EventModel');
             $propeties = array_keys($form->getData()->extract());
             unset($propeties['event_type_name']);
             $eventModel->insertOne($event, array_keys($form->getData()->extract()));
@@ -99,7 +99,7 @@ class EventController extends Controller
         }
 
         return $this->render(
-            'GermBundle:Event:edit.html.twig',
+            'Germ:Event:edit.html.twig',
             array(
                 'form' => $form->createView(),
                 'mode' => 'create',
@@ -109,7 +109,7 @@ class EventController extends Controller
 
     private function getEventOr404($eventId)
     {
-        $eventModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\EventSchema\EventModel');
+        $eventModel = $this->get('pomm')['germ']->getModel('Germ\Model\Germ\EventSchema\EventModel');
         $event = $eventModel->getEventById($eventId);
         if (!$event) {
             throw $this->createNotFoundException('The event does not exist');
@@ -123,7 +123,7 @@ class EventController extends Controller
 
     private function buildNextEvent($eventTypeId)
     {
-        $eventTypeModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\EventSchema\EventTypeModel');
+        $eventTypeModel = $this->get('pomm')['germ']->getModel('Germ\Model\Germ\EventSchema\EventTypeModel');
         $type = $eventTypeModel->findByPk(['id_event_event_type' => $eventTypeId]);
 
         $event = new Event();
@@ -138,10 +138,10 @@ class EventController extends Controller
 
     private function buildEventForm(Event $event)
     {
-        $eventModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\EventSchema\EventModel');
+        $eventModel = $this->get('pomm')['germ']->getModel('Germ\Model\Germ\EventSchema\EventModel');
         $event = $eventModel->hydrateDockets($event);
 
-        $personModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\PersonSchema\PersonModel');
+        $personModel = $this->get('pomm')['germ']->getModel('Germ\Model\Germ\PersonSchema\PersonModel');
         $personChoices['-'.$this->get('translator')->trans('none').'-'] = null;
         foreach ($personModel->getPersons() as $key => $person) {
             $personChoices[(string) $person] = $person->getId();

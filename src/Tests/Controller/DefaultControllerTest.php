@@ -1,6 +1,6 @@
 <?php
 
-namespace GermBundle\Tests\Controller;
+namespace Germ\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 

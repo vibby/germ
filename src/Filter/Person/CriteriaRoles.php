@@ -1,15 +1,15 @@
 <?php
 
-namespace GermBundle\Filter\Person;
+namespace Germ\Filter\Person;
 
-use GermBundle\Filter\Criteria\AbstractCriteria;
+use Germ\Filter\Criteria\AbstractCriteria;
 use Symfony\Component\Form\Form;
 use PommProject\Foundation\Where;
 use PommProject\ModelManager\Model\Projection;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Security\Core\Role\RoleHierarchy;
 use Symfony\Component\Security\Core\Role\Role;
-use GermBundle\Person\RoleManager;
+use Germ\Person\RoleManager;
 
 class CriteriaRoles extends AbstractCriteria
 {

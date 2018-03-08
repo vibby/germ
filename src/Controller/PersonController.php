@@ -1,9 +1,9 @@
 <?php
 
-namespace GermBundle\Controller;
+namespace Germ\Controller;
 
-use GermBundle\Type\AccountType;
-use GermBundle\Type\PersonType;
+use Germ\Type\AccountType;
+use Germ\Type\PersonType;
 use PommProject\ModelManager\Model\Model;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,11 +13,11 @@ class PersonController extends Controller
 
     public function listAction(Request $request, $page, $search = null)
     {
-        $finder = $this->get('GermBundle\Model\Germ\Person\PersonFinder');
+        $finder = $this->get('Germ\Model\Germ\Person\PersonFinder');
         if ($request->get('_format') != 'html') {
             $output['persons'] = $finder->findForListWhere();
         } else {
-            $searcher = $this->get('GermBundle\Filter\Person\Searcher');
+            $searcher = $this->get('Germ\Filter\Person\Searcher');
             if ($redirect = $searcher->handleRequest($request)) {
                 return $redirect;
             }
@@ -34,7 +34,7 @@ class PersonController extends Controller
             );
         }
 
-        $response = $this->render('GermBundle:Person:list.'.$request->get('_format').'.twig', $output);
+        $response = $this->render('Germ:Person:list.'.$request->get('_format').'.twig', $output);
 
         if ($request->get('_format') != 'html') {
             $response->headers->set(
@@ -55,13 +55,13 @@ class PersonController extends Controller
         if (!$personSlug) {
             $personSlug = $this->getUser()->getUsername();
         }
-        $accountModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\PersonSchema\AccountModel');
+        $accountModel = $this->get('pomm')['germ']->getModel('Germ\Model\Germ\PersonSchema\AccountModel');
         $person = $this->getPersonOr404($personSlug);
 
         $personForm = $this->get('form.factory')->create(PersonType::class, $person);
         $personForm->handleRequest($request);
         if ($personForm->isSubmitted() && $personForm->isValid()) {
-            $personSaver = $this->get('GermBundle\Model\Germ\Person\PersonSaver');
+            $personSaver = $this->get('Germ\Model\Germ\Person\PersonSaver');
             $personSaver->update($person);
             $this->get('session')->getFlashBag()->add('success', 'Person updated');
 
@@ -73,11 +73,11 @@ class PersonController extends Controller
         $accountForm = $this->get('form.factory')->create(AccountType::class, $account, ['person' => $person]);
         $accountForm->handleRequest($request);
         if ($accountForm->isSubmitted() && $accountForm->isValid()) {
-            $saver = $this->get('GermBundle\Model\Germ\Person\AccountSaver');
+            $saver = $this->get('Germ\Model\Germ\Person\AccountSaver');
             $saver->insertOrUpdate($accountForm->getData(), $person);
             $accountRequest = $request->request->get('account');
             if (isset($accountRequest['sendEmail'])) {
-                $emailer = $this->get('GermBundle\Email\Mailer');
+                $emailer = $this->get('Germ\Email\Mailer');
                 $emailer->sendEmailChangePassword(
                     $person,
                     $accountRequest['plainPassword']['first']
@@ -89,7 +89,7 @@ class PersonController extends Controller
         }
 
         return $this->render(
-            'GermBundle:Person:edit.html.twig',
+            'Germ:Person:edit.html.twig',
             array(
                 'mode' => 'edit',
                 'form' => $personForm,
@@ -105,7 +105,7 @@ class PersonController extends Controller
         $person = $this->getPersonOr404($personSlug);
 
         return $this->render(
-            'GermBundle:Person:show.html.twig',
+            'Germ:Person:show.html.twig',
             array(
                 'person' => $person,
             )
@@ -117,7 +117,7 @@ class PersonController extends Controller
         $form = $this->get('form.factory')->create(PersonType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $person = $this->get('GermBundle\Model\Germ\Person\PersonSaver')->create($form->getData());
+            $person = $this->get('Germ\Model\Germ\Person\PersonSaver')->create($form->getData());
             $translator = $this->get('translator');
             $this->get('session')->getFlashBag()->add('success', $translator->trans('Person created'));
 
@@ -125,7 +125,7 @@ class PersonController extends Controller
         }
 
         return $this->render(
-            'GermBundle:Person:edit.html.twig',
+            'Germ:Person:edit.html.twig',
             array(
                 'mode' => 'create',
                 'form' => $form->createView(),
@@ -143,7 +143,7 @@ class PersonController extends Controller
             return $this->redirectToRoute('germ_person_list');
         }
         /** @var Model $personModel */
-        $personModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\PersonSchema\PersonModel');
+        $personModel = $this->get('pomm')['germ']->getModel('Germ\Model\Germ\PersonSchema\PersonModel');
         $personModel->updateOne($person);
         $this->get('session')->getFlashBag()->add('success', 'Person deleted');
 
@@ -155,7 +155,7 @@ class PersonController extends Controller
         $person = $this->getPersonOr404($personSlug);
         $person['is_deleted'] = false;
         /** @var Model $personModel */
-        $personModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\PersonSchema\PersonModel');
+        $personModel = $this->get('pomm')['germ']->getModel('Germ\Model\Germ\PersonSchema\PersonModel');
         $personModel->updateOne($person);
         $this->get('session')->getFlashBag()->add('success', 'Person created');
 
@@ -164,7 +164,7 @@ class PersonController extends Controller
 
     private function getPersonOr404($personSlug)
     {
-        $finder = $this->get('GermBundle\Model\Germ\Person\PersonFinder');
+        $finder = $this->get('Germ\Model\Germ\Person\PersonFinder');
         $person = $finder->findOneBySlug($personSlug);
         if (!$person) {
             throw $this->createNotFoundException('The person does not exist');
@@ -175,7 +175,7 @@ class PersonController extends Controller
     private function getAccountOr404($personSlug)
     {
         $person = $this->getPersonOr404($personSlug);
-        $accountModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\PersonSchema\AccountModel');
+        $accountModel = $this->get('pomm')['germ']->getModel('Germ\Model\Germ\PersonSchema\AccountModel');
         $account = $accountModel->findWhere("person_id = $*", [$person->getId()])->current();
         if (!$account) {
             throw $this->createNotFoundException('The account does not exist');
@@ -198,7 +198,7 @@ class PersonController extends Controller
             return $redirectRoute;
         }
         $account->setEnabled($enable);
-        $accountModel = $this->get('pomm')['germ']->getModel('GermBundle\Model\Germ\PersonSchema\AccountModel');
+        $accountModel = $this->get('pomm')['germ']->getModel('Germ\Model\Germ\PersonSchema\AccountModel');
         $accountModel->updateOne($account, ['enabled']);
         $this->get('session')->getFlashBag()->add(
             'success',

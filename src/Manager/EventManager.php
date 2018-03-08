@@ -1,6 +1,6 @@
 <?php
 
-namespace GermBundle\Manager;
+namespace Germ\Manager;
 
 /**
  * EventManager
@@ -25,8 +25,8 @@ class EventManager
             $from = new \DateTime;
         }
 
-        $eventModel = $this->pomm['germ']->getModel('GermBundle\Model\Germ\EventSchema\EventModel');
-        $eventTypeModel = $this->pomm['germ']->getModel('GermBundle\Model\Germ\EventSchema\EventTypeModel');
+        $eventModel = $this->pomm['germ']->getModel('Germ\Model\Germ\EventSchema\EventModel');
+        $eventTypeModel = $this->pomm['germ']->getModel('Germ\Model\Germ\EventSchema\EventTypeModel');
 
 
 

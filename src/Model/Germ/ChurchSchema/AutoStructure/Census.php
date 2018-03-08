@@ -5,7 +5,7 @@
  * generation.
  */
 
-namespace GermBundle\Model\Germ\ChurchSchema\AutoStructure;
+namespace Germ\Model\Germ\ChurchSchema\AutoStructure;
 
 use PommProject\ModelManager\Model\RowStructure;
 

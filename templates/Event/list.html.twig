@@ -1,0 +1,44 @@
+{% extends 'Germ::base.html.twig' %}
+
+{% block content_main %}
+    {% if is_granted('ROLE_EVENT_CREATE') %}
+        <form class="form-inline" action="{{ path('germ_event_create') }}">
+            <div class="form-group">
+                <select class="form-control" name="event_type">
+                    {% for eventType in eventTypes %}
+                        <option value="{{ eventType.id }}">{{ eventType }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">{% trans %}New event{% endtrans %}</button>
+        </form>
+    {% endif  %}
+    <table class="table table-striped">
+        <tr>
+            <th>{% trans %}Name{% endtrans %}</th>
+        </tr>
+        {% for event in events %}
+            <tr>
+                <td>
+                    {% if is_granted('ROLE_EVENT_EDIT') %}
+                        <a href="{{ path('germ_event_edit', {'eventId': event.id}) }}"
+                          data-toggle="tooltip"
+                          data-placement="left"
+                          title="{% trans with {'%name%': event} %}Edit %name%{% endtrans %}"
+                        >
+                            {{ event }}
+                        </a>
+                    {% elseif is_granted('ROLE_EVENT_SEE') %}
+                        <a href="{{ path('germ_event_show', {'eventId': event.id}) }}">
+                            {{ event }}
+                        </a>
+                    {% else %}
+                        {{ event }}
+                    {% endif  %}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
+
+

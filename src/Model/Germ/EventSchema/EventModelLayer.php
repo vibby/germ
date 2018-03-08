@@ -1,11 +1,11 @@
 <?php
 
-namespace GermBundle\Model\Germ\EventSchema;
+namespace Germ\Model\Germ\EventSchema;
 
-use GermBundle\Model\Germ\EventSchema\Event;
-use GermBundle\Model\Germ\EventSchema\EventModel;
-use GermBundle\Model\Germ\EventSchema\Assignation;
-use GermBundle\Model\Germ\EventSchema\AssignationModel;
+use Germ\Model\Germ\EventSchema\Event;
+use Germ\Model\Germ\EventSchema\EventModel;
+use Germ\Model\Germ\EventSchema\Assignation;
+use Germ\Model\Germ\EventSchema\AssignationModel;
 
 use PommProject\ModelManager\ModelLayer\ModelLayer;
 

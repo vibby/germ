@@ -1,5 +1,5 @@
 <?php
-namespace GermBundle\DependencyInjection;
+namespace Germ\DependencyInjection;
 
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

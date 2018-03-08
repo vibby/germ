@@ -1,6 +1,6 @@
 <?php
 
-namespace GermBundle\Filter;
+namespace Germ\Filter;
 
 trait FilterFinder
 {

@@ -1,10 +1,10 @@
 <?php
 
-namespace GermBundle\Model\Germ\Census;
+namespace Germ\Model\Germ\Census;
 
-use GermBundle\Model\Germ\AbstractSaver;
-use GermBundle\Model\Germ\ChurchSchema\Census;
-use GermBundle\Model\Germ\ChurchSchema\CensusModel;
+use Germ\Model\Germ\AbstractSaver;
+use Germ\Model\Germ\ChurchSchema\Census;
+use Germ\Model\Germ\ChurchSchema\CensusModel;
 use PommProject\Foundation\Pomm;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;

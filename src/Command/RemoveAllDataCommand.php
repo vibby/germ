@@ -1,6 +1,6 @@
 <?php
 
-namespace GermBundle\Command;
+namespace Germ\Command;
 
 use PommProject\Foundation\Session;
 use Symfony\Component\Console\Input\InputInterface;

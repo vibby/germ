@@ -1,6 +1,6 @@
 <?php
 
-namespace GermBundle\Model\Germ;
+namespace Germ\Model\Germ;
 
 use PommProject\Foundation\Where;
 

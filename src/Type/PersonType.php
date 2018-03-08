@@ -1,15 +1,15 @@
 <?php
 
-namespace GermBundle\Type;
+namespace Germ\Type;
 
 use Symfony\Component\Form;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use GermBundle\Person\RoleManager;
+use Germ\Person\RoleManager;
 use Symfony\Component\Form\Extension\Core\Type;
-use GermBundle\Person\Membership;
+use Germ\Person\Membership;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use PommProject\Foundation\Pomm;
-use GermBundle\Model\Germ\ChurchSchema\ChurchModel;
+use Germ\Model\Germ\ChurchSchema\ChurchModel;
 
 class PersonType extends Form\AbstractType
 {

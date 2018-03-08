@@ -1,11 +1,11 @@
 <?php
 
-namespace GermBundle\Twig;
+namespace Germ\Twig;
 
-use GermBundle\Filter\Person\CriteriaTerms;
+use Germ\Filter\Person\CriteriaTerms;
 use Symfony\Component\Security\Core\Role\RoleHierarchy;
 use Symfony\Component\Security\Core\Role\Role;
-use GermBundle\Person\RoleManager;
+use Germ\Person\RoleManager;
 
 class PersonExtension extends \Twig_Extension
 {

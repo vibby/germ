@@ -1,8 +1,8 @@
 <?php
 
-namespace GermBundle\DependencyInjection\Compiler;
+namespace Germ\DependencyInjection\Compiler;
 
-use GermBundle\Filter\AbstractSearcher;
+use Germ\Filter\AbstractSearcher;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Reference;

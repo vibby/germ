@@ -1,13 +1,13 @@
 <?php
 
-namespace GermBundle\Model\Germ\ChurchSchema;
+namespace Germ\Model\Germ\ChurchSchema;
 
-use GermBundle\Filter\FilterQueries;
+use Germ\Filter\FilterQueries;
 use PommProject\ModelManager\Model\Model;
 use PommProject\ModelManager\Model\Projection;
 use PommProject\ModelManager\Model\ModelTrait\WriteQueries;
 use PommProject\Foundation\Where;
-use GermBundle\Model\Germ\ChurchSchema\AutoStructure\Church as ChurchStructure;
+use Germ\Model\Germ\ChurchSchema\AutoStructure\Church as ChurchStructure;
 
 /**
  * ChurchModel
@@ -31,7 +31,7 @@ class ChurchModel extends Model
     public function __construct()
     {
         $this->structure = new ChurchStructure;
-        $this->flexible_entity_class = '\GermBundle\Model\Germ\ChurchSchema\Church';
+        $this->flexible_entity_class = '\Germ\Model\Germ\ChurchSchema\Church';
     }
 
     public function findAll($suffix = '')

@@ -1,0 +1,163 @@
+{% from 'MopaBootstrapBundle::flash.html.twig' import session_flash %}
+
+<!DOCTYPE html>
+{% block html_tag %}
+<html lang="{{ app.request.locale }}">
+{% endblock html_tag %}
+
+{% block head %}
+<head>
+    <meta charset="{{ _charset }}" />
+    {% block head_style %}
+        {# Override this block to add your own files! #}
+        {% stylesheets
+            '@MopaBootstrapBundle/Resources/public/less/mopabootstrapbundle.less'
+             filter='less'
+        %}
+        <link href="{{ asset_url }}" type="text/css" rel="stylesheet" media="screen" />
+        {% endstylesheets %}
+        {# To use this without less use the base_css.html.twig template as your base
+         # Be sure you understand whats going on: have a look into
+         # https://github.com/phiamo/MopaBootstrapBundle/blob/master/Resources/doc/css-vs-less.md
+         #}
+         <style type="text/css">
+            @font-face {
+                font-family: 'advent_sanslogo';
+                src: url('{{ asset('bundles/germ/fonts/adventsans-logo-webfont.woff2') }}') format('woff2'),
+                     url('{{ asset('bundles/germ/fonts/adventsans-logo-webfont.woff') }}') format('woff');
+                font-weight: normal;
+                font-style: normal;
+            }
+            body {font-family: 'advent_sanslogo', sans-serif; font-size: 1.4em}
+        </style>
+    {% endblock head_style %}
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    {% block head_script %}
+    {% javascripts
+        'http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js'
+    %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    {% endblock head_script %}
+
+    <title>{% block title %}Germ Adventiste Nantes{% endblock title %}</title>
+    {% block favicon %}
+        <link rel="apple-touch-icon" sizes="57x57" href="{{ asset('apple-touch-icon-57x57.png') }}">
+        <link rel="apple-touch-icon" sizes="60x60" href="{{ asset('apple-touch-icon-60x60.png') }}">
+        <link rel="apple-touch-icon" sizes="72x72" href="{{ asset('apple-touch-icon-72x72.png') }}">
+        <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('apple-touch-icon-76x76.png') }}">
+        <link rel="apple-touch-icon" sizes="114x114" href="{{ asset('apple-touch-icon-114x114.png') }}">
+        <link rel="apple-touch-icon" sizes="120x120" href="{{ asset('apple-touch-icon-120x120.png') }}">
+        <link rel="apple-touch-icon" sizes="144x144" href="{{ asset('apple-touch-icon-144x144.png') }}">
+        <link rel="apple-touch-icon" sizes="152x152" href="{{ asset('apple-touch-icon-152x152.png') }}">
+        <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-touch-icon-180x180.png') }}">
+        <link rel="icon" type="image/png" href="{{ asset('favicon-32x32.png') }}" sizes="32x32">
+        <link rel="icon" type="image/png" href="{{ asset('android-chrome-192x192.png') }}" sizes="192x192">
+        <link rel="icon" type="image/png" href="{{ asset('favicon-96x96.png') }}" sizes="96x96">
+        <link rel="icon" type="image/png" href="{{ asset('favicon-16x16.png') }}" sizes="16x16">
+        <link rel="manifest" href="/manifest.json">
+        <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+        <meta name="apple-mobile-web-app-title" content="Germ">
+        <meta name="application-name" content="Germ">
+        <meta name="msapplication-TileColor" content="#ffc40d">
+        <meta name="msapplication-TileImage" content="{{ asset('mstile-144x144.png') }}">
+        <meta name="theme-color" content="#ffffff">
+    {% endblock %}
+    {% block head_bottom %}
+    {% endblock head_bottom %}
+</head>
+{% endblock head %}
+
+{% block body_tag %}
+<body>
+{% endblock body_tag %}
+
+{% block body_start %}
+{% endblock body_start %}
+
+{% block body %}
+    {% block navbar %}
+    <!-- No navbar included here to reduce dependencies, see https://github.com/phiamo/MopaBootstrapSandboxBundle/blob/master/Resources/views/base.html.twig for howto include it -->
+    {% endblock navbar %}
+
+    {% block container %}
+    {% block container_div_start %}<div class="{% block container_class %}container{% endblock container_class %}">{% endblock container_div_start %}
+        {% block header %}
+        {% endblock header %}
+
+        {% block content_div_start %}<div class="content">{% endblock content_div_start %}
+            {% block page_header %}
+            {% endblock page_header %}
+
+            {% block main_menu %}
+            {% endblock %}
+
+            {% block flashes %}
+            {% if app.session.flashbag.peekAll|length > 0 %}
+            <div class="row">
+                <div class="col-sm-12">
+                {{ session_flash() }}
+                </div>
+            </div>
+            {% endif %}
+            {% endblock flashes %}
+
+            {% block content_row %}
+            <div class="row">
+                {% block content %}
+                {% endblock content %}
+            </div>
+            {% endblock content_row %}
+
+        {% block content_div_end %}</div>{% endblock content_div_end %}
+
+        {% block footer_tag_start %}
+        <footer>
+        {% endblock footer_tag_start %}
+
+        {% block footer %}
+        {% endblock footer %}
+
+        {% block footer_tag_end %}
+        </footer>
+        {% endblock footer_tag_end %}
+    {% block container_div_end %}</div><!-- /container -->{% endblock container_div_end %}
+    {% endblock container %}
+
+    {% block body_end_before_js %}
+    {% endblock body_end_before_js %}
+
+    {% block foot_script %}
+    {# To only use a subset or add more js overwrite and copy paste this block
+    To speed up page loads save a copy of jQuery in your project and override this block to include the correct path
+    Otherwise the regeneration is done on every load in dev more with use_controller: true
+     #}
+    {% block foot_script_assetic %}
+        {# Please add the javascripts you need in your project
+        '@MopaBootstrapBundle/Resources/public/js/mopabootstrap-subnav.js'
+        #}
+        {% javascripts
+            '@Germ/Resources/public/bootstrap/js/collapse.js'
+            '@Germ/Resources/public/bootstrap/js/tooltip.js'
+            '@Germ/Resources/public/bootstrap/js/popover.js'
+            '@MopaBootstrapBundle/Resources/public/js/mopabootstrap-collection.js'
+        %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+    {% endblock foot_script_assetic %}
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+            $('[data-toggle="popover"]').popover();
+        });
+    </script>
+    {% endblock foot_script %}
+{% endblock body %}
+
+{% block body_end %}
+{% endblock body_end %}
+</body>
+</html>

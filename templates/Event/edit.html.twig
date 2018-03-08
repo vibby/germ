@@ -1,0 +1,19 @@
+{% extends 'Germ::base.html.twig' %}
+
+{% block content_main %}
+	<div class="panel panel-default">
+		<div class="panel-body">
+			{{ form_start(form) }}
+			{{ form_widget(form) }}
+			<button class="btn btn-primary" type="submit">{% trans %}Save{% endtrans %}</button>
+			{% if mode == 'edit' %}
+				<a class="btn btn-danger" href="{{ path('germ_event_remove', {'eventId': form.vars.value.id}) }}" data-toggle="tooltip" data-placement="left" title="{% trans %}The event will be complety removed{% endtrans %}">{% trans %}Remove event{% endtrans %}</a>
+			{% endif %}
+			{{ form_end(form) }}
+		</div>
+	</div>
+{% endblock %}
+
+{% block content_sidebar %}
+	Nothing here yet
+{% endblock %}

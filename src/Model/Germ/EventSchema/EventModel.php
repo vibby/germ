@@ -1,6 +1,6 @@
 <?php
 
-namespace GermBundle\Model\Germ\EventSchema;
+namespace Germ\Model\Germ\EventSchema;
 
 use PommProject\ModelManager\Model\Model;
 use PommProject\ModelManager\Model\Projection;
@@ -8,8 +8,8 @@ use PommProject\ModelManager\Model\ModelTrait\WriteQueries;
 
 use PommProject\Foundation\Where;
 
-use GermBundle\Model\Germ\EventSchema\AutoStructure\Event as EventStructure;
-use GermBundle\Model\Germ\EventSchema\Event;
+use Germ\Model\Germ\EventSchema\AutoStructure\Event as EventStructure;
+use Germ\Model\Germ\EventSchema\Event;
 
 /**
  * EventModel
@@ -32,14 +32,14 @@ class EventModel extends Model
     public function __construct()
     {
         $this->structure = new EventStructure;
-        $this->flexible_entity_class = '\GermBundle\Model\Germ\EventSchema\Event';
+        $this->flexible_entity_class = '\Germ\Model\Germ\EventSchema\Event';
     }
 
     public function hydrateDockets(Event $event)
     {
         $docketModel = $this
             ->getSession()
-            ->getModel('\GermBundle\Model\Germ\EventSchema\DocketModel')
+            ->getModel('\Germ\Model\Germ\EventSchema\DocketModel')
             ;
         $event->setDockets($docketModel->getDocketsAndAssignationsForEvent($event));
 
@@ -50,11 +50,11 @@ class EventModel extends Model
     {
         $eventTypeModel = $this
             ->getSession()
-            ->getModel('\GermBundle\Model\Germ\EventSchema\EventTypeModel')
+            ->getModel('\Germ\Model\Germ\EventSchema\EventTypeModel')
             ;
         $locationModel = $this
             ->getSession()
-            ->getModel('\GermBundle\Model\Germ\EventSchema\LocationModel')
+            ->getModel('\Germ\Model\Germ\EventSchema\LocationModel')
             ;
 
         $sql = <<<SQL

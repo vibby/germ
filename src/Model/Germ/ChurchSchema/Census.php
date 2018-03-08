@@ -1,6 +1,6 @@
 <?php
 
-namespace GermBundle\Model\Germ\ChurchSchema;
+namespace Germ\Model\Germ\ChurchSchema;
 
 use PommProject\ModelManager\Model\FlexibleEntity;
 

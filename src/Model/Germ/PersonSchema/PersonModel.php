@@ -1,12 +1,12 @@
 <?php
 
-namespace GermBundle\Model\Germ\PersonSchema;
+namespace Germ\Model\Germ\PersonSchema;
 
-use GermBundle\Filter\FilterQueries;
+use Germ\Filter\FilterQueries;
 use PommProject\Foundation\Where;
 use PommProject\ModelManager\Model\Model;
 use PommProject\ModelManager\Model\ModelTrait\WriteQueries;
-use GermBundle\Model\Germ\PersonSchema\AutoStructure\Person as PersonStructure;
+use Germ\Model\Germ\PersonSchema\AutoStructure\Person as PersonStructure;
 use PommProject\ModelManager\Model\Projection;
 
 /**
@@ -31,7 +31,7 @@ class PersonModel extends Model
     public function __construct()
     {
         $this->structure = new PersonStructure;
-        $this->flexible_entity_class = '\GermBundle\Model\Germ\PersonSchema\Person';
+        $this->flexible_entity_class = '\Germ\Model\Germ\PersonSchema\Person';
     }
 
     public function findForListWhere(Where $where)
@@ -79,7 +79,7 @@ SQL;
                 ':projection'      => $projection,
                 ':person_relation' => $this->getStructure()->getRelation(),
                 ':church_relation' => $this->getSession()
-                    ->getModel('\GermBundle\Model\Germ\ChurchSchema\ChurchModel')
+                    ->getModel('\Germ\Model\Germ\ChurchSchema\ChurchModel')
                     ->getStructure()
                     ->getRelation(),
                 ':condition' => $where,

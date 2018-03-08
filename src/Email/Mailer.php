@@ -1,6 +1,6 @@
 <?php
 
-namespace GermBundle\Email;
+namespace Germ\Email;
 
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -33,7 +33,7 @@ class Mailer
             ->setTo($person['email'])
             ->setBody(
                 $this->twig->render(
-                    'GermBundle:Emails:newPassword.html.twig',
+                    'Germ:Emails:newPassword.html.twig',
                     [
                         'person' => $person,
                         'password' => $password,

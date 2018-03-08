@@ -1,6 +1,6 @@
 <?php
 
-namespace GermBundle\Person;
+namespace Germ\Person;
 
 class Membership
 {

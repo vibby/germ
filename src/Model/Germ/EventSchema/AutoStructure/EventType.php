@@ -5,7 +5,7 @@
  * generation.
  */
 
-namespace GermBundle\Model\Germ\EventSchema\AutoStructure;
+namespace Germ\Model\Germ\EventSchema\AutoStructure;
 
 use PommProject\ModelManager\Model\RowStructure;
 

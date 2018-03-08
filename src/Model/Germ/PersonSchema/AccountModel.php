@@ -1,6 +1,6 @@
 <?php
 
-namespace GermBundle\Model\Germ\PersonSchema;
+namespace Germ\Model\Germ\PersonSchema;
 
 use PommProject\ModelManager\Model\Model;
 use PommProject\ModelManager\Model\Projection;
@@ -8,8 +8,8 @@ use PommProject\ModelManager\Model\ModelTrait\WriteQueries;
 
 use PommProject\Foundation\Where;
 
-use GermBundle\Model\Germ\PersonSchema\AutoStructure\Account as AccountStructure;
-use GermBundle\Model\Germ\PersonSchema\Account;
+use Germ\Model\Germ\PersonSchema\AutoStructure\Account as AccountStructure;
+use Germ\Model\Germ\PersonSchema\Account;
 
 /**
  * AccountModel
@@ -34,7 +34,7 @@ class AccountModel extends Model
     public function __construct()
     {
         $this->structure = new AccountStructure;
-        $this->flexible_entity_class = '\GermBundle\Model\Germ\PersonSchema\Account';
+        $this->flexible_entity_class = '\Germ\Model\Germ\PersonSchema\Account';
     }
 
     public function getAccounts(Array $role = [])
@@ -78,11 +78,11 @@ SQL;
                 ':projection'      => $projection,
                 ':user_relation'   => $this->getStructure()->getRelation(),
                 ':person_relation' => $this->getSession()
-                    ->getModel('\GermBundle\Model\Germ\PersonSchema\PersonModel')
+                    ->getModel('\Germ\Model\Germ\PersonSchema\PersonModel')
                     ->getStructure()
                     ->getRelation(),
                 ':church_relation' => $this->getSession()
-                    ->getModel('\GermBundle\Model\Germ\ChurchSchema\ChurchModel')
+                    ->getModel('\Germ\Model\Germ\ChurchSchema\ChurchModel')
                     ->getStructure()
                     ->getRelation(),
                 ':condition' => $where,

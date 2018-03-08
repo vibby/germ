@@ -1,6 +1,6 @@
 <?php
 
-namespace GermBundle\Twig;
+namespace Germ\Twig;
 
 use Symfony\Component\HttpFoundation\Request;
 

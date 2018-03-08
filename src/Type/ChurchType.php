@@ -1,6 +1,6 @@
 <?php
 
-namespace GermBundle\Type;
+namespace Germ\Type;
 
 use FOS\UserBundle\Util\LegacyFormHelper;
 use Symfony\Component\Form;

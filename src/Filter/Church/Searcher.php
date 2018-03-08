@@ -1,8 +1,8 @@
 <?php
 
-namespace GermBundle\Filter\Church;
+namespace Germ\Filter\Church;
 
-use GermBundle\Filter\AbstractSearcher;
+use Germ\Filter\AbstractSearcher;
 
 class Searcher extends AbstractSearcher
 {

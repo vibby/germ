@@ -1,6 +1,6 @@
 <?php
 
-namespace GermBundle\Twig;
+namespace Germ\Twig;
 
 class StringifyExtension extends \Twig_Extension
 {

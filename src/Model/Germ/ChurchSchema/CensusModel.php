@@ -1,16 +1,16 @@
 <?php
 
-namespace GermBundle\Model\Germ\ChurchSchema;
+namespace Germ\Model\Germ\ChurchSchema;
 
-use GermBundle\Filter\FilterQueries;
+use Germ\Filter\FilterQueries;
 use PommProject\ModelManager\Model\Model;
 use PommProject\ModelManager\Model\Projection;
 use PommProject\ModelManager\Model\ModelTrait\WriteQueries;
 
 use PommProject\Foundation\Where;
 
-use GermBundle\Model\Germ\ChurchSchema\AutoStructure\Census as CensusStructure;
-use GermBundle\Model\Germ\ChurchSchema\Census;
+use Germ\Model\Germ\ChurchSchema\AutoStructure\Census as CensusStructure;
+use Germ\Model\Germ\ChurchSchema\Census;
 
 /**
  * CensusModel
@@ -34,7 +34,7 @@ class CensusModel extends Model
     public function __construct()
     {
         $this->structure = new CensusStructure;
-        $this->flexible_entity_class = '\GermBundle\Model\Germ\ChurchSchema\Census';
+        $this->flexible_entity_class = '\Germ\Model\Germ\ChurchSchema\Census';
     }
 
     public function findForListWhereSql(Where $where, $projection = null, $suffix = null)

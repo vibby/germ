@@ -1,0 +1,13 @@
+{% extends 'Germ::base.html.twig' %}
+
+{% block content_main %}
+	<h1>{{ person }}</h1>
+	<dl>
+	  <dt>{% trans %}Phone{% endtrans %}</dt>
+	  <dd>{{ person.phone|join('<br />') }}</dd>
+	  <dt>{% trans %}Address{% endtrans %}</dt>
+	  <dd>{{ person.address|nl2br }}</dd>
+	</dl>
+{% endblock %}
+
+

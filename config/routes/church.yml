@@ -1,0 +1,29 @@
+germ_church_list:
+    path:     /churches_{page}.{_format}
+    defaults:
+        _controller: Germ:Church:list
+        _format: html
+        page: 1
+    requirements:
+        _format:  html|csv|geojson
+
+germ_church_filter:
+    path:     /filter/{page}/{filters}
+    defaults:
+        _format: html
+        _controller: Germ:Church:list
+        page: 1
+    requirements:
+        filters: ".*"
+
+germ_church_edit:
+    path:     /edit/{churchSlug}
+    defaults: { _controller: Germ:Church:edit }
+
+germ_church_remove:
+    path:     /remove/{churchSlug}
+    defaults: { _controller: Germ:Church:remove }
+
+germ_church_create:
+    path:     /create
+    defaults: { _controller: Germ:Church:create }

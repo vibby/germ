@@ -1,6 +1,6 @@
 <?php
 
-namespace GermBundle\Model\Germ\PersonSchema;
+namespace Germ\Model\Germ\PersonSchema;
 
 use Vibby\PommProjectFosUserBundle\Model\User;
 

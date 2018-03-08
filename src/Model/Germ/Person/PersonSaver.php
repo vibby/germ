@@ -1,11 +1,11 @@
 <?php
 
-namespace GermBundle\Model\Germ\Person;
+namespace Germ\Model\Germ\Person;
 
-use GermBundle\Model\Germ\AbstractSaver;
-use GermBundle\Model\Germ\PersonSchema\AccountModel;
-use GermBundle\Model\Germ\PersonSchema\Person;
-use GermBundle\Model\Germ\PersonSchema\PersonModel;
+use Germ\Model\Germ\AbstractSaver;
+use Germ\Model\Germ\PersonSchema\AccountModel;
+use Germ\Model\Germ\PersonSchema\Person;
+use Germ\Model\Germ\PersonSchema\PersonModel;
 use PommProject\Foundation\Pomm;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;

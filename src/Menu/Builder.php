@@ -1,6 +1,6 @@
 <?php
 
-namespace GermBundle\Menu;
+namespace Germ\Menu;
 
 use Knp\Menu\FactoryInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;

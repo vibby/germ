@@ -1,12 +1,12 @@
 <?php
 
-namespace GermBundle;
+namespace Germ;
 
-use GermBundle\DependencyInjection\Compiler\FilterSearcherPass;
+use Germ\DependencyInjection\Compiler\FilterSearcherPass;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class GermBundle extends Bundle
+class Germ extends Bundle
 {
     public function build(ContainerBuilder $container)
     {

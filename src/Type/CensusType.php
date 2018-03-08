@@ -1,9 +1,9 @@
 <?php
 
-namespace GermBundle\Type;
+namespace Germ\Type;
 
 use FOS\UserBundle\Util\LegacyFormHelper;
-use GermBundle\Model\Germ\ChurchSchema\ChurchModel;
+use Germ\Model\Germ\ChurchSchema\ChurchModel;
 use PommProject\Foundation\Pomm;
 use Symfony\Component\Form;
 use Symfony\Component\Form\Extension\Core\Type;

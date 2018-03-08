@@ -1,14 +1,14 @@
 <?php
 
-namespace GermBundle\Command;
+namespace Germ\Command;
 
 use Faker\Factory;
-use GermBundle\Model\Germ\ChurchSchema\Church;
-use GermBundle\Model\Germ\ChurchSchema\ChurchModel;
-use GermBundle\Model\Germ\PersonSchema\Account;
-use GermBundle\Model\Germ\PersonSchema\AccountModel;
-use GermBundle\Model\Germ\PersonSchema\Person;
-use GermBundle\Model\Germ\PersonSchema\PersonModel;
+use Germ\Model\Germ\ChurchSchema\Church;
+use Germ\Model\Germ\ChurchSchema\ChurchModel;
+use Germ\Model\Germ\PersonSchema\Account;
+use Germ\Model\Germ\PersonSchema\AccountModel;
+use Germ\Model\Germ\PersonSchema\Person;
+use Germ\Model\Germ\PersonSchema\PersonModel;
 use PragmaFabrik\Pomm\Faker\FakerPooler;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;

@@ -1,8 +1,8 @@
 <?php
 
-namespace GermBundle\Twig;
+namespace Germ\Twig;
 
-use GermBundle\Filter\Church\CriteriaTerms;
+use Germ\Filter\Church\CriteriaTerms;
 
 class ChurchExtension extends \Twig_Extension
 {

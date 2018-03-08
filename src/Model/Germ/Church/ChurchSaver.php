@@ -1,10 +1,10 @@
 <?php
 
-namespace GermBundle\Model\Germ\Church;
+namespace Germ\Model\Germ\Church;
 
-use GermBundle\Model\Germ\AbstractSaver;
-use GermBundle\Model\Germ\ChurchSchema\Church;
-use GermBundle\Model\Germ\ChurchSchema\ChurchModel;
+use Germ\Model\Germ\AbstractSaver;
+use Germ\Model\Germ\ChurchSchema\Church;
+use Germ\Model\Germ\ChurchSchema\ChurchModel;
 
 class ChurchSaver extends AbstractSaver
 {

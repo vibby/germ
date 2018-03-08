@@ -1,0 +1,185 @@
+
+
+parameters:
+    pomm_fos_user.user_model_class: Germ\Model\Germ\PersonSchema\AccountModel
+
+services:
+    Germ\Security\UserManager:
+        class: Germ\Security\UserManager
+        arguments:
+            - "@fos_user.util.password_updater"
+            - "@fos_user.util.canonical_fields_updater"
+        calls:
+            - [setPommModel, ["@pomm_fos_user_bundle.model_manager"]]
+
+    fos_user.util.canonical_fields_updater:
+        class: Germ\Security\CanonicalFieldsUpdater
+        arguments:
+            - "@fos_user.util.username_canonicalizer"
+            - "@fos_user.util.email_canonicalizer"
+
+    Germ\EventSubscriber\PommPaginatorSubscriber:
+        class: Germ\EventSubscriber\PommPaginatorSubscriber
+        public: false
+        tags:
+            - { name: knp_paginator.subscriber }
+
+    Germ\EventSubscriber\LocaleSubscriber:
+        class: Germ\EventSubscriber\LocaleSubscriber
+        public: false
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Germ\Twig\StringifyExtension:
+        class: Germ\Twig\StringifyExtension
+        public: false
+        tags:
+            - { name: twig.extension }
+
+    Germ\Twig\PersonExtension:
+        class: Germ\Twig\PersonExtension
+        autowire: true
+        public: false
+        tags:
+            - { name: twig.extension }
+
+    Germ\Twig\CensusExtension:
+        class: Germ\Twig\CensusExtension
+        autowire: true
+        public: false
+        tags:
+            - { name: twig.extension }
+
+    Germ\Twig\ChurchExtension:
+        class: Germ\Twig\ChurchExtension
+        autowire: true
+        public: false
+        tags:
+            - { name: twig.extension }
+
+    Germ\Twig\RouteExtension:
+        class: Germ\Twig\RouteExtension
+        public: false
+        tags:
+            - { name: twig.extension }
+
+    Germ\Manager\EventManager:
+        class: Germ\Manager\EventManager
+        calls:
+            - [setPomm, ['@pomm']]
+
+    Germ\Filter\Church\Searcher:
+        class: Germ\Filter\Church\Searcher
+        autowire: true
+        tags:
+            - { name: "Germ\\Filter\\AbstractSearcher" }
+
+    Germ\Filter\Census\Searcher:
+        class: Germ\Filter\Census\Searcher
+        autowire: true
+        tags:
+            - { name: "Germ\\Filter\\AbstractSearcher" }
+
+    Germ\Model\Germ\Church\ChurchSaver:
+        class: Germ\Model\Germ\Church\ChurchSaver
+        autowire: true
+
+    Germ\Filter\Church\CriteriaTerms:
+        class: Germ\Filter\Church\CriteriaTerms
+        autowire: true
+        tags:
+            - { name: "Germ\\Filter\\Church\\Searcher" }
+
+    Germ\Filter\Person\Searcher:
+        class: Germ\Filter\Person\Searcher
+        autowire: true
+        tags:
+            - { name: "Germ\\Filter\\AbstractSearcher" }
+
+    Germ\Filter\Person\CriteriaTerms:
+        class: Germ\Filter\Person\CriteriaTerms
+        autowire: true
+        tags:
+            - { name: "Germ\\Filter\\Person\\Searcher" }
+
+    Germ\Filter\Person\CriteriaStatus:
+        class: Germ\Filter\Person\CriteriaStatus
+        autowire: true
+        tags:
+            - { name: "Germ\\Filter\\Person\\Searcher" }
+
+    Germ\Filter\Person\CriteriaRoles:
+        class: Germ\Filter\Person\CriteriaRoles
+        autowire: true
+        tags:
+            - { name: "Germ\\Filter\\Person\\Searcher" }
+
+    Germ\Filter\Person\CriteriaChurch:
+        class: Germ\Filter\Person\CriteriaChurch
+        autowire: true
+        tags:
+            - { name: "Germ\\Filter\\Person\\Searcher" }
+
+    Germ\Filter\Person\CriteriaChurch2:
+        class: Germ\Filter\Person\CriteriaChurch
+        autowire: true
+        tags:
+            - { name: "Germ\\Filter\\Census\\Searcher" }
+
+    Germ\Person\RoleManager:
+        class: Germ\Person\RoleManager
+        calls:
+            - [setConfig, ['%germ.roles%']]
+        autowire: true
+
+    Germ\Person\Membership:
+        class: Germ\Person\Membership
+        autowire: true
+
+    Germ\Model\Germ\Person\PersonFinder:
+        class: Germ\Model\Germ\Person\PersonFinder
+        autowire: true
+
+    Germ\Model\Germ\Church\ChurchFinder:
+        class: Germ\Model\Germ\Church\ChurchFinder
+        autowire: true
+
+    Germ\Model\Germ\Census\CensusFinder:
+        class: Germ\Model\Germ\Census\CensusFinder
+        autowire: true
+
+    Germ\Model\Germ\Census\CensusSaver:
+        class: Germ\Model\Germ\Census\CensusSaver
+        autowire: true
+
+    Germ\Model\Germ\Person\PersonSaver:
+        class: Germ\Model\Germ\Person\PersonSaver
+        autowire: true
+
+    Germ\Model\Germ\Person\AccountSaver:
+        class: Germ\Model\Germ\Person\AccountSaver
+        autowire: true
+
+    Germ\Type\PersonType:
+        class: Germ\Type\PersonType
+        autowire: true
+        tags:
+            - { name: form.type }
+
+    Germ\Type\AccountType:
+        class: Germ\Type\AccountType
+        autowire: true
+        tags:
+            - { name: form.type }
+
+    Germ\Email\Mailer:
+        class: Germ\Email\Mailer
+        autowire: true
+        calls:
+            - [setEmailFrom, ["%germ.email.from%"]]
+
+    Germ\Type\CensusType:
+        class: Germ\Type\CensusType
+        autowire: true
+        tags:
+            - { name: form.type }

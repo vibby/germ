@@ -1,8 +1,8 @@
 <?php
 
-namespace GermBundle\Filter\Criteria;
+namespace Germ\Filter\Criteria;
 
-use GermBundle\Filter\Criteria\AbstractCriteria;
+use Germ\Filter\Criteria\AbstractCriteria;
 use Symfony\Component\Form\Form;
 use PommProject\Foundation\Where;
 use PommProject\ModelManager\Model\Projection;

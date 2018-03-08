@@ -1,6 +1,6 @@
 <?php
 
-namespace GermBundle\Model\Germ\EventSchema;
+namespace Germ\Model\Germ\EventSchema;
 
 use PommProject\ModelManager\Model\Model;
 use PommProject\ModelManager\Model\Projection;
@@ -9,8 +9,8 @@ use PommProject\ModelManager\Model\ModelTrait\ReadQueries;
 
 use PommProject\Foundation\Where;
 
-use GermBundle\Model\Germ\EventSchema\AutoStructure\EventType as EventTypeStructure;
-use GermBundle\Model\Germ\EventSchema\EventType;
+use Germ\Model\Germ\EventSchema\AutoStructure\EventType as EventTypeStructure;
+use Germ\Model\Germ\EventSchema\EventType;
 
 /**
  * EventTypeModel
@@ -33,6 +33,6 @@ class EventTypeModel extends Model
     public function __construct()
     {
         $this->structure = new EventTypeStructure;
-        $this->flexible_entity_class = '\GermBundle\Model\Germ\EventSchema\EventType';
+        $this->flexible_entity_class = '\Germ\Model\Germ\EventSchema\EventType';
     }
 }

@@ -1,8 +1,8 @@
 <?php
 
-namespace GermBundle\Filter\Church;
+namespace Germ\Filter\Church;
 
-use GermBundle\Filter\Criteria\AbstractCriteriaTerms;
+use Germ\Filter\Criteria\AbstractCriteriaTerms;
 
 class CriteriaTerms extends AbstractCriteriaTerms
 {

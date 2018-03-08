@@ -1,8 +1,8 @@
 <?php
 
-namespace GermBundle\Filter\Person;
+namespace Germ\Filter\Person;
 
-use GermBundle\Filter\AbstractSearcher;
+use Germ\Filter\AbstractSearcher;
 
 class Searcher extends AbstractSearcher
 {

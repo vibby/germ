@@ -1,6 +1,6 @@
 <?php
 
-namespace GermBundle\Filter\Criteria;
+namespace Germ\Filter\Criteria;
 
 use Symfony\Component\Form\Form;
 use PommProject\Foundation\Where;

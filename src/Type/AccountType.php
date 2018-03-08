@@ -1,6 +1,6 @@
 <?php
 
-namespace GermBundle\Type;
+namespace Germ\Type;
 
 use Symfony\Component\Form;
 use Symfony\Component\Form\Extension\Core\Type;

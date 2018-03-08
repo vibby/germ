@@ -1,6 +1,6 @@
 <?php
 
-namespace GermBundle\Person;
+namespace Germ\Person;
 
 use Symfony\Component\Security\Core\Role\Role;
 use Symfony\Component\Translation\TranslatorInterface;

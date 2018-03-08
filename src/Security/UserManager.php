@@ -1,6 +1,6 @@
 <?php
 
-namespace GermBundle\Security;
+namespace Germ\Security;
 
 use Vibby\PommProjectFosUserBundle\Manager\UserManager as BaseUserManager;
 use FOS\UserBundle\Model\UserInterface;

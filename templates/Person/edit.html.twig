@@ -1,0 +1,86 @@
+{% extends 'Germ::base.html.twig' %}
+
+{% block main_width %}6{% endblock %}
+{% block right_width %}6{% endblock %}
+
+{% block content_main %}
+	<div class="panel panel-default">
+		<div class="panel-body">
+			{{ form_start(form) }}
+			{{ form_widget(form) }}
+			<button class="btn btn-primary" type="submit">{% trans %}Save{% endtrans %}</button>
+			{% if mode == 'edit' %}
+				{% if form.vars.value.is_deleted %}
+					<a href="{{ path('germ_person_recreate', {'personSlug': form.vars.value.slug}) }}" class="btn btn-danger">
+						{% trans %}Recreate person{% endtrans %}
+					</a>
+				{% endif %}
+				{% if account is defined and account and account == currentAccount %}
+					<button type="button" class="btn btn-danger disabled">
+						{% trans %}You cannot remove yourself{% endtrans %}
+					</button>
+				{% else %}
+					<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confirmRemoveModal">
+						{% trans %}Remove person{% endtrans %}
+					</button>
+
+					<!-- Modal -->
+					<div class="modal fade" id="confirmRemoveModal" tabindex="-1" role="dialog" aria-labelledby="confirmRemoveModalLabel">
+						<div class="modal-dialog" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+									<h4 class="modal-title" id="myModalLabel">{% trans %}Remove person{% endtrans %}</h4>
+								</div>
+								<div class="modal-body">
+									{% trans %}Are you sure you want to remove this person ?{% endtrans %} {% trans %}This action can be canceled by admin only.{% endtrans %}
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-default" data-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
+									<a href="{{ path('germ_person_remove', {'personSlug': form.vars.value.slug}) }}" class="btn btn-danger">{% trans %}Remove person{% endtrans %}</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				{% endif %}
+			{% endif %}
+			{{ form_end(form) }}
+		</div>
+	</div>
+{% endblock %}
+
+{% block content_right %}
+	{% if accountForm is defined and account is defined and (not account or account.enabled) %}
+		<div class="panel panel-default">
+			<div class="panel-body">
+				{{ form_start(accountForm) }}
+				{{ form_widget(accountForm) }}
+				<button class="btn btn-primary" type="submit">{% trans %}Save{% endtrans %}</button>
+				{{ form_end(accountForm) }}
+			</div>
+		</div>
+	{% endif %}
+	{% if account is defined and account %}
+		{% if account == currentAccount %}
+			<button type="button" class="btn btn-danger disabled">
+				{% trans %}You cannot deactivate your account{% endtrans %}
+			</button>
+		{% elseif not account.enabled %}
+			<a class="btn btn-default" href="{{ path('germ_person_account_enable', {'personSlug': form.vars.value.slug}) }}" data-toggle="tooltip" data-placement="left" title="{% trans %}The person will be able to connect this application{% endtrans %}">{% trans %}Activate account{% endtrans %}</a>
+		{% elseif account.enabled %}
+			<a class="btn btn-default btn-warning" href="{{ path('germ_person_account_disable', {'personSlug': form.vars.value.slug}) }}" data-toggle="tooltip" data-placement="left" title="{% trans %}The person wont be able to connect this application{% endtrans %}">{% trans %}Desactivate account{% endtrans %}</a>
+		{% endif %}
+	{% endif %}
+{% endblock %}
+
+{% block foot_script %}
+    {{ parent() }}
+    {% javascripts
+        '@MopaBootstrapBundle/Resources/public/bootstrap/js/tooltip.js'
+        '@MopaBootstrapBundle/Resources/public/bootstrap/js/*.js'
+        '@MopaBootstrapBundle/Resources/public/js/mopabootstrap-collection.js'
+        '@MopaBootstrapBundle/Resources/public/js/mopabootstrap-subnav.js'
+    %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock foot_script %}

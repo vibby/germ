@@ -1,8 +1,8 @@
 <?php
 
-namespace GermBundle\EventSubscriber;
+namespace Germ\EventSubscriber;
 
-use GermBundle\Model\Germ\AbstractFinder;
+use Germ\Model\Germ\AbstractFinder;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Knp\Component\Pager\Event\ItemsEvent;
 use PommProject\Foundation\Where;

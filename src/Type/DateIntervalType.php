@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace GermBundle\Type;
+namespace Germ\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Exception\InvalidConfigurationException;

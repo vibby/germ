@@ -1,8 +1,8 @@
 <?php
 
-namespace GermBundle\Filter;
+namespace Germ\Filter;
 
-use GermBundle\Filter\Criteria\AbstractCriteria;
+use Germ\Filter\Criteria\AbstractCriteria;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\Extension\Core\Type\FormType;

@@ -1,6 +1,6 @@
 <?php
 
-namespace GermBundle\Model\Germ\EventSchema;
+namespace Germ\Model\Germ\EventSchema;
 
 use PommProject\ModelManager\Model\Model;
 use PommProject\ModelManager\Model\Projection;
@@ -8,8 +8,8 @@ use PommProject\ModelManager\Model\ModelTrait\WriteQueries;
 
 use PommProject\Foundation\Where;
 
-use GermBundle\Model\Germ\EventSchema\AutoStructure\Docket as DocketStructure;
-use GermBundle\Model\Germ\EventSchema\Docket;
+use Germ\Model\Germ\EventSchema\AutoStructure\Docket as DocketStructure;
+use Germ\Model\Germ\EventSchema\Docket;
 
 /**
  * DocketModel
@@ -32,7 +32,7 @@ class DocketModel extends Model
     public function __construct()
     {
         $this->structure = new DocketStructure;
-        $this->flexible_entity_class = '\GermBundle\Model\Germ\EventSchema\Docket';
+        $this->flexible_entity_class = '\Germ\Model\Germ\EventSchema\Docket';
     }
 
     public function getDocketsAndAssignationsForEvent(Event $event)
@@ -43,15 +43,15 @@ class DocketModel extends Model
 
         $assignationModel = $this
             ->getSession()
-            ->getModel('\GermBundle\Model\Germ\EventSchema\AssignationModel')
+            ->getModel('\Germ\Model\Germ\EventSchema\AssignationModel')
             ;
         $accountModel = $this
             ->getSession()
-            ->getModel('\GermBundle\Model\Germ\PersonSchema\AccountModel')
+            ->getModel('\Germ\Model\Germ\PersonSchema\AccountModel')
             ;
         $personModel = $this
             ->getSession()
-            ->getModel('\GermBundle\Model\Germ\PersonSchema\PersonModel')
+            ->getModel('\Germ\Model\Germ\PersonSchema\PersonModel')
             ;
 
         $sql = <<<SQL

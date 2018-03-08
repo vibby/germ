@@ -1,6 +1,6 @@
 <?php
 
-namespace GermBundle\Model\Germ\EventSchema;
+namespace Germ\Model\Germ\EventSchema;
 
 use PommProject\ModelManager\Model\FlexibleEntity;
 use PommProject\ModelManager\Exception\ModelException;

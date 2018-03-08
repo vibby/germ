@@ -1,6 +1,6 @@
 <?php
 
-namespace GermBundle\Security;
+namespace Germ\Security;
 
 use FOS\UserBundle\Model\UserInterface;
 use FOS\UserBundle\Util\CanonicalFieldsUpdater as BaseCanonicalFieldsUpdater;

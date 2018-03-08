@@ -1,10 +1,10 @@
 <?php
 
-namespace GermBundle\Model\Germ\Census;
+namespace Germ\Model\Germ\Census;
 
-use GermBundle\Filter\FilterFinder;
-use GermBundle\Model\Germ\AbstractFinder;
-use GermBundle\Model\Germ\ChurchSchema\CensusModel;
+use Germ\Filter\FilterFinder;
+use Germ\Model\Germ\AbstractFinder;
+use Germ\Model\Germ\ChurchSchema\CensusModel;
 use PommProject\Foundation\Pomm;
 use PommProject\Foundation\Where;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;

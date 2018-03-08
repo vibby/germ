@@ -1,0 +1,21 @@
+germ_event_list:
+    path:     /
+    defaults: { _controller: Germ:Event:list }
+
+germ_event_create:
+    path:     /create
+    defaults: { _controller: Germ:Event:create }
+
+germ_event_edit:
+    path:     /edit/{eventId}
+    defaults: { _controller: Germ:Event:edit }
+
+germ_event_show:
+    path:     /{eventId}
+    defaults: { _controller: Germ:Event:show }
+    requirements:
+        eventId:  \d
+
+germ_event_remove:
+    path:     /sremove/{eventId}
+    defaults: { _controller: Germ:Event:remove }
