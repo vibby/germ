@@ -6,7 +6,7 @@ use Germ\Filter\Criteria\AbstractCriteria;
 use Symfony\Component\Form\Form;
 use PommProject\Foundation\Where;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use PommProject\Foundation\Pomm;
 use Germ\Model\Germ\ChurchSchema\ChurchModel;
 
@@ -17,7 +17,7 @@ class CriteriaChurch extends AbstractCriteria
     private $authorisationChecker;
     private $model;
 
-    public function __construct(AuthorizationChecker $authorisationChecker, Pomm $pomm)
+    public function __construct(AuthorizationCheckerInterface $authorisationChecker, Pomm $pomm)
     {
         $this->authorisationChecker = $authorisationChecker;
         /** @var ChurchModel model */

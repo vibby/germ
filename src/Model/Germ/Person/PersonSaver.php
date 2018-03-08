@@ -7,8 +7,8 @@ use Germ\Model\Germ\PersonSchema\AccountModel;
 use Germ\Model\Germ\PersonSchema\Person;
 use Germ\Model\Germ\PersonSchema\PersonModel;
 use PommProject\Foundation\Pomm;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
-use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class PersonSaver extends AbstractSaver
 {
@@ -18,7 +18,7 @@ class PersonSaver extends AbstractSaver
     private $user;
     private $authorisationChecker;
 
-    public function __construct(Pomm $pomm, PersonFinder $personFinder, TokenStorage $tokenStorage, AuthorizationChecker $authorisationChecker)
+    public function __construct(Pomm $pomm, PersonFinder $personFinder, TokenStorageInterface $tokenStorage, AuthorizationCheckerInterface $authorisationChecker)
     {
         $this->model = $pomm['germ']->getModel(self::getModelClassName());
         $this->modelAccount = $pomm['germ']->getModel(AccountModel::class);

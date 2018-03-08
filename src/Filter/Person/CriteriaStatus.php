@@ -10,7 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Security\Core\Role\RoleHierarchy;
 use Symfony\Component\Security\Core\Role\Role;
 use Germ\Person\RoleManager;
-use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use PommProject\Foundation\Pomm;
 use Germ\Model\Germ\ChurchSchema\ChurchModel;
 
@@ -22,7 +22,7 @@ class CriteriaStatus extends AbstractCriteria
     private $model;
     protected $data = [0];
 
-    public function __construct(AuthorizationChecker $authorisationChecker, Pomm $pomm)
+    public function __construct(AuthorizationCheckerInterface $authorisationChecker, Pomm $pomm)
     {
         $this->authorisationChecker = $authorisationChecker;
         $this->model = $pomm['germ']->getModel(ChurchModel::class);

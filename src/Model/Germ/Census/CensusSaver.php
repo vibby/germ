@@ -6,8 +6,8 @@ use Germ\Model\Germ\AbstractSaver;
 use Germ\Model\Germ\ChurchSchema\Census;
 use Germ\Model\Germ\ChurchSchema\CensusModel;
 use PommProject\Foundation\Pomm;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
-use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class CensusSaver extends AbstractSaver
 {
@@ -16,7 +16,7 @@ class CensusSaver extends AbstractSaver
     private $user;
     private $authorisationChecker;
 
-    public function __construct(Pomm $pomm, CensusFinder $censusFinder, TokenStorage $tokenStorage, AuthorizationChecker $authorisationChecker)
+    public function __construct(Pomm $pomm, CensusFinder $censusFinder, TokenStorageInterface $tokenStorage, AuthorizationCheckerInterface $authorisationChecker)
     {
         parent::__construct($pomm);
         $this->user = $tokenStorage->getToken()->getUser();
