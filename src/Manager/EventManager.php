@@ -2,6 +2,8 @@
 
 namespace Germ\Manager;
 
+use PommProject\Foundation\Pomm;
+
 /**
  * EventManager
  *
@@ -14,7 +16,7 @@ class EventManager
     /**
      * set pomm
      */
-    public function setPomm($pomm)
+    public function __construct(Pomm $pomm)
     {
         $this->pomm = $pomm;
     }
@@ -27,10 +29,5 @@ class EventManager
 
         $eventModel = $this->pomm['germ']->getModel('Germ\Model\Germ\EventSchema\EventModel');
         $eventTypeModel = $this->pomm['germ']->getModel('Germ\Model\Germ\EventSchema\EventTypeModel');
-
-
-
-
-
     }
 }

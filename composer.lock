@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "62efc61da63a5f17d1a3b3dca2d7eb32",
+    "content-hash": "282f84a8750511143071734dced4dd06",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -3250,6 +3250,56 @@
             "time": "2018-03-08T11:13:12+00:00"
         },
         {
+            "name": "fzaninotto/faker",
+            "version": "v1.7.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/fzaninotto/Faker.git",
+                "reference": "d3ed4cc37051c1ca52d22d76b437d14809fc7e0d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/d3ed4cc37051c1ca52d22d76b437d14809fc7e0d",
+                "reference": "d3ed4cc37051c1ca52d22d76b437d14809fc7e0d",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.3.3 || ^7.0"
+            },
+            "require-dev": {
+                "ext-intl": "*",
+                "phpunit/phpunit": "^4.0 || ^5.0",
+                "squizlabs/php_codesniffer": "^1.5"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.8-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Faker\\": "src/Faker/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "François Zaninotto"
+                }
+            ],
+            "description": "Faker is a PHP library that generates fake data for you.",
+            "keywords": [
+                "data",
+                "faker",
+                "fixtures"
+            ],
+            "time": "2017-08-15T16:48:10+00:00"
+        },
+        {
             "name": "php-cs-fixer/diff",
             "version": "v1.3.0",
             "source": {
@@ -3299,6 +3349,58 @@
                 "diff"
             ],
             "time": "2018-02-15T16:58:55+00:00"
+        },
+        {
+            "name": "pragmafabrik/pomm-faker",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pragmafabrik/Pomm2Faker.git",
+                "reference": "dd74105592419e2c4c7ff95561d37f34c2dfef57"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pragmafabrik/Pomm2Faker/zipball/dd74105592419e2c4c7ff95561d37f34c2dfef57",
+                "reference": "dd74105592419e2c4c7ff95561d37f34c2dfef57",
+                "shasum": ""
+            },
+            "require": {
+                "fzaninotto/faker": "~1.4",
+                "pomm-project/foundation": "2.*@dev"
+            },
+            "require-dev": {
+                "atoum/atoum": "~1.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "PragmaFabrik\\Pomm\\Faker\\": "sources/lib"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Grégoire HUBERT",
+                    "email": "hubert.greg@gmail.com",
+                    "homepage": "http://www.coolkeums.org"
+                }
+            ],
+            "description": "Faker API for Pomm2",
+            "homepage": "http://www.pomm-project.org",
+            "keywords": [
+                "database",
+                "framework",
+                "postgresql"
+            ],
+            "time": "2017-11-16T19:21:55+00:00"
         },
         {
             "name": "symfony/phpunit-bridge",
@@ -3430,12 +3532,13 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "friendsofsymfony/user-bundle": 20,
-        "pomm-project/pomm-bundle": 20,
-        "pomm-project/pomm-symfony-bridge": 20,
+        "pomm-project/cli": 20,
         "pomm-project/foundation": 20,
         "pomm-project/model-manager": 20,
-        "pomm-project/cli": 20,
-        "vibby/pomm-project-fos-user-bundle": 20
+        "pomm-project/pomm-bundle": 20,
+        "pomm-project/pomm-symfony-bridge": 20,
+        "vibby/pomm-project-fos-user-bundle": 20,
+        "pragmafabrik/pomm-faker": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
