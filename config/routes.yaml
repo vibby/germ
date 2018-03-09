@@ -1,6 +1,6 @@
 germ_homepage:
     path:     /
-    defaults: { _controller: Germ:Main:index }
+    controller: Germ\Controller\MainController::index
 
 fos_user:
     resource: "@FOSUserBundle/Resources/config/routing/all.xml"

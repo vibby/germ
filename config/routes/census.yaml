@@ -1,7 +1,7 @@
 germ_census_list:
     path:     /censuses_{page}.{_format}
+    controller: Germ\Controller\CensusController::list
     defaults:
-        _controller: Germ:Census:list
         _format: html
         page: 1
     requirements:
@@ -9,21 +9,21 @@ germ_census_list:
 
 germ_census_filter:
     path:     /filter/{page}/{filters}
+    controller: Germ\Controller\CensusController::list
     defaults:
         _format: html
-        _controller: Germ:Census:list
         page: 1
     requirements:
         filters: ".*"
 
 germ_census_edit:
     path:     /edit/{censusId}
-    defaults: { _controller: Germ:Census:edit }
+    controller: Germ\Controller\CensusController::edit
 
 germ_census_remove:
     path:     /remove/{censusId}
-    defaults: { _controller: Germ:Census:remove }
+    controller: Germ\Controller\CensusController::remove
 
 germ_census_create:
     path:     /create
-    defaults: { _controller: Germ:Census:create }
+    controller: Germ\Controller\CensusController::create

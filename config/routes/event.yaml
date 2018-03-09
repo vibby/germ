@@ -1,21 +1,21 @@
 germ_event_list:
     path:     /
-    defaults: { _controller: Germ:Event:list }
+    controller: Germ\Controller\EventController::list
 
 germ_event_create:
     path:     /create
-    defaults: { _controller: Germ:Event:create }
+    controller: Germ\Controller\ChurchController::create
 
 germ_event_edit:
     path:     /edit/{eventId}
-    defaults: { _controller: Germ:Event:edit }
+    controller: Germ\Controller\ChurchController::edit
 
 germ_event_show:
     path:     /{eventId}
-    defaults: { _controller: Germ:Event:show }
+    controller: Germ\Controller\ChurchController::show
     requirements:
         eventId:  \d
 
 germ_event_remove:
     path:     /sremove/{eventId}
-    defaults: { _controller: Germ:Event:remove }
+    controller: Germ\Controller\ChurchController::remove

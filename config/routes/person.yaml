@@ -1,48 +1,50 @@
 germ_person_filter:
     path:     /filter/{page}/{filters}
+    controller: Germ\Controller\PersonController::list
     defaults:
         _format: html
-        _controller: Germ:Person:list
         page: 1
     requirements:
         filters: ".*"
 
 germ_person_show:
     path:     /show/{personSlug}
-    defaults: { _controller: Germ:Person:show }
+    controller: Germ\Controller\PersonController::show
 
 germ_person_edit:
     path:     /edit/{personSlug}
-    defaults: { _controller: Germ:Person:edit }
+    controller: Germ\Controller\PersonController::edit
 
 germ_person_edit_myself:
     path:     /edit_myself
-    defaults: { _controller: Germ:Person:edit }
+    controller: Germ\Controller\PersonController::edit
 
 germ_person_remove:
     path:     /remove/{personSlug}
-    defaults: { _controller: Germ:Person:remove }
+    controller: Germ\Controller\PersonController::remove
 
 germ_person_recreate:
     path:     /recreate/{personSlug}
-    defaults: { _controller: Germ:Person:recreate  }
+    controller: Germ\Controller\PersonController::recreate
 
 germ_person_create:
     path:     /create
-    defaults: { _controller: Germ:Person:create }
+    controller: Germ\Controller\PersonController::create
 
 germ_person_account_disable:
     path:     /disable/{personSlug}
-    defaults: { _controller: Germ:Person:accountActivation, enable: false }
+    controller: Germ\Controller\PersonController::accountActivation
+    defaults: { enable: false }
 
 germ_person_account_enable:
     path:     /enable/{personSlug}
-    defaults: { _controller: Germ:Person:accountActivation, enable: true }
+    controller: Germ\Controller\PersonController::accountActivation
+    defaults: { enable: true }
 
 germ_person_list:
     path:     /{page}.{_format}
+    controller: Germ\Controller\PersonController::list
     defaults:
-        _controller: Germ:Person:list
         _format: html
         page: 1
     requirements:
