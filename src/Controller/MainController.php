@@ -8,6 +8,6 @@ class MainController extends Controller
 {
     public function indexAction()
     {
-        return $this->render('Germ:Main:index.html.twig');
+        return $this->render('Main/index.html.twig');
     }
 }

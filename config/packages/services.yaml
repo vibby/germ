@@ -21,12 +21,6 @@ services:
     Symfony\Component\Security\Core\Role\RoleHierarchyInterface:
         alias: security.role_hierarchy
 
-#    security.role_hierarchy:
-#        alias: Symfony\Component\Security\Core\Role\RoleHierarchy
-#
-#    pomm:
-#        alias: PommProject\Foundation\Pomm
-
     Germ\EventSubscriber\PommPaginatorSubscriber:
         class: Germ\EventSubscriber\PommPaginatorSubscriber
         public: false
@@ -196,3 +190,6 @@ services:
         autowire: true
         tags:
             - { name: form.type }
+
+    Germ\Menu\Builder:
+        autowire: true

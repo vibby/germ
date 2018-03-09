@@ -61,6 +61,7 @@ twig:
         timezone: Europe/Paris
     globals:
         locales: "%locales%"
+        menuBuilder: "@Germ\\Menu\\Builder"
 
 framework:
     #esi:             ~

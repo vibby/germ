@@ -56,10 +56,10 @@ security:
                 lifetime: 604800 # 1 week in seconds
                 path: /
 
-#    access_control:
-#        - { path: ^/(en|fr|de)/access/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-#        - { path: ^/person/create, roles: ROLE_PERSON_CREATE }
-#        - { path: ^/person/delete, roles: ROLE_PERSON_DELETE }
-#        - { path: ^/person/edit, roles: ROLE_PERSON_EDIT }
-#        - { path: ^/person, roles: ROLE_PERSON_LIST }
-#        - { path: ^/, roles: IS_AUTHENTICATED_FULLY }
+    access_control:
+        - { path: ^/(en|fr|de)/access/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/person/create, roles: ROLE_PERSON_CREATE }
+        - { path: ^/person/delete, roles: ROLE_PERSON_DELETE }
+        - { path: ^/person/edit, roles: ROLE_PERSON_EDIT }
+        - { path: ^/person, roles: ROLE_PERSON_LIST }
+        - { path: ^/, roles: IS_AUTHENTICATED_FULLY }

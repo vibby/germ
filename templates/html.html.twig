@@ -9,17 +9,8 @@
 <head>
     <meta charset="{{ _charset }}" />
     {% block head_style %}
-        {# Override this block to add your own files! #}
-        {% stylesheets
-            '@MopaBootstrapBundle/Resources/public/less/mopabootstrapbundle.less'
-             filter='less'
-        %}
-        <link href="{{ asset_url }}" type="text/css" rel="stylesheet" media="screen" />
-        {% endstylesheets %}
-        {# To use this without less use the base_css.html.twig template as your base
-         # Be sure you understand whats going on: have a look into
-         # https://github.com/phiamo/MopaBootstrapBundle/blob/master/Resources/doc/css-vs-less.md
-         #}
+         {#<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">#}
+         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
          <style type="text/css">
             @font-face {
                 font-family: 'advent_sanslogo';
@@ -35,11 +26,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     {% block head_script %}
-    {% javascripts
-        'http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js'
-    %}
-        <script type="text/javascript" src="{{ asset_url }}"></script>
-    {% endjavascripts %}
+    {#{% javascripts#}
+        {#'http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js'#}
+    {#%}#}
+        {#<script type="text/javascript" src="{{ asset_url }}"></script>#}
+    {#{% endjavascripts %}#}
     {% endblock head_script %}
 
     <title>{% block title %}Germ Adventiste Nantes{% endblock title %}</title>
@@ -130,25 +121,8 @@
     {% endblock body_end_before_js %}
 
     {% block foot_script %}
-    {# To only use a subset or add more js overwrite and copy paste this block
-    To speed up page loads save a copy of jQuery in your project and override this block to include the correct path
-    Otherwise the regeneration is done on every load in dev more with use_controller: true
-     #}
-    {% block foot_script_assetic %}
-        {# Please add the javascripts you need in your project
-        '@MopaBootstrapBundle/Resources/public/js/mopabootstrap-subnav.js'
-        #}
-        {% javascripts
-            '@Germ/Resources/public/bootstrap/js/collapse.js'
-            '@Germ/Resources/public/bootstrap/js/tooltip.js'
-            '@Germ/Resources/public/bootstrap/js/popover.js'
-            '@MopaBootstrapBundle/Resources/public/js/mopabootstrap-collection.js'
-        %}
-        <script type="text/javascript" src="{{ asset_url }}"></script>
-        {% endjavascripts %}
-    {% endblock foot_script_assetic %}
-
-    <script type="text/javascript">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script>
         $(document).ready(function () {
             $('[data-toggle="tooltip"]').tooltip();
             $('[data-toggle="popover"]').popover();
