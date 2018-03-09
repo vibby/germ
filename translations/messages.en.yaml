@@ -78,16 +78,12 @@ Item per page: Item per page
 Search: Search
 Filter: Filter
 Role: Role
-Secretary: Secretary
-Elder: Elder
-Pastor: Pastor
 Administrator: Administrator
 Diaconate: Diaconate
 Deacon: Deacon
 Deaconess: Deaconess
 'First deacon': 'First deacon'
 'First deaconess': 'First deaconess'
-'Dept. Director': 'Dept. Director'
 Treasurer: Treasurer
 Communication: Communication
 Dept. Director: Dept. Director
@@ -110,7 +106,6 @@ Active: Active
 Removed: Removed
 Recreate person: Recreate person
 Email address: Email address
-Password: Password
 Log me in: Log me in
 Remember me: Remember me
 Password forgotten ?: Password forgotten ?

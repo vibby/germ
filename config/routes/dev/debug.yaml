@@ -5,7 +5,3 @@ _errors:
 _pomm:
     resource: "@PommBundle/Resources/config/routing.yml"
     prefix:   /_pomm
-
-_debug:
-    resource: "../../src/Resources/config/routing_dev.yml"
-    prefix:   /_debug

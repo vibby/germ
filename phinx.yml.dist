@@ -1,6 +1,6 @@
 paths:
-    migrations: %%PHINX_CONFIG_DIR%%/app/migrations
-    seeds: %%PHINX_CONFIG_DIR%%/app/seeds
+    migrations: %%PHINX_CONFIG_DIR%%/src/Migrations
+    seeds: %%PHINX_CONFIG_DIR%%/src/Seeds
 
 environments:
     default_migration_table: phinxlog

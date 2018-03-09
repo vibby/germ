@@ -1,5 +1,7 @@
 <?php
 
+namespace Germ\Migrations;
+
 use Phinx\Migration\AbstractMigration;
 
 class Event extends AbstractMigration

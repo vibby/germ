@@ -11,7 +11,7 @@ fos_user:
         _locale: fr|en|de
 
 germ_church:
-    resource: "routes/church.yml"
+    resource: "routes/church.yaml"
     prefix:   /{_locale}/church
     defaults:
         _locale: fr
@@ -19,7 +19,7 @@ germ_church:
         _locale: fr|en|de
 
 germ_person:
-    resource: "routes/person.yml"
+    resource: "routes/person.yaml"
     prefix:   /{_locale}/person
     defaults:
         _locale: fr
@@ -27,7 +27,7 @@ germ_person:
         _locale: fr|en|de
 
 germ_event:
-    resource: "routes/event.yml"
+    resource: "routes/event.yaml"
     prefix:   /{_locale}/event
     defaults:
         _locale: fr
@@ -35,7 +35,7 @@ germ_event:
         _locale: fr|en|de
 
 germ_census:
-    resource: "routes/census.yml"
+    resource: "routes/census.yaml"
     prefix:   /{_locale}/census
     defaults:
         _locale: fr

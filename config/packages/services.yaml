@@ -18,6 +18,9 @@ services:
             - "@fos_user.util.username_canonicalizer"
             - "@fos_user.util.email_canonicalizer"
 
+    Symfony\Component\Security\Core\Role\RoleHierarchyInterface:
+        alias: security.role_hierarchy
+
 #    security.role_hierarchy:
 #        alias: Symfony\Component\Security\Core\Role\RoleHierarchy
 #

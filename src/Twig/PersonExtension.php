@@ -3,9 +3,9 @@
 namespace Germ\Twig;
 
 use Germ\Filter\Person\CriteriaTerms;
-use Symfony\Component\Security\Core\Role\RoleHierarchy;
 use Symfony\Component\Security\Core\Role\Role;
 use Germ\Person\RoleManager;
+use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
 
 class PersonExtension extends \Twig_Extension
 {
@@ -13,8 +13,11 @@ class PersonExtension extends \Twig_Extension
     private $roleHierarchy;
     private $roleManager;
 
-    public function __construct(CriteriaTerms $searchTerms, RoleHierarchy $roleHierarchy, RoleManager $roleManager)
-    {
+    public function __construct(
+        CriteriaTerms $searchTerms,
+        RoleHierarchyInterface $roleHierarchy,
+        RoleManager $roleManager
+    ) {
         $this->searchTerms = $searchTerms;
         $this->roleHierarchy = $roleHierarchy;
         $this->roleManager = $roleManager;
@@ -34,7 +37,10 @@ class PersonExtension extends \Twig_Extension
     {
         $color = null;
         foreach ($this->roleManager->getColored() as $coloredRole) {
-            $hierarchyRoles = array_map(function(Role $role) {return $role->getRole();}, $this->roleHierarchy->getReachableRoles([$coloredRole]));
+            $hierarchyRoles = array_map(
+                function(Role $role) { return $role->getRole(); },
+                $this->roleHierarchy->getReachableRoles([$coloredRole])
+            );
             foreach ($roles as $role) {
                 if (in_array($role, $hierarchyRoles)) {
                     $color = $this->stringToColorCode($coloredRole->getRole());
@@ -49,7 +55,10 @@ class PersonExtension extends \Twig_Extension
     {
         $color = null;
         foreach ($this->roleManager->getColored() as $coloredRole) {
-            $hierarchyRoles = array_map(function(Role $role) {return $role->getRole();}, $this->roleHierarchy->getReachableRoles([$coloredRole]));
+            $hierarchyRoles = array_map(
+                function(Role $role) {return $role->getRole();},
+                $this->roleHierarchy->getReachableRoles([$coloredRole])
+            );
             if (in_array($role, $hierarchyRoles)) {
                 $color = $this->stringToColorCode($coloredRole->getRole());
             }
