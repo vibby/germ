@@ -2759,12 +2759,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/vibby/PommFosUserBundle.git",
-                "reference": "1fb75e77f5c609b95bb8c00cca882fdaf9a5eb24"
+                "reference": "dba0b36d171385c88a58816e53cbefd29153582a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vibby/PommFosUserBundle/zipball/1fb75e77f5c609b95bb8c00cca882fdaf9a5eb24",
-                "reference": "1fb75e77f5c609b95bb8c00cca882fdaf9a5eb24",
+                "url": "https://api.github.com/repos/vibby/PommFosUserBundle/zipball/dba0b36d171385c88a58816e53cbefd29153582a",
+                "reference": "dba0b36d171385c88a58816e53cbefd29153582a",
                 "shasum": ""
             },
             "require": {
