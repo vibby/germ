@@ -76,9 +76,17 @@ services:
 
     # search criterias
 
+    Germ\Filter\Church\Searcher:
+        tags:
+            - { name: "Germ\\Filter\\AbstractSearcher" }
+
     Germ\Filter\Church\CriteriaTerms:
         tags:
             - { name: "Germ\\Filter\\Church\\Searcher" }
+
+    Germ\Filter\Person\Searcher:
+        tags:
+            - { name: "Germ\\Filter\\AbstractSearcher" }
 
     Germ\Filter\Person\CriteriaTerms:
         tags:
@@ -95,6 +103,10 @@ services:
     Germ\Filter\Person\CriteriaChurch:
         tags:
             - { name: "Germ\\Filter\\Person\\Searcher" }
+
+    Germ\Filter\Census\Searcher:
+        tags:
+            - { name: "Germ\\Filter\\AbstractSearcher" }
 
     Germ\Filter\Person\CriteriaChurch2:
         class: Germ\Filter\Person\CriteriaChurch

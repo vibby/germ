@@ -1,6 +1,6 @@
 germ_person_filter:
     path:     /filter/{page}/{filters}
-    controller: Germ\Controller\PersonController::list
+    controller: Germ\Controller\PersonController::listAction
     defaults:
         _format: html
         page: 1
@@ -9,41 +9,41 @@ germ_person_filter:
 
 germ_person_show:
     path:     /show/{personSlug}
-    controller: Germ\Controller\PersonController::show
+    controller: Germ\Controller\PersonController::showAction
 
 germ_person_edit:
     path:     /edit/{personSlug}
-    controller: Germ\Controller\PersonController::edit
+    controller: Germ\Controller\PersonController::editAction
 
 germ_person_edit_myself:
     path:     /edit_myself
-    controller: Germ\Controller\PersonController::edit
+    controller: Germ\Controller\PersonController::editAction
 
 germ_person_remove:
     path:     /remove/{personSlug}
-    controller: Germ\Controller\PersonController::remove
+    controller: Germ\Controller\PersonController::removeAction
 
 germ_person_recreate:
     path:     /recreate/{personSlug}
-    controller: Germ\Controller\PersonController::recreate
+    controller: Germ\Controller\PersonController::recreateAction
 
 germ_person_create:
     path:     /create
-    controller: Germ\Controller\PersonController::create
+    controller: Germ\Controller\PersonController::createAction
 
 germ_person_account_disable:
     path:     /disable/{personSlug}
-    controller: Germ\Controller\PersonController::accountActivation
+    controller: Germ\Controller\PersonController::accountActivationAction
     defaults: { enable: false }
 
 germ_person_account_enable:
     path:     /enable/{personSlug}
-    controller: Germ\Controller\PersonController::accountActivation
+    controller: Germ\Controller\PersonController::accountActivationAction
     defaults: { enable: true }
 
 germ_person_list:
     path:     /{page}.{_format}
-    controller: Germ\Controller\PersonController::list
+    controller: Germ\Controller\PersonController::listAction
     defaults:
         _format: html
         page: 1

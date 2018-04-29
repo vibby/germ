@@ -1,6 +1,6 @@
 germ_census_list:
     path:     /censuses_{page}.{_format}
-    controller: Germ\Controller\CensusController::list
+    controller: Germ\Controller\CensusController::listAction
     defaults:
         _format: html
         page: 1
@@ -9,7 +9,7 @@ germ_census_list:
 
 germ_census_filter:
     path:     /filter/{page}/{filters}
-    controller: Germ\Controller\CensusController::list
+    controller: Germ\Controller\CensusController::listAction
     defaults:
         _format: html
         page: 1
@@ -18,12 +18,12 @@ germ_census_filter:
 
 germ_census_edit:
     path:     /edit/{censusId}
-    controller: Germ\Controller\CensusController::edit
+    controller: Germ\Controller\CensusController::editAction
 
 germ_census_remove:
     path:     /remove/{censusId}
-    controller: Germ\Controller\CensusController::remove
+    controller: Germ\Controller\CensusController::removeAction
 
 germ_census_create:
     path:     /create
-    controller: Germ\Controller\CensusController::create
+    controller: Germ\Controller\CensusController::createAction

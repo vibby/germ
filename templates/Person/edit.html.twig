@@ -75,12 +75,7 @@
 
 {% block foot_script %}
     {{ parent() }}
-    {% javascripts
-        '@MopaBootstrapBundle/Resources/public/bootstrap/js/tooltip.js'
-        '@MopaBootstrapBundle/Resources/public/bootstrap/js/*.js'
-        '@MopaBootstrapBundle/Resources/public/js/mopabootstrap-collection.js'
-        '@MopaBootstrapBundle/Resources/public/js/mopabootstrap-subnav.js'
-    %}
-        <script type="text/javascript" src="{{ asset_url }}"></script>
-    {% endjavascripts %}
+	<script type="text/javascript" src="{{ asset('bundle/mopabootstrap/bootstrap/js/tooltip.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('bundle/mopabootstrap/js/mopabootstrap-collection.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('bundle/mopabootstrap/js/mopabootstrap-subnav.js') }}"></script>
 {% endblock foot_script %}

@@ -2,7 +2,6 @@
 
 namespace Germ\Filter\Criteria;
 
-use Germ\Filter\Criteria\AbstractCriteria;
 use Symfony\Component\Form\Form;
 use PommProject\Foundation\Where;
 use PommProject\ModelManager\Model\Projection;

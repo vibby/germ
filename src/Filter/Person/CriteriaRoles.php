@@ -5,9 +5,8 @@ namespace Germ\Filter\Person;
 use Germ\Filter\Criteria\AbstractCriteria;
 use Symfony\Component\Form\Form;
 use PommProject\Foundation\Where;
-use PommProject\ModelManager\Model\Projection;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Security\Core\Role\RoleHierarchy;
+use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
 use Symfony\Component\Security\Core\Role\Role;
 use Germ\Person\RoleManager;
 
@@ -18,7 +17,7 @@ class CriteriaRoles extends AbstractCriteria
     private $roleHierarchy;
     private $roleManager;
 
-    public function __construct(RoleHierarchy $roleHierarchy, RoleManager $roleManager)
+    public function __construct(RoleHierarchyInterface $roleHierarchy, RoleManager $roleManager)
     {
         $this->roleHierarchy = $roleHierarchy;
         $this->roleManager = $roleManager;

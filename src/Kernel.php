@@ -2,6 +2,7 @@
 
 namespace Germ;
 
+use Germ\DependencyInjection\Compiler\FilterSearcherPass;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -32,6 +33,11 @@ class Kernel extends BaseKernel
                 yield new $class();
             }
         }
+    }
+
+    protected function build(ContainerBuilder $container)
+    {
+        $container->addCompilerPass(new FilterSearcherPass());
     }
 
     protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader)

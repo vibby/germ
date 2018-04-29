@@ -42,4 +42,14 @@ abstract class AbstractFinder
     }
 
     abstract public function getDefaultOrderBy();
+
+    public function findOneBySlug($slug)
+    {
+        return $this->findWhere(new Where('slug = $1', [':slug' => $slug]))->current();
+    }
+
+    public function findOneById($id)
+    {
+        return $this->findWhere(new Where('id = $1', [':id' => $id]))->current();
+    }
 }

@@ -2,39 +2,52 @@
 
 namespace Germ\Controller;
 
+use Germ\Filter\Church\Searcher;
+use Germ\Model\Germ\Church\ChurchFinder;
+use Germ\Model\Germ\Church\ChurchSaver;
+use Germ\Model\Germ\ChurchSchema\ChurchModel;
+use PommProject\Foundation\Pomm;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Germ\Type\ChurchType;
-use Germ\Model\Germ\ChurchSchema\Church;
-use PommProject\Foundation\Where;
 
 class ChurchController extends Controller
 {
+    private $finder;
+    private $searcher;
+    private $model;
+    private $saver;
+
+    public function __construct(ChurchFinder $churchFinder, Searcher $searcher, Pomm $pomm, ChurchSaver $saver)
+    {
+        $this->finder = $churchFinder;
+        $this->searcher = $searcher;
+        $this->saver = $saver;
+        $this->model = $pomm['germ']->getModel(ChurchModel::class);
+    }
 
     public function listAction(Request $request, $page, $search = null)
     {
-        $finder = $this->get('Germ\Model\Germ\Church\ChurchFinder');
         if ($request->get('_format') != 'html') {
-            $output['churches'] = $finder->findAll();
+            $output['churches'] = $this->finder->findAll();
         } else {
-            $searcher = $this->get('Germ\Filter\Church\Searcher');
-            if ($redirect = $searcher->handleRequest($request)) {
+            if ($redirect = $this->searcher->handleRequest($request)) {
                 return $redirect;
             }
-            $output['searchForm'] = $searcher->getForm()->createView();
+            $output['searchForm'] = $this->searcher->getForm()->createView();
             $paginator = $this->get('knp_paginator');
             $output['paginatedChurches'] = $paginator->paginate(
                 [
-                    $finder,
+                    $this->finder,
                     'paginateFilterQuery',
-                    [$searcher],
+                    [$this->searcher],
                 ],
                 $page,
                 min((int) $request->get('perPage', 30), 250)
             );
         }
 
-        $response = $this->render('Germ:Church:list.'.$request->get('_format').'.twig', $output);
+        $response = $this->render('Church/list.'.$request->get('_format').'.twig', $output);
 
         if ($request->get('_format') != 'html') {
             $response->headers->set(
@@ -56,15 +69,14 @@ class ChurchController extends Controller
         $churchForm = $this->get('form.factory')->create(ChurchType::class,$church);
         $churchForm->handleRequest($request);
         if ($churchForm->isSubmitted() && $churchForm->isValid()) {
-            $churchModel = $this->get('pomm')['germ']->getModel('Germ\Model\Germ\ChurchSchema\ChurchModel');
-            $churchModel->updateOne($church, array_keys($churchForm->getData()->extract()));
+            $this->model->updateOne($church, array_keys($churchForm->getData()->extract()));
             $this->get('session')->getFlashBag()->add('success', 'Church updated');
 
             return $this->redirectToRoute('germ_church_edit', ['churchSlug' => $church->getSlug()]);
         }
 
         return $this->render(
-            'Germ:Church:edit.html.twig',
+            'Church/edit.html.twig',
             array(
                 'mode' => 'edit',
                 'form' => $churchForm->createView(),
@@ -79,8 +91,7 @@ class ChurchController extends Controller
         $churchForm->handleRequest($request);
 
         if ($churchForm->isSubmitted() && $churchForm->isValid()) {
-            $churchModel = $this->get('pomm')['germ']->getModel('Germ\Model\Germ\ChurchSchema\ChurchModel');
-            $church = $this->get('Germ\Model\Germ\Church\ChurchSaver')->create($churchForm->getData());
+            $church = $this->saver->create($churchForm->getData());
             $translator = $this->get('translator');
             $this->get('session')->getFlashBag()->add('success', $translator->trans('Church created'));
 
@@ -88,7 +99,7 @@ class ChurchController extends Controller
         }
 
         return $this->render(
-            'Germ:Church:edit.html.twig',
+            'Church/edit.html.twig',
             array(
                 'mode' => 'create',
                 'form' => $churchForm->createView(),
@@ -99,20 +110,19 @@ class ChurchController extends Controller
     public function removeAction($churcheslug)
     {
         $church = $this->getChurchOr404($churcheslug);
-        $churchModel = $this->get('pomm')['germ']->getModel('Germ\Model\Germ\ChurchSchema\ChurchModel');
-        $churchModel->deleteOne($church);
+        $this->model->deleteOne($church);
         $this->get('session')->getFlashBag()->add('success', 'Church deleted');
 
         return $this->redirectToRoute('germ_church_list');
     }
 
-    private function getChurchOr404($churcheslug)
+    private function getChurchOr404($churchSlug)
     {
-        $churchModel = $this->get('pomm')['germ']->getModel('Germ\Model\Germ\ChurchSchema\ChurchModel');
-        $church = $churchModel->findWhere(new Where('slug = $1', [':slug' => $churcheslug]))->current();
+        $church = $this->finder->findOneBySlug($churchSlug);
         if (!$church) {
             throw $this->createNotFoundException('The church does not exist');
         }
+
         return $church;
     }
 }

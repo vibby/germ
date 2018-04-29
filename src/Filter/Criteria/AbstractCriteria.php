@@ -3,7 +3,6 @@
 namespace Germ\Filter\Criteria;
 
 use Symfony\Component\Form\Form;
-use PommProject\Foundation\Where;
 use PommProject\ModelManager\Model\Projection;
 
 abstract class AbstractCriteria
@@ -29,7 +28,7 @@ abstract class AbstractCriteria
     {
         return;
     }
-    
+
     public function urlize($data)
     {
         return $data;

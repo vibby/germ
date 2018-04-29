@@ -60,14 +60,6 @@ class PersonFinder extends AbstractFinder
         return $this->findWhere($where);
     }
 
-    public function findOneBySlug($slug)
-    {
-        $where = new Where('slug = $*', [':slug' => $slug]);
-        $where = $this->alterWhere($where);
-
-        return $this->model->findWhere($where)->current();
-    }
-
     public function findForListWhere(Where $where = null)
     {
         if (!$where) {
