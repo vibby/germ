@@ -37,6 +37,7 @@ class RemoveAllDataCommand extends ContainerAwareCommand
             DELETE FROM person.account;
             DELETE FROM person.person_church;
             DELETE FROM person.person;
+            DELETE FROM church.census;
             DELETE FROM church.church;
 SQL
         );
