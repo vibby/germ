@@ -1,10 +1,8 @@
 <?php
 
-namespace Germ\Migrations;
-
 use Phinx\Migration\AbstractMigration;
 
-class functions extends AbstractMigration
+class Functions extends AbstractMigration
 {
     public function up()
     {

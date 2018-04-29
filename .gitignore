@@ -20,5 +20,5 @@
 *.orig
 /public/js/*
 /public/css/*
-src/Migrations/*data.php
+config/migrations/*data.php
 .idea/

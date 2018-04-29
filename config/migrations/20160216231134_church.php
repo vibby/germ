@@ -1,7 +1,5 @@
 <?php
 
-namespace Germ\Migrations;
-
 use Phinx\Migration\AbstractMigration;
 
 class Church extends AbstractMigration
