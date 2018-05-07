@@ -7,6 +7,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class LocaleSubscriber implements EventSubscriberInterface
 {
+    const SESSION_KEY = '_locale';
+
     private $defaultLocale;
 
     public function __construct($defaultLocale = 'en')
@@ -23,10 +25,14 @@ class LocaleSubscriber implements EventSubscriberInterface
 
         // try to see if the locale has been set as a _locale routing parameter
         if ($locale = $request->attributes->get('_locale')) {
-            $request->getSession()->set('_locale', $locale);
+            $request->getSession()->set(self::SESSION_KEY, $locale);
+            dump('set locale in session', $locale);
         } else {
             // if no explicit locale has been set on this request, use one from the session
-            $request->setLocale($request->getSession()->get('_locale', $this->defaultLocale));
+            $lang = $request->getSession()->get(self::SESSION_KEY, $this->defaultLocale);
+            $request->setLocale($lang);
+            $request->attributes->set('_locale', $lang);
+            dump('set locale in request', $lang);
         }
     }
 

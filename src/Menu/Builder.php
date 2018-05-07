@@ -5,6 +5,7 @@ namespace Germ\Menu;
 use Knp\Menu\FactoryInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -12,12 +13,18 @@ class Builder implements ContainerAwareInterface
 {
     use ContainerAwareTrait;
 
+    private $factory;
+    private $authorizationChecker;
+    private $request;
+
     public function __construct(
         FactoryInterface $factory,
-        AuthorizationCheckerInterface $authorizationChecker
+        AuthorizationCheckerInterface $authorizationChecker,
+        RequestStack $requestStack
     ) {
         $this->factory = $factory;
         $this->authorizationChecker = $authorizationChecker;
+        $this->request = $requestStack->getCurrentRequest();
     }
 
     public function mainMenu()
@@ -25,16 +32,19 @@ class Builder implements ContainerAwareInterface
         $menu = $this->factory->createItem('root');
 
         $menu->addChild('Home', ['route' => 'germ_homepage']);
+        $routeParameters = [
+            '_locale' => $this->request->attributes->get('_locale'),
+        ];
         if ($this->authorizationChecker->isGranted('ROLE_CHURCH_LIST')) {
-            $menu->addChild('Churches', ['route' => 'germ_church_list']);
+            $menu->addChild('Churches', ['route' => 'germ_church_list', 'routeParameters' => $routeParameters]);
         }
         if ($this->authorizationChecker->isGranted('ROLE_LOCAL_CENSUS_LIST')
             || $this->authorizationChecker->isGranted('ROLE_CENSUS_LIST')
         ) {
-            $menu->addChild('Census', ['route' => 'germ_census_list']);
+            $menu->addChild('Census', ['route' => 'germ_census_list', 'routeParameters' => $routeParameters]);
         }
         if ($this->authorizationChecker->isGranted('ROLE_PERSON_LIST')) {
-            $menu->addChild('Persons', ['route' => 'germ_person_list']);
+            $menu->addChild('Persons', ['route' => 'germ_person_list', 'routeParameters' => $routeParameters]);
         }
         // if ($this->container->get('security.authorization_checker')->isGranted('ROLE_EVENT_LIST')) {
         //     $menu->addChild('Events', [

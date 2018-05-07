@@ -5,39 +5,29 @@ germ_homepage:
 fos_user:
     resource: "@FOSUserBundle/Resources/config/routing/all.xml"
     prefix:   /{_locale}/access
-    defaults:
-        _locale: fr
     requirements:
         _locale: fr|en|de
 
 germ_church:
     resource: "routes/church.yaml"
     prefix:   /{_locale}/church
-    defaults:
-        _locale: fr
     requirements:
         _locale: fr|en|de
 
 germ_person:
     resource: "routes/person.yaml"
     prefix:   /{_locale}/person
-    defaults:
-        _locale: fr
     requirements:
         _locale: fr|en|de
 
 germ_event:
     resource: "routes/event.yaml"
     prefix:   /{_locale}/event
-    defaults:
-        _locale: fr
     requirements:
         _locale: fr|en|de
 
 germ_census:
     resource: "routes/census.yaml"
     prefix:   /{_locale}/census
-    defaults:
-        _locale: fr
     requirements:
         _locale: fr|en|de
