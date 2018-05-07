@@ -1,3 +1,6 @@
+global.sitename1: Germ
+global.sitename2: Adventist
+global.baseline: Church Managment for Risponsibles and Members.
 Home: Home
 Persons: Persons
 Logout: Logout
@@ -136,3 +139,13 @@ Members: Members
 My account: My account
 You cannot deactivate your account: You cannot deactivate your account
 You cannot remove yourself: You cannot remove yourself
+Census: Census
+Welcome!: Welcome!
+GERM is the numeric space for your church: GERM is the numeric space for your church
+Read more: Read more
+New census: New census
+Here, a list of functions and abilities of this tool: Here, a list of functions and abilities of this tool
+"{0} No census|{1} 1 census|]1,Inf[ %count% censuses": "{0} No census|{1} 1 census|]1,Inf[ %count% censuses"
+Date: Date
+Count: Count
+Edit: Edit
