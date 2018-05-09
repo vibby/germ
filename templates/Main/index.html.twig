@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block content_main %}
+<div class="jumbotron">
+  <h1>{% trans %}Welcome!{% endtrans %}</h1>
+  <p>{% trans %}GERM is the numeric space for your church{% endtrans %}</p>
+  <p>
+	  <a class="btn btn-primary btn-lg" role="button" data-toggle="collapse" href="#moreAboutGerm" aria-expanded="false" aria-controls="moreAboutGerm">
+	  {% trans %}Read more{% endtrans %}
+	</a>
+	<div class="collapse" id="moreAboutGerm">
+	  <div class="well">
+	    {% trans %}Here, a list of functions and abilities of this tool{% endtrans %}
+	  </div>
+	</div>
+  </p>
+</div>
+<div class="well">
+	<h2>User context dashboard</h2>
+	<p>Here come data for current connected user. For example :
+		<ul>
+			<li>list of implications in next events - for a member</li>
+			<li>list of last included member in the church - for a secretary</li>
+			<li>list of members with missing phone, email or address - for a secretary too</li>
+			<li>last actions of some users - for a member of federation</li>
+			<li>anything else !</li>
+		</ul>
+	</p>
+</div>
+{% endblock %}
+
+
+{% block content_right %}
+	<div class="well">
+		<h2>Aside informations</h2>
+		<p>Some addtionnal general informations, like stats on members and churches, or anything not sensible.</p>
+	</div>
+{% endblock content_right %}

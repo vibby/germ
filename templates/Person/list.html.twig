@@ -1,0 +1,89 @@
+{% extends 'base.html.twig' %}
+
+{% block content_main %}
+	{% if is_granted('ROLE_PERSON_CREATE') %}
+		<a class="btn btn-primary" href="{{ path('germ_person_create') }}">
+			{% trans %}New person{% endtrans %}
+		</a>
+	{% endif  %}
+	<a class="btn btn-default" href="{{ path('germ_person_list', {_format: 'csv'}) }}">
+		{% trans %}Export CSV{% endtrans %}
+	</a>
+	<a class="btn btn-default" href="{{ path('germ_person_list', {_format: 'geojson'}) }}">
+		{% trans %}Export GeoJson{% endtrans %}
+	</a> {% trans %}to be used on{% endtrans %} <a target="_blank" href="http://geojson.io">geojson.io</a>
+	<hr />
+	<h2>
+		{% transchoice paginatedPersons.totalItemCount %}
+		    {0} No person|{1} 1 person|]1,Inf[ %count% persons
+		{% endtranschoice %}
+	</h2>
+	{{ form(searchForm) }}
+	{{ knp_pagination_render(paginatedPersons) }}
+	{% include 'Pagination/perPage.html.twig' with {'paginated': paginatedPersons} %}
+	{% if paginatedPersons.count %}
+		<table class="table table-striped table-hover">
+			<tr>
+				<th>{% trans %}Name{% endtrans %}</th>
+				<th>{% trans %}Phone{% endtrans %}</th>
+				<th>{% trans %}Address{% endtrans %}</th>
+				{% if is_granted('ROLE_CHURCH_LIST') %}
+					<th>{% trans %}Church{% endtrans %}</th>
+				{% endif %}
+			</tr>
+			{% for person in paginatedPersons.items %}
+				<tr {% if person.is_deleted %}class="danger"{% endif %}>
+					<td style="font-size: 1.6em;">
+						{% if is_granted('ROLE_PERSON_EDIT') %}
+							<a href="{{ path('germ_person_edit', {'personSlug': person.slug}) }}" data-toggle="tooltip" data-placement="left" title="{% trans with {'%name%': person} %}Edit %name%{% endtrans %}">
+						{% elseif is_granted('ROLE_PERSON_SEE') %}
+							<a href="{{ path('germ_person_show', {'personSlug': person.slug}) }}">
+						{% endif %}
+							{{ person|highlightPerson() }}
+						{% if is_granted('ROLE_PERSON_EDIT') or is_granted('ROLE_PERSON_SEE') %}
+							</a>
+						{% endif  %}<br />
+						{% for role in person.roles %}
+							<span style="background: {{ role | colorizeRole }};" class="badge">{{ role | nameRole | trans }}</span>
+						{% endfor %}
+					</td>
+					<td>
+						<a href="tel:{{ person.phone|first }}">{{ person.phone|first }}</a>
+					</td>
+					<td>
+						{{ person.address|nl2br }}
+					</td>
+					{% if is_granted('ROLE_CHURCH_LIST') %}
+						<td>
+							{% if is_granted('ROLE_CHURCH_EDIT') %}
+								<a href="{{ path('germ_church_edit', {'churchSlug': person.church_slug}) }}" data-toggle="tooltip" data-placement="left" title="{% trans with {'%name%': person.church_name} %}Edit %name%{% endtrans %}">
+							{% endif %}
+							{{ person.church_name }}
+							{% if is_granted('ROLE_CHURCH_EDIT') %}
+								</a>
+							{% endif %}
+						</td>
+					{% endif %}
+				</tr>
+			{% endfor %}
+		</table>
+	{% endif %}
+	{{ knp_pagination_render(paginatedPersons) }}
+	{% include 'Pagination/perPage.html.twig' with {'paginated': paginatedPersons} %}
+{% endblock %}
+
+{% block main_width %}{% if form is defined %}6{% else %}12{% endif %}{% endblock %}
+{% block right_width %}{% if form is defined %}6{% else %}0{% endif %}{% endblock %}
+
+{% block content_right %}
+	{% if form is defined %}
+		<div class="panel panel-default">
+			<div class="panel-body">
+				{{ form_start(form) }}
+				{{ form_widget(form) }}
+				<button class="btn btn-primary" type="submit">{% trans %}Create person{% endtrans %}</button>
+				{{ form_end(form) }}
+			</div>
+		</div>
+	{% endif %}
+{% endblock %}

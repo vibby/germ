@@ -1,6 +1,0 @@
-MopaBootstrapBundle:Form:fields.html.twig
-
-{%- block form_widget_simple -%}
-    {%- set type = type|default('text') -%}
-    <input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{% if value.format is defined and value.nonExistingProperty is not defined %}{{ value|date('d-m-Y h:i:s') }}{% elseif value.timestamp is defined and value.nonExistingProperty is not defined %}{{ value|date('d-m-Y') }}{% else %}{{ value }}{% endif %}" {% endif %}/>
-{%- endblock form_widget_simple -%}

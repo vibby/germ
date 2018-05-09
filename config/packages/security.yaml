@@ -1,0 +1,65 @@
+security:
+
+    role_hierarchy:
+        ROLE_PERSON_READ:  ROLE_PERSON_SEE, ROLE_PERSON_LIST
+        ROLE_PERSON_WRITE: ROLE_PERSON_DELETE, ROLE_PERSON_CREATE, ROLE_PERSON_EDIT
+        ROLE_PERSON_DELETED: ~
+        ROLE_EVENT_READ:   ROLE_EVENT_SEE, ROLE_EVENT_LIST
+        ROLE_EVENT_WRITE:  ROLE_EVENT_DELETE, ROLE_EVENT_CREATE, ROLE_EVENT_EDIT
+        ROLE_CHURCH_READ:  ROLE_CHURCH_SEE, ROLE_CHURCH_LIST
+        ROLE_CHURCH_WRITE: ROLE_CHURCH_DELETE, ROLE_CHURCH_CREATE, ROLE_CHURCH_EDIT
+        ROLE_LOCAL_CENSUS_READ:  ROLE_LOCAL_CENSUS_SEE, ROLE_LOCAL_CENSUS_LIST
+        ROLE_CENSUS_READ:  ROLE_CENSUS_SEE, ROLE_CENSUS_LIST, ROLE_LOCAL_CENSUS_READ
+        ROLE_LOCAL_CENSUS_WRITE: ROLE_LOCAL_CENSUS_DELETE, ROLE_LOCAL_CENSUS_CREATE, ROLE_LOCAL_CENSUS_EDIT
+        ROLE_CENSUS_WRITE: ROLE_CENSUS_DELETE, ROLE_CENSUS_CREATE, ROLE_CENSUS_EDIT
+
+        ROLE_SECRETARY:    ROLE_PERSON_READ, ROLE_PERSON_WRITE, ROLE_EVENT_WRITE, ROLE_EVENT_READ, ROLE_LOCAL_CENSUS_READ, ROLE_LOCAL_CENSUS_WRITE
+        ROLE_ELDER:        ROLE_PERSON_READ, ROLE_EVENT_READ
+        ROLE_FIRST_ELDER:  ROLE_ELDER
+        ROLE_PASTEUR:      ROLE_PERSON_READ, ROLE_EVENT_READ
+        ROLE_DEACON:       ROLE_FIRST_DEACON
+        ROLE_DEACONESS:    ROLE_FIRST_DEACONESS
+        ROLE_DIACONATE:    ROLE_DEACON, ROLE_DEACONESS
+        ROLE_FIRST_DEACON: ROLE_DEPT_DIRECTOR
+        ROLE_FIRST_DEACONESS: ROLE_DEPT_DIRECTOR
+        ROLE_DEPT_DIRECTOR: ROLE_PERSON_READ
+        ROLE_LOCAL_ADMIN:  ROLE_ELDER, ROLE_SECRETARY
+
+        ROLE_FEDERATION:   ROLE_CHURCH_READ, ROLE_CHURCH_WRITE, ROLE_CENSUS_READ, ROLE_CENSUS_WRITE
+        ROLE_ADMIN:        ROLE_LOCAL_ADMIN, ROLE_FEDERATION, ROLE_PERSON_DELETED
+
+    encoders:
+        FOS\UserBundle\Model\UserInterface: sha512
+
+    providers:
+        fos_userbundle:
+            id: fos_user.user_provider.username_email
+
+    firewalls:
+        # disables authentication for assets and the profiler, adapt it according to your needs
+        dev:
+            pattern: ^/(_(profiler|wdt|debug)|css|images|js)/
+            security: false
+
+        main:
+            anonymous: true
+            form_login:
+                login_path: fos_user_security_login
+                check_path: fos_user_security_check
+                provider: fos_userbundle
+                csrf_token_generator: security.csrf.token_manager
+            logout:
+                path: fos_user_security_logout
+                target: /
+            remember_me:
+                secret:   "%kernel.secret%"
+                lifetime: 604800 # 1 week in seconds
+                path: /
+
+    access_control:
+        - { path: ^/(en|fr|de)/access/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/person/create, roles: ROLE_PERSON_CREATE }
+        - { path: ^/person/delete, roles: ROLE_PERSON_DELETE }
+        - { path: ^/person/edit, roles: ROLE_PERSON_EDIT }
+        - { path: ^/person, roles: ROLE_PERSON_LIST }
+        - { path: ^/, roles: IS_AUTHENTICATED_FULLY }

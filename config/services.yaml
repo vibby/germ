@@ -1,0 +1,114 @@
+
+
+parameters:
+    pomm_fos_user.user_model_class: Germ\Model\Germ\PersonSchema\AccountModel
+
+services:
+
+    # Globals
+
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        public: false
+
+    Germ\:
+        resource: '../src/*'
+        exclude: '../src/{Entity,Migrations,Tests,Kernel.php}'
+
+    Germ\Controller\:
+        resource: '../src/Controller'
+        tags: ['controller.service_arguments']
+
+    _instanceof:
+#        "\\Twig_Extension":
+#            tags:
+#                - { name: twig.extension }
+
+        "Germ\\Filter\\AbstractSearcher":
+            tags:
+                - { name: Germ\\Filter\\AbstractSearcher }
+
+#        "Symfony\\Component\\Form\\AbstractType":
+#            tags:
+#                - { name: form.type }
+
+    # Alias on interfaces
+
+    FOS\UserBundle\Util\CanonicalFieldsUpdater:
+        alias: fos_user.util.canonical_fields_updater
+
+    FOS\UserBundle\Util\PasswordUpdaterInterface:
+        alias: fos_user.util.password_updater
+
+    Symfony\Component\Security\Core\Role\RoleHierarchyInterface:
+        alias: security.role_hierarchy
+
+    # Specific
+
+    Germ\Security\UserManager:
+        calls:
+            - [setPommModel, ["@pomm_fos_user_bundle.model_manager"]]
+
+    fos_user.util.canonical_fields_updater:
+        class: Germ\Security\CanonicalFieldsUpdater
+        arguments:
+            - "@fos_user.util.username_canonicalizer"
+            - "@fos_user.util.email_canonicalizer"
+
+    Germ\Person\RoleManager:
+        calls:
+            - [setConfig, ['%germ.roles%']]
+
+    Germ\Email\Mailer:
+        calls:
+            - [setEmailFrom, ["%germ.email.from%"]]
+
+    # events subscribers
+
+    Germ\EventSubscriber\PommPaginatorSubscriber:
+        tags:
+            - { name: knp_paginator.subscriber }
+
+    Germ\EventSubscriber\LocaleSubscriber:
+        tags:
+            - { name: kernel.event_subscriber }
+
+    # search criterias
+
+    Germ\Filter\Church\Searcher:
+        tags:
+            - { name: "Germ\\Filter\\AbstractSearcher" }
+
+    Germ\Filter\Church\CriteriaTerms:
+        tags:
+            - { name: "Germ\\Filter\\Church\\Searcher" }
+
+    Germ\Filter\Person\Searcher:
+        tags:
+            - { name: "Germ\\Filter\\AbstractSearcher" }
+
+    Germ\Filter\Person\CriteriaTerms:
+        tags:
+            - { name: "Germ\\Filter\\Person\\Searcher" }
+
+    Germ\Filter\Person\CriteriaStatus:
+        tags:
+            - { name: "Germ\\Filter\\Person\\Searcher" }
+
+    Germ\Filter\Person\CriteriaRoles:
+        tags:
+            - { name: "Germ\\Filter\\Person\\Searcher" }
+
+    Germ\Filter\Person\CriteriaChurch:
+        tags:
+            - { name: "Germ\\Filter\\Person\\Searcher" }
+
+    Germ\Filter\Census\Searcher:
+        tags:
+            - { name: "Germ\\Filter\\AbstractSearcher" }
+
+    Germ\Filter\Person\CriteriaChurch2:
+        class: Germ\Filter\Person\CriteriaChurch
+        tags:
+            - { name: "Germ\\Filter\\Census\\Searcher" }
