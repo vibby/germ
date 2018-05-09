@@ -3,15 +3,6 @@
     "license": "MIT",
     "type": "project",
     "description": "The Germ project. A manager for churches, designed for members at any level.",
-    "autoload": {
-        "psr-4": {
-            "": "src/"
-        },
-        "classmap": [ "app/AppKernel.php", "app/AppCache.php" ]
-    },
-    "autoload-dev": {
-        "psr-4": { "Tests\\": "tests/" }
-    },
     "repositories": [
         {
             "type": "vcs",
@@ -19,73 +10,68 @@
         }
     ],
     "require": {
-        "php": ">=5.5.9",
-        "incenteev/composer-parameter-handler" : "^2.0",
-        "sensio/distribution-bundle"           : "^5.0",
-        "sensio/framework-extra-bundle"        : "^3.0.2",
-        "symfony/monolog-bundle"               : "^3.0",
-        "symfony/assetic-bundle"               : "^2.7",
-        "symfony/polyfill-apcu"                : "^1.0",
-        "symfony/swiftmailer-bundle"           : "^2.3",
-        "twig/extensions"                      : "^1.3",
-        "twig/twig"                            : "^1.28 || ^2.0",
-        "symfony/symfony"                      : "^3",
-        "mopa/bootstrap-bundle"                : "~3.0",
-        "twbs/bootstrap"                       : "~3.3.0",
-        "knplabs/knp-paginator-bundle"         : "^2.0",
-        "knplabs/knp-menu-bundle"              : "^2.0",
-        "robmorgan/phinx"                      : "^0.6",
-        "friendsofsymfony/user-bundle"         : "dev-master",
-        "pomm-project/pomm-bundle"             : "2.*@dev",
-        "pomm-project/pomm-symfony-bridge"     : "2.*@dev",
-        "pomm-project/foundation"              : "2.*@dev",
-        "pomm-project/model-manager"           : "2.*@dev",
-        "pomm-project/cli"                     : "2.*@dev",
-        "vibby/pomm-project-fos-user-bundle"   : "dev-master",
-        "mtdowling/cron-expression"            : "1.1.*",
-        "ramsey/uuid": "^3.7"
+        "friendsofsymfony/user-bundle": "dev-master",
+        "knplabs/knp-menu-bundle": "^2.0",
+        "knplabs/knp-paginator-bundle": "^2.0",
+        "mopa/bootstrap-bundle": "3.x",
+        "mtdowling/cron-expression": "1.1.*",
+        "pomm-project/cli": "2.*@dev",
+        "pomm-project/foundation": "2.*@dev",
+        "pomm-project/model-manager": "2.*@dev",
+        "pomm-project/pomm-bundle": "2.*@dev",
+        "pomm-project/pomm-symfony-bridge": "2.*@dev",
+        "ramsey/uuid": "^3.7",
+        "robmorgan/phinx": "0.x",
+        "sensio/framework-extra-bundle": "^5.0",
+        "symfony/monolog-bundle": "^3.1",
+        "symfony/polyfill-apcu": "^1.5",
+        "symfony/swiftmailer-bundle": "^3.1",
+        "symfony/symfony": "4.x",
+        "twbs/bootstrap": "~3.3.0",
+        "twig/extensions": "^1.5",
+        "vibby/pomm-project-fos-user-bundle": "dev-master"
     },
     "require-dev": {
-        "sensio/generator-bundle": "^3.0",
-        "symfony/phpunit-bridge": "^2.7"
-    },
-    "scripts": {
-        "post-install-cmd": [
-            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget",
-            "Mopa\\Bundle\\BootstrapBundle\\Composer\\ScriptHandler::postInstallSymlinkTwitterBootstrap"
-        ],
-        "post-update-cmd": [
-            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget",
-            "Mopa\\Bundle\\BootstrapBundle\\Composer\\ScriptHandler::postInstallSymlinkTwitterBootstrap"
-        ]
+        "dama/doctrine-test-bundle": "^5.0",
+        "friendsofphp/php-cs-fixer": "^2.7",
+        "pragmafabrik/pomm-faker": "dev-master",
+        "symfony/browser-kit": "^4.0",
+        "symfony/css-selector": "^4.0",
+        "symfony/debug-bundle": "^4.0",
+        "symfony/dotenv": "^4.0",
+        "symfony/phpunit-bridge": "^4.0",
+        "symfony/stopwatch": "^4.0",
+        "symfony/web-profiler-bundle": "^4.0",
+        "symfony/web-server-bundle": "^4.0"
     },
     "config": {
         "platform": {
-            "php": "5.5.9"
+            "php": "7.1.3"
+        },
+        "preferred-install": {
+            "*": "dist"
+        },
+        "sort-packages": true
+    },
+    "autoload": {
+        "psr-4": {
+            "Germ\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": { "Germ\\Tests\\": "tests/" }
+    },
+    "scripts": {
+        "auto-scripts": {
+            "cache:clear": "symfony-cmd",
+            "assets:install --symlink --relative %PUBLIC_DIR%": "symfony-cmd",
+            "security-checker security:check": "script"
         }
     },
     "extra": {
-        "symfony-app-dir": "app",
-        "symfony-bin-dir": "bin",
-        "symfony-var-dir": "var",
-        "symfony-web-dir": "web",
-        "symfony-tests-dir": "tests",
-        "symfony-assets-install": "relative",
-        "incenteev-parameters": {
-            "file": "app/config/parameters.yml"
-        },
-        "branch-alias": {
-            "dev-master": "3.0-dev"
+        "symfony": {
+            "id": "01BY8QJHBGTYRP06WQFNY99EKP",
+            "allow-contrib": true
         }
     }
 }

@@ -1,0 +1,11 @@
+{% extends 'html.html.twig' %}
+
+{% block head_style %}
+    {{ parent() }}
+    <link href="/css/c5f4e45_security_1.css" type="text/css" rel="stylesheet" media="screen" />
+{% endblock %}
+
+{% block content %}
+  {% block fos_user_content %}
+  {% endblock fos_user_content %}
+{% endblock content %}

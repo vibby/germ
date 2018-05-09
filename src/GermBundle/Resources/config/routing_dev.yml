@@ -1,3 +1,0 @@
-germ_debug  :
-    path:     /
-    defaults: { _controller: GermBundle:Default:debug }

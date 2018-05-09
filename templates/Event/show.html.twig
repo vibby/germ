@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block content_main %}
+	<h1>{{ event }}</h1>
+	<dl>
+	  <dt>{% trans %}Type{% endtrans %}</dt>
+	  <dd>{{ event.event_type_name }}</dd>
+	  <dt>{% trans %}Date{% endtrans %}</dt>
+	  <dd>{{ event.date_from|date('Y-m-d') }}</dd>
+	  <dt>{% trans %}Duration{% endtrans %}</dt>
+	  <dd>{{ event.duration|date('H:i') }}</dd>
+	</dl>
+{% endblock %}
+
+

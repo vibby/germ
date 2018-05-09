@@ -1,0 +1,33 @@
+germ_homepage:
+    path:     /
+    controller: Germ\Controller\MainController::indexAction
+
+fos_user:
+    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+    prefix:   /{_locale}/access
+    requirements:
+        _locale: fr|en|de
+
+germ_church:
+    resource: "routes/church.yaml"
+    prefix:   /{_locale}/church
+    requirements:
+        _locale: fr|en|de
+
+germ_person:
+    resource: "routes/person.yaml"
+    prefix:   /{_locale}/person
+    requirements:
+        _locale: fr|en|de
+
+germ_event:
+    resource: "routes/event.yaml"
+    prefix:   /{_locale}/event
+    requirements:
+        _locale: fr|en|de
+
+germ_census:
+    resource: "routes/census.yaml"
+    prefix:   /{_locale}/census
+    requirements:
+        _locale: fr|en|de
