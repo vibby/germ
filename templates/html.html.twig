@@ -26,11 +26,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     {% block head_script %}
-    {#{% javascripts#}
-        {#'http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js'#}
-    {#%}#}
-        {#<script type="text/javascript" src="{{ asset_url }}"></script>#}
-    {#{% endjavascripts %}#}
     {% endblock head_script %}
 
     <title>{% block title %}Germ Adventiste Nantes{% endblock title %}</title>
@@ -121,13 +116,14 @@
     {% endblock body_end_before_js %}
 
     {% block foot_script %}
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-    <script>
-        $(document).ready(function () {
-            $('[data-toggle="tooltip"]').tooltip();
-            $('[data-toggle="popover"]').popover();
-        });
-    </script>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <script>
+            $(document).ready(function () {
+                $('[data-toggle="tooltip"]').tooltip();
+                $('[data-toggle="popover"]').popover();
+            });
+        </script>
     {% endblock foot_script %}
 {% endblock body %}
 
