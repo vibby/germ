@@ -17,8 +17,15 @@
 		{% transchoice paginatedPersons.totalItemCount %}
 		    {0} No person|{1} 1 person|]1,Inf[ %count% persons
 		{% endtranschoice %}
+		<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#filters" aria-expanded="false" aria-controls="filters">
+            {% trans %}Filter{% endtrans %}
+		</button>
 	</h2>
-	{{ form(searchForm) }}
+	<div class="collapse" id="filters">
+		<div class="well">
+            {{ form(searchForm) }}
+		</div>
+	</div>
 	{{ knp_pagination_render(paginatedPersons) }}
 	{% include 'Pagination/perPage.html.twig' with {'paginated': paginatedPersons} %}
 	{% if paginatedPersons.count %}

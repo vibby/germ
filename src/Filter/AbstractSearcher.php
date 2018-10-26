@@ -60,7 +60,10 @@ abstract class AbstractSearcher
                 $criteria->alterForm($form);
             }
             $form->add('ok', SubmitType::class, [
-                'label' => 'Filter'
+                'label' => 'Filter',
+                'attr' => [
+                    'class' => 'btn-primary',
+                ],
             ]);
 
             $this->form = $form;

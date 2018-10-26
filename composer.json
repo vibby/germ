@@ -28,6 +28,7 @@
         "symfony/polyfill-apcu": "^1.5",
         "symfony/swiftmailer-bundle": "^3.1",
         "symfony/symfony": "4.x",
+        "symfony/webpack-encore-pack": "^1.0",
         "twbs/bootstrap": "~3.3.0",
         "twig/extensions": "^1.5",
         "vibby/pomm-project-fos-user-bundle": "dev-master"

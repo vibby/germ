@@ -11,6 +11,8 @@
     {% block head_style %}
          {#<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">#}
          <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+         <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous" />
+         <link rel="stylesheet" href="{{ asset('build/app.css') }}">
          <style type="text/css">
             @font-face {
                 font-family: 'advent_sanslogo';
@@ -57,7 +59,7 @@
 {% endblock head %}
 
 {% block body_tag %}
-<body>
+<body style="background-color: #e2e0b0;">
 {% endblock body_tag %}
 
 {% block body_start %}
@@ -91,7 +93,7 @@
             {% endblock flashes %}
 
             {% block content_row %}
-            <div class="row">
+            <div class="row" style="background: #fff; padding: 1em; border-radius: 2em;">
                 {% block content %}
                 {% endblock content %}
             </div>
@@ -116,8 +118,7 @@
     {% endblock body_end_before_js %}
 
     {% block foot_script %}
-        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <script type="text/javascript" src="{{ asset('build/app.js') }}"></script>
         <script>
             $(document).ready(function () {
                 $('[data-toggle="tooltip"]').tooltip();
