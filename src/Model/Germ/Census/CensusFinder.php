@@ -43,4 +43,9 @@ class CensusFinder extends AbstractFinder
     {
         return CensusModel::class;
     }
+
+    public function findOneById($id)
+    {
+        return $this->findWhere(new Where('id_church_census = $1', [':id' => $id]))->current();
+    }
 }
