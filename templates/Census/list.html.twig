@@ -20,7 +20,7 @@
             {0} No census|{1} 1 census|]1,Inf[ %count% censuses
         {% endtranschoice %}
     </h2>
-    <div class="ct-chart ct-perfect-fourth"></div>
+    <canvas id="censusesChart" width="400" height="200"></canvas>
     {{ form(searchForm) }}
     {{ knp_pagination_render(paginatedCensuses) }}
     {% include 'Pagination/perPage.html.twig' with {'paginated': paginatedCensuses} %}
@@ -91,36 +91,121 @@
     {% endif %}
 {% endblock %}
 
-{% block foot_script_assetic %}
+{% block foot_script %}
     {{ parent() }}
-    <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
     <script>
-        var chart = new Chartist.Line(
-            '.ct-chart', {
-                series: [
-                    {% for serie in paginatedCensuses.items|group_censuses %}
-                        {
-                            name: '{{ serie.name }}',
-                            data: [
-                                {% for census in serie.censuses %}
-                                    {x: new Date({{ census.date|date('U') }}), y: {{ census.count }} },
-                                {% endfor %}
-                            ]
-                        },
-                    {% endfor %}
-                ]
-            },
+        var censuses = [
+            {% for serie in paginatedCensuses.items|group_censuses %}
             {
-                axisX: {
-                    type: Chartist.FixedScaleAxis,
-                    labelInterpolationFnc: function(value) {
-                        var date = new Date(value*1000);
-                        return date.getFullYear() + '-' + date.getMonth();
-                    }
+                label: '{{ serie.name }}',
+                data: {
+                    {% for census in serie.censuses %}
+                        {{ census.date|date('U') }}: {{ census.count }},
+                    {% endfor %}
                 },
-                low: 0,
-                showArea: true
+            },
+            {% endfor %}
+        ];
+        var allDates = [];
+        for (indexCensus in censuses) {
+            for (date in censuses[indexCensus].data) {
+                allDates.push(date);
             }
-        );
+        }
+        allDates = allDates.map(x => parseInt(x));
+        allDates.sort(function (a,b) {return a - b; });
+        labels = [];
+        for (indexDate in allDates) {
+            labels.push(moment.utc(allDates[indexDate], 'X'));
+        }
+
+        var estimateValueForDate = function(dateValueStructure, targetDate) {
+            var beforeDate = 0;
+            var afterDate = 100000000000000000;
+            for (thisDate in dateValueStructure) {
+                if (thisDate > beforeDate && thisDate < targetDate) {
+                    beforeDate = thisDate;
+                }
+                if (thisDate < afterDate && thisDate > targetDate) {
+                    afterDate = thisDate;
+                }
+            }
+            if (beforeDate === 0 || afterDate === 100000000000000000) {
+                return null;
+            }
+            decDate = afterDate - beforeDate;
+            decValue = dateValueStructure[afterDate] - dateValueStructure[beforeDate];
+            decTargetDate = targetDate - beforeDate;
+            decTargetValue = decTargetDate * decValue / decDate;
+
+            return decTargetValue + dateValueStructure[beforeDate];
+        };
+
+        var nameToColor = function (name) {
+            var stringHexNumber = (
+                parseInt(parseInt(name, 36).toExponential().slice(2,-5), 10) & 0xFFFFFF
+            ).toString(16).toUpperCase();
+
+            return '#' + ('000000' + stringHexNumber).slice(-6);
+        };
+
+        var series = [];
+        for (indexCensus in censuses) {
+            var data = [];
+            for (indexDate in allDates) {
+                if (allDates[indexDate] in censuses[indexCensus].data) {
+                    data.push(censuses[indexCensus].data[allDates[indexDate]]);
+                } else {
+                    data.push(estimateValueForDate(censuses[indexCensus].data, allDates[indexDate]));
+                }
+            }
+            series.push({
+                label:  censuses[indexCensus].label,
+                backgroundColor: Chart.helpers.color(nameToColor(censuses[indexCensus].label)).lightness(87).rgbString(),
+                borderColor: nameToColor(censuses[indexCensus].label),
+                fill: true,
+                data: data
+            });
+        }
+
+        var config = {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: series
+            },
+            options: {
+                title: {
+                    text: 'Chart.js Time Scale'
+                },
+                scales: {
+                    xAxes: [{
+                        type: 'time',
+                        time: {
+                            format: 'YYYY-MM-DD',
+                            round: 'day',
+                            tooltipFormat: 'll HH:mm'
+                        },
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Date'
+                        }
+                    }],
+                    yAxes: [{
+                        stacked: true,
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'value'
+                        }
+                    }]
+                },
+            }
+        };
+
+        window.onload = function() {
+            var ctx = document.getElementById('censusesChart').getContext('2d');
+            window.myLine = new Chart(ctx, config);
+
+        };
     </script>
 {% endblock %}

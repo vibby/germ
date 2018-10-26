@@ -12,4 +12,6 @@ const $ = require('jquery');
 global.$ = $;
 require('bootstrap');
 
+const moment = require('moment');
+global.moment = moment;
 const Chart = require('chart.js');
