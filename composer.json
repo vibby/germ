@@ -23,6 +23,7 @@
         "ramsey/uuid": "^3.7",
         "robmorgan/phinx": "0.x",
         "sensio/framework-extra-bundle": "^5.0",
+        "symfony/flex": "^1.1",
         "symfony/monolog-bundle": "^3.1",
         "symfony/polyfill-apcu": "^1.5",
         "symfony/swiftmailer-bundle": "^3.1",
