@@ -14,33 +14,29 @@ use Germ\Type\ChurchType;
 class ChurchController extends Controller
 {
     private $finder;
-    private $searcher;
     private $model;
-    private $saver;
 
-    public function __construct(ChurchFinder $churchFinder, Searcher $searcher, Pomm $pomm, ChurchSaver $saver)
+    public function __construct(ChurchFinder $churchFinder, Pomm $pomm)
     {
         $this->finder = $churchFinder;
-        $this->searcher = $searcher;
-        $this->saver = $saver;
         $this->model = $pomm['germ']->getModel(ChurchModel::class);
     }
 
-    public function listAction(Request $request, $page, $search = null)
+    public function listAction(Request $request, $page, Searcher $searcher, $search = null)
     {
         if ($request->get('_format') != 'html') {
             $output['churches'] = $this->finder->findAll();
         } else {
-            if ($redirect = $this->searcher->handleRequest($request)) {
+            if ($redirect = $searcher->handleRequest($request)) {
                 return $redirect;
             }
-            $output['searchForm'] = $this->searcher->getForm()->createView();
+            $output['searchForm'] = $searcher->getForm()->createView();
             $paginator = $this->get('knp_paginator');
             $output['paginatedChurches'] = $paginator->paginate(
                 [
                     $this->finder,
                     'paginateFilterQuery',
-                    [$this->searcher],
+                    [$searcher],
                 ],
                 $page,
                 min((int) $request->get('perPage', 30), 250)
@@ -85,13 +81,13 @@ class ChurchController extends Controller
         );
     }
 
-    public function createAction(Request $request)
+    public function createAction(Request $request, ChurchSaver $saver)
     {
         $churchForm = $this->get('form.factory')->create(ChurchType::class);
         $churchForm->handleRequest($request);
 
         if ($churchForm->isSubmitted() && $churchForm->isValid()) {
-            $church = $this->saver->create($churchForm->getData());
+            $church = $saver->create($churchForm->getData());
             $translator = $this->get('translator');
             $this->get('session')->getFlashBag()->add('success', $translator->trans('Church created'));
 
