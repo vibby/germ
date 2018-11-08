@@ -1,0 +1,35 @@
+stages:
+  - demo
+
+test:
+  stage: demo
+  image: php:7.2-fpm
+  tags:
+    - demo
+  services:
+    - postgres
+
+  variables:
+    POSTGRES_USER: germ-demo
+    POSTGRES_PASSWORD: germ-demo-pass
+    POSTGRES_DB: germ
+    DATABASE_HOST: postgres
+    DATABASE_PORT: "5432"
+
+  artifacts:
+    expire_in: 1 day
+    paths:
+      - vendor/
+      - app/config/parameters.yml
+      - var/bootstrap.php.cache
+
+  before_script:
+    - composer config cache-files-dir /cache/composer
+
+  cache:
+    paths:
+      - /cache/composer
+      - ./vendor
+
+  script:
+    - composer install --optimize-autoloader
