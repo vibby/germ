@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "282f84a8750511143071734dced4dd06",
+    "content-hash": "634e688712d566463a274daa96847a12",
     "packages": [
         {
             "name": "cakephp/cache",
@@ -1123,7 +1123,7 @@
             "keywords": [
                 "User management"
             ],
-            "time": "2018-10-15 11:35:47"
+            "time": "2018-10-15T11:35:47+00:00"
         },
         {
             "name": "jdorn/sql-formatter",
@@ -1782,7 +1782,7 @@
                 "pomm",
                 "postgresql"
             ],
-            "time": "2018-09-10 12:44:34"
+            "time": "2018-09-10T12:44:34+00:00"
         },
         {
             "name": "pomm-project/foundation",
@@ -1837,7 +1837,7 @@
                 "pomm",
                 "postgresql"
             ],
-            "time": "2018-10-03 13:08:48"
+            "time": "2018-10-03T13:08:48+00:00"
         },
         {
             "name": "pomm-project/model-manager",
@@ -1895,7 +1895,7 @@
                 "pomm",
                 "postgresql"
             ],
-            "time": "2017-02-22 13:36:45"
+            "time": "2017-02-22T13:36:45+00:00"
         },
         {
             "name": "pomm-project/pomm-bundle",
@@ -2821,7 +2821,7 @@
                 },
                 {
                     "name": "Gert de Pagter",
-                    "email": "BackEndTea@gmail.com"
+                    "email": "backendtea@gmail.com"
                 }
             ],
             "description": "Symfony polyfill for ctype functions",
@@ -3465,7 +3465,7 @@
             "support": {
                 "source": "https://github.com/vibby/PommFosUserBundle/tree/master"
             },
-            "time": "2018-04-29 18:47:53"
+            "time": "2018-04-29T18:47:53+00:00"
         }
     ],
     "packages-dev": [
@@ -4129,6 +4129,84 @@
             "time": "2017-11-16T19:21:55+00:00"
         },
         {
+            "name": "squizlabs/php_codesniffer",
+            "version": "2.9.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
+                "reference": "2acf168de78487db620ab4bc524135a13cfe6745"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/2acf168de78487db620ab4bc524135a13cfe6745",
+                "reference": "2acf168de78487db620ab4bc524135a13cfe6745",
+                "shasum": ""
+            },
+            "require": {
+                "ext-simplexml": "*",
+                "ext-tokenizer": "*",
+                "ext-xmlwriter": "*",
+                "php": ">=5.1.2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0"
+            },
+            "bin": [
+                "scripts/phpcs",
+                "scripts/phpcbf"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.x-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "CodeSniffer.php",
+                    "CodeSniffer/CLI.php",
+                    "CodeSniffer/Exception.php",
+                    "CodeSniffer/File.php",
+                    "CodeSniffer/Fixer.php",
+                    "CodeSniffer/Report.php",
+                    "CodeSniffer/Reporting.php",
+                    "CodeSniffer/Sniff.php",
+                    "CodeSniffer/Tokens.php",
+                    "CodeSniffer/Reports/",
+                    "CodeSniffer/Tokenizers/",
+                    "CodeSniffer/DocGenerators/",
+                    "CodeSniffer/Standards/AbstractPatternSniff.php",
+                    "CodeSniffer/Standards/AbstractScopeSniff.php",
+                    "CodeSniffer/Standards/AbstractVariableSniff.php",
+                    "CodeSniffer/Standards/IncorrectPatternException.php",
+                    "CodeSniffer/Standards/Generic/Sniffs/",
+                    "CodeSniffer/Standards/MySource/Sniffs/",
+                    "CodeSniffer/Standards/PEAR/Sniffs/",
+                    "CodeSniffer/Standards/PSR1/Sniffs/",
+                    "CodeSniffer/Standards/PSR2/Sniffs/",
+                    "CodeSniffer/Standards/Squiz/Sniffs/",
+                    "CodeSniffer/Standards/Zend/Sniffs/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Greg Sherwood",
+                    "role": "lead"
+                }
+            ],
+            "description": "PHP_CodeSniffer tokenizes PHP, JavaScript and CSS files and detects violations of a defined set of coding standards.",
+            "homepage": "http://www.squizlabs.com/php-codesniffer",
+            "keywords": [
+                "phpcs",
+                "standards"
+            ],
+            "time": "2018-11-07T22:31:41+00:00"
+        },
+        {
             "name": "symfony/phpunit-bridge",
             "version": "v4.1.6",
             "source": {
@@ -4252,6 +4330,40 @@
                 "shim"
             ],
             "time": "2018-08-06T14:22:27+00:00"
+        },
+        {
+            "name": "vibby/phpcs-git-pre-commit",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/vibby/phpcs-git-pre-commit.git",
+                "reference": "18a91494d6400c098159e19eac80dcb1bb0d40b6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/vibby/phpcs-git-pre-commit/zipball/18a91494d6400c098159e19eac80dcb1bb0d40b6",
+                "reference": "18a91494d6400c098159e19eac80dcb1bb0d40b6",
+                "shasum": ""
+            },
+            "require": {
+                "friendsofphp/php-cs-fixer": "^2.7",
+                "squizlabs/php_codesniffer": "^2.7"
+            },
+            "type": "scripts",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "vibby",
+                    "email": "vibby@vibby.fr"
+                }
+            ],
+            "description": "PHPCS check and php-cd-fixer before commit",
+            "support": {
+                "source": "https://github.com/vibby/phpcs-git-pre-commit/tree/master"
+            },
+            "time": "2019-03-22T11:53:56+00:00"
         }
     ],
     "aliases": [],
@@ -4264,7 +4376,8 @@
         "pomm-project/pomm-bundle": 20,
         "pomm-project/pomm-symfony-bridge": 20,
         "vibby/pomm-project-fos-user-bundle": 20,
-        "pragmafabrik/pomm-faker": 20
+        "pragmafabrik/pomm-faker": 20,
+        "vibby/phpcs-git-pre-commit": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

@@ -7,6 +7,10 @@
         {
             "type": "vcs",
             "url": "https://github.com/vibby/PommFosUserBundle"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/vibby/phpcs-git-pre-commit"
         }
     ],
     "require": {
@@ -44,7 +48,8 @@
         "symfony/phpunit-bridge": "^4.0",
         "symfony/stopwatch": "^4.0",
         "symfony/web-profiler-bundle": "^4.0",
-        "symfony/web-server-bundle": "^4.0"
+        "symfony/web-server-bundle": "^4.0",
+        "vibby/phpcs-git-pre-commit": "dev-master"
     },
     "config": {
         "platform": {
@@ -68,7 +73,13 @@
             "cache:clear": "symfony-cmd",
             "assets:install --symlink --relative %PUBLIC_DIR%": "symfony-cmd",
             "security-checker security:check": "script"
-        }
+        },
+        "post-install-cmd": [
+            "sh ./vendor/vibby/phpcs-git-pre-commit/src/setup.sh"
+        ],
+        "post-update-cmd": [
+            "sh ./vendor/vibby/phpcs-git-pre-commit/src/setup.sh"
+        ]
     },
     "extra": {
         "symfony": {
