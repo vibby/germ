@@ -64,9 +64,8 @@ SQL;
             ->setField('church_name', 'c.name', 'varchar')
             ->setField('email', 'p.email', 'varchar')
             ->setField('username', 'p.slug', 'varchar')
-            ->setField('username_canonical', 'p.slug', 'varchar')
-            ->setField('id_person_person', 'p.id_person_person', 'varchar')
-            ;
+        //            ->setField('username_canonical', 'p.slug', 'varchar')
+            ->setField('id_person_person', 'p.id_person_person', 'varchar');
 
         $sql = strtr(
             $sql,

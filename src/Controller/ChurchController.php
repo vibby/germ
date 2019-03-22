@@ -7,22 +7,26 @@ use Germ\Model\Germ\Church\ChurchFinder;
 use Germ\Model\Germ\Church\ChurchSaver;
 use Germ\Model\Germ\ChurchSchema\ChurchModel;
 use Germ\Type\ChurchType;
+use Knp\Component\Pager\PaginatorInterface;
 use PommProject\Foundation\Pomm;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
-class ChurchController extends Controller
+class ChurchController extends AbstractController
 {
     private $finder;
     private $model;
+    private $translator;
 
-    public function __construct(ChurchFinder $churchFinder, Pomm $pomm)
+    public function __construct(ChurchFinder $churchFinder, Pomm $pomm, TranslatorInterface $translator)
     {
         $this->finder = $churchFinder;
         $this->model = $pomm['germ']->getModel(ChurchModel::class);
+        $this->translator = $translator;
     }
 
-    public function listAction(Request $request, $page, Searcher $searcher, $search = null)
+    public function listAction(Request $request, $page, Searcher $searcher, PaginatorInterface $paginator)
     {
         if ('html' != $request->get('_format')) {
             $output['churches'] = $this->finder->findAll();
@@ -31,7 +35,6 @@ class ChurchController extends Controller
                 return $redirect;
             }
             $output['searchForm'] = $searcher->getForm()->createView();
-            $paginator = $this->get('knp_paginator');
             $output['paginatedChurches'] = $paginator->paginate(
                 [
                     $this->finder,
@@ -62,11 +65,11 @@ class ChurchController extends Controller
     public function editAction(Request $request, $churchSlug)
     {
         $church = $this->getChurchOr404($churchSlug);
-        $churchForm = $this->get('form.factory')->create(ChurchType::class, $church);
+        $churchForm = $this->createForm(ChurchType::class, $church);
         $churchForm->handleRequest($request);
         if ($churchForm->isSubmitted() && $churchForm->isValid()) {
             $this->model->updateOne($church, array_keys($churchForm->getData()->extract()));
-            $this->get('session')->getFlashBag()->add('success', 'Church updated');
+            $request->getSession()->getFlashBag()->add('success', $this->translator->trans('Church updated'));
 
             return $this->redirectToRoute('germ_church_edit', ['churchSlug' => $church->getSlug()]);
         }
@@ -83,13 +86,12 @@ class ChurchController extends Controller
 
     public function createAction(Request $request, ChurchSaver $saver)
     {
-        $churchForm = $this->get('form.factory')->create(ChurchType::class);
+        $churchForm = $this->createForm(ChurchType::class);
         $churchForm->handleRequest($request);
 
         if ($churchForm->isSubmitted() && $churchForm->isValid()) {
             $church = $saver->create($churchForm->getData());
-            $translator = $this->get('translator');
-            $this->get('session')->getFlashBag()->add('success', $translator->trans('Church created'));
+            $request->getSession()->getFlashBag()->add('success', $this->translator->trans('Church created'));
 
             return $this->redirectToRoute('germ_church_edit', ['churchSlug' => $church->getSlug()]);
         }
@@ -103,11 +105,11 @@ class ChurchController extends Controller
         );
     }
 
-    public function removeAction($churcheslug)
+    public function removeAction($churcheslug, Request $request)
     {
         $church = $this->getChurchOr404($churcheslug);
         $this->model->deleteOne($church);
-        $this->get('session')->getFlashBag()->add('success', 'Church deleted');
+        $request->getSession()->getFlashBag()->add('success', 'Church deleted');
 
         return $this->redirectToRoute('germ_church_list');
     }

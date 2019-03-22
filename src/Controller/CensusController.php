@@ -6,12 +6,13 @@ use Germ\Filter\Census\Searcher;
 use Germ\Model\Germ\Census\CensusFinder;
 use Germ\Model\Germ\Census\CensusSaver;
 use Germ\Model\Germ\ChurchSchema\CensusModel;
-use PommProject\Foundation\Pomm;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
 use Germ\Type\CensusType;
+use Knp\Component\Pager\PaginatorInterface;
+use PommProject\Foundation\Pomm;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 
-class CensusController extends Controller
+class CensusController extends AbstractController
 {
     private $finder;
     private $searcher;
@@ -26,16 +27,15 @@ class CensusController extends Controller
         $this->model = $pomm['germ']->getModel(CensusModel::class);
     }
 
-    public function listAction(Request $request, $page)
+    public function listAction(Request $request, $page, PaginatorInterface $paginator)
     {
-        if ($request->get('_format') != 'html') {
+        if ('html' != $request->get('_format')) {
             $output['censuses'] = $this->finder->findAll();
         } else {
             if ($redirect = $this->searcher->handleRequest($request)) {
                 return $redirect;
             }
             $output['searchForm'] = $this->searcher->getForm()->createView();
-            $paginator = $this->get('knp_paginator');
             $output['paginatedCensuses'] = $paginator->paginate(
                 [
                     $this->finder,
@@ -49,7 +49,7 @@ class CensusController extends Controller
 
         $response = $this->render('Census/list.'.$request->get('_format').'.twig', $output);
 
-        if ($request->get('_format') != 'html') {
+        if ('html' != $request->get('_format')) {
             $response->headers->set(
                 'Content-Disposition',
                 sprintf('attachment; filename="censuses.%s";"', $request->get('_format'))
@@ -66,52 +66,52 @@ class CensusController extends Controller
     public function editAction(Request $request, $censusId)
     {
         $census = $this->getCensusOr404($censusId);
-        $censusForm = $this->get('form.factory')->create(CensusType::class, $census);
+        $censusForm = $this->createForm(CensusType::class, $census);
         $censusForm->handleRequest($request);
         if ($censusForm->isSubmitted() && $censusForm->isValid()) {
             $this->model->updateOne($census, array_keys($censusForm->getData()->extract()));
-            $this->get('session')->getFlashBag()->add('success', 'Census updated');
+            $request->getSession()->getFlashBag()->add('success', 'Census updated');
 
             return $this->redirectToRoute('germ_census_edit', ['censusId' => $census->getId()]);
         }
 
         return $this->render(
             'Census/edit.html.twig',
-            array(
+            [
                 'mode' => 'edit',
                 'form' => $censusForm->createView(),
                 'census' => $census,
-            )
+            ]
         );
     }
 
     public function createAction(Request $request)
     {
-        $censusForm = $this->get('form.factory')->create(CensusType::class);
+        $censusForm = $this->createForm(CensusType::class);
         $censusForm->handleRequest($request);
 
         if ($censusForm->isSubmitted() && $censusForm->isValid()) {
             $census = $this->saver->create($censusForm->getData());
             $translator = $this->get('translator');
-            $this->get('session')->getFlashBag()->add('success', $translator->trans('Census created'));
+            $request->getSession()->getFlashBag()->add('success', $translator->trans('Census created'));
 
             return $this->redirectToRoute('germ_census_edit', ['censusId' => $census->getId()]);
         }
 
         return $this->render(
             'Census/edit.html.twig',
-            array(
+            [
                 'mode' => 'create',
                 'form' => $censusForm->createView(),
-            )
+            ]
         );
     }
 
-    public function removeAction($censusId)
+    public function removeAction($censusId, Request $request)
     {
         $census = $this->getCensusOr404($censusId);
         $this->model->deleteOne($census);
-        $this->get('session')->getFlashBag()->add('success', 'Census deleted');
+        $request->getSession()->getFlashBag()->add('success', 'Census deleted');
 
         return $this->redirectToRoute('germ_census_list');
     }
@@ -119,9 +119,10 @@ class CensusController extends Controller
     private function getCensusOr404($censusId)
     {
         $census = $this->finder->findOneById($censusId);
-        if (!$census) {
+        if (! $census) {
             throw $this->createNotFoundException('The census does not exist');
         }
+
         return $census;
     }
 }

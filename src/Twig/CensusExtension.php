@@ -2,20 +2,23 @@
 
 namespace Germ\Twig;
 
-class CensusExtension extends \Twig_Extension
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
+
+class CensusExtension extends AbstractExtension
 {
     public function getFilters()
     {
-        return array(
-            new \Twig_SimpleFilter('group_censuses', array($this, 'groupCensuses')),
-        );
+        return [
+            new TwigFilter('group_censuses', [$this, 'groupCensuses']),
+        ];
     }
 
     public function groupCensuses(\Traversable $censuses)
     {
         $grouped = [];
         foreach ($censuses as $census) {
-            if (!isset($grouped[$census['church_id']])) {
+            if (! isset($grouped[$census['church_id']])) {
                 $grouped[$census['church_id']] = [
                     'name' => $census['church_name'],
                     'censuses' => [$census],

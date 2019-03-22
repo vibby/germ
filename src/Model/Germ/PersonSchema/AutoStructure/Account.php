@@ -10,26 +10,22 @@ namespace Germ\Model\Germ\PersonSchema\AutoStructure;
 use PommProject\ModelManager\Model\RowStructure;
 
 /**
- * Account
+ * Account.
  *
  * Structure class for relation person.account.
  *
  * Class and fields comments are inspected from table and fields comments.
  * Just add comments in your database and they will appear here.
+ *
  * @see http://www.postgresql.org/docs/9.0/static/sql-comment.html
- *
- *
- *
  * @see RowStructure
  */
 class Account extends RowStructure
 {
     /**
-     * __construct
+     * __construct.
      *
      * Structure definition.
-     *
-     * @access public
      */
     public function __construct()
     {
@@ -38,6 +34,7 @@ class Account extends RowStructure
             ->setPrimaryKey(['id_person_account'])
             ->addField('id_person_account', 'uuid')
             ->addField('email_canonical', 'varchar')
+            ->addField('username_canonical', 'varchar')
             ->addField('enabled', 'bool')
             ->addField('salt', 'varchar')
             ->addField('password', 'varchar')
@@ -49,7 +46,6 @@ class Account extends RowStructure
             ->addField('password_requested_at', 'timestamp')
             ->addField('credentials_expired', 'bool')
             ->addField('credentials_expire_at', 'timestamp')
-            ->addField('person_id', 'uuid')
-            ;
+            ->addField('person_id', 'uuid');
     }
 }

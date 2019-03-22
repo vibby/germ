@@ -28,11 +28,13 @@ class Person extends AbstractMigration
     public function up()
     {
         $this->execute('CREATE SCHEMA "person"');
-        $this->execute(<<<SQL
+        $this->execute(
+            <<<SQL
             CREATE TABLE "person"."account" (
                 id_person_account uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
                 enabled BOOLEAN NOT NULL DEFAULT FALSE,
                 email_canonical VARCHAR(64) NOT NULL UNIQUE,
+                username_canonical VARCHAR(64) NOT NULL UNIQUE,
                 salt VARCHAR(255) NOT NULL,
                 password VARCHAR(255) NOT NULL,
                 last_login TIMESTAMP WITHOUT TIME ZONE,
@@ -47,7 +49,8 @@ class Person extends AbstractMigration
             );
 SQL
         );
-        $this->execute(<<<SQL
+        $this->execute(
+            <<<SQL
             CREATE TABLE "person"."person" (
                 id_person_person uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
                 family_id uuid NULL,
@@ -68,7 +71,8 @@ SQL
             );
 SQL
         );
-        $this->execute(<<<SQL
+        $this->execute(
+            <<<SQL
             CREATE TABLE "person"."person_church" (
                 person_id uuid REFERENCES "person"."person",
                 church_id uuid REFERENCES "church"."church"
@@ -79,7 +83,8 @@ SQL
         $this->execute('ALTER TABLE "person"."person" ADD FOREIGN KEY ("family_id") REFERENCES "person"."person" ("id_person_person") ON DELETE SET NULL ON UPDATE CASCADE;');
         $this->execute('ALTER TABLE "person"."account" ADD FOREIGN KEY ("person_id") REFERENCES "person"."person" ("id_person_person") ON DELETE CASCADE ON UPDATE CASCADE;');
 
-        $this->execute(<<<SQL
+        $this->execute(
+            <<<SQL
             CREATE OR REPLACE FUNCTION "person".person_slug()
             RETURNS trigger AS $$
             DECLARE newslug varchar(48); suffix int := 0;
@@ -104,7 +109,8 @@ SQL
 SQL
         );
 
-        $this->execute(<<<SQL
+        $this->execute(
+            <<<SQL
             CREATE TRIGGER "person_slug"
               BEFORE INSERT OR UPDATE
               ON "person"."person"

@@ -3,8 +3,10 @@
 namespace Germ\Twig;
 
 use Germ\Filter\Church\CriteriaTerms;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
 
-class ChurchExtension extends \Twig_Extension
+class ChurchExtension extends AbstractExtension
 {
     private $searchTerms;
 
@@ -15,8 +17,8 @@ class ChurchExtension extends \Twig_Extension
 
     public function getFilters()
     {
-        return array(
-            new \Twig_SimpleFilter('highlightChurch', array($this->searchTerms, 'highlight'), ['is_safe' => ['html']]),
-        );
+        return [
+            new TwigFilter('highlightChurch', [$this->searchTerms, 'highlight'], ['is_safe' => ['html']]),
+        ];
     }
 }

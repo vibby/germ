@@ -9,16 +9,27 @@ use Germ\Model\Germ\PersonSchema\Account;
 use Germ\Model\Germ\PersonSchema\AccountModel;
 use Germ\Model\Germ\PersonSchema\Person;
 use Germ\Model\Germ\PersonSchema\PersonModel;
+use PommProject\Foundation\Pomm;
 use PragmaFabrik\Pomm\Faker\FakerPooler;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
-class GenerateFakeDataCommand extends ContainerAwareCommand
+class GenerateFakeDataCommand extends Command
 {
     private $pommSession;
     private $accountModel;
+    private $params;
+
+    public function __construct(Pomm $pomm, ParameterBagInterface $params)
+    {
+        parent::__construct(self::class);
+        $this->pommSession = $pomm['germ'];
+        $this->accountModel = $this->pommSession->getModel(AccountModel::class);
+        $this->params = $params;
+    }
 
     protected function configure()
     {
@@ -27,20 +38,16 @@ class GenerateFakeDataCommand extends ContainerAwareCommand
             ->setDescription('Generate many data for dev and tests. Not allowed on production')
             ->setHelp('This command allows you to generate many data : churches and persons. For testing and work with data for developing without real data.')
             ->addOption('persons', 'p', InputOption::VALUE_REQUIRED, 'Number of person to generate', 1082)
-            ->addOption('churches', 'c', InputOption::VALUE_REQUIRED, 'Number of churches to generate', 14)
-        ;
+            ->addOption('churches', 'c', InputOption::VALUE_REQUIRED, 'Number of churches to generate', 14);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        if ('prod' == $this->getContainer()->getParameter('kernel.environment')) {
+        if ('prod' == $this->params->get('kernel.environment')) {
             throw new \Exception('This command cannot be executed on PROD environment', 1);
         }
         $this->output = $output;
         $output->writeln('Generating fixed data in database : ');
-
-        $this->pommSession = $this->getContainer()->get('pomm')['germ'];
-        $this->accountModel = $this->pommSession->getModel(AccountModel::class);
 
         // Fix data
         $churchModel = $this->pommSession->getModel(ChurchModel::class);
@@ -85,6 +92,7 @@ class GenerateFakeDataCommand extends ContainerAwareCommand
         $account->setPassword('LJQRDmbG37bHbZTi0oTH4td8L6mHU7kecPoX2zw8SDwWFpBcT11bQqx+FjOYvfSyP8BdZhwYlUB/kTp1RR31Qg==');
         $account->setSalt('5cmq15n0q0w0go4ogcc0co444ocw4oc');
         $account->setEmailCanonical($person['email']);
+        $account->setUsernameCanonical($person['email']);
         $account->setPersonId($person['id_person_person']);
         $this->accountModel->insertOne($account);
         unset($account);
@@ -96,13 +104,18 @@ class GenerateFakeDataCommand extends ContainerAwareCommand
             ->unsetDefinition('id_church_church')
             ->setFormatterType('name', 'city')
             ->setFormatterType('phone', 'phoneNumber')
-            ->setDefinition('latlong', function (\Faker\Generator $generator) {
-                return '('.$generator->longitude(45, 50).', '.$generator->latitude(0, 5).')';
-            })
-            ->setDefinition('address', function (\Faker\Generator $generator) {
-                return $generator->streetAddress()."\n".$generator->postcode().' '.$generator->city();
-            })
-        ;
+            ->setDefinition(
+                'latlong',
+                function (\Faker\Generator $generator) {
+                    return '('.$generator->longitude(45, 50).', '.$generator->latitude(0, 5).')';
+                }
+            )
+            ->setDefinition(
+                'address',
+                function (\Faker\Generator $generator) {
+                    return $generator->streetAddress()."\n".$generator->postcode().' '.$generator->city();
+                }
+            );
     }
 
     private function defineCensusFaker($churchIds)
@@ -111,8 +124,7 @@ class GenerateFakeDataCommand extends ContainerAwareCommand
             ->unsetDefinition('id_church_census')
             ->setFormatterType('church_id', 'randomElement', [$churchIds])
             ->setFormatterType('date', 'dateTime')
-            ->setFormatterType('count', 'numberBetween', [40, 300])
-        ;
+            ->setFormatterType('count', 'numberBetween', [40, 300]);
     }
 
     private function definePersonFaker($churchIds)
@@ -170,22 +182,29 @@ class GenerateFakeDataCommand extends ContainerAwareCommand
             )
             ->setFormatterType('email', 'email')
             ->setFormatterType('church_id', 'randomElement', [$churchIds])
-            ->setDefinition('latlong', function (\Faker\Generator $generator) {
-                return '('.$generator->longitude(45, 50).', '.$generator->latitude(0, 5).')';
-            })
-            ->setDefinition('address', function (\Faker\Generator $generator) {
-                return $generator->streetAddress()."\n".$generator->postcode().' '.$generator->city();
-            })
-            ->setDefinition('phone', function (\Faker\Generator $generator) {
-                return [$generator->phoneNumber()];
-            })
-        ;
+            ->setDefinition(
+                'latlong',
+                function (\Faker\Generator $generator) {
+                    return '('.$generator->longitude(45, 50).', '.$generator->latitude(0, 5).')';
+                }
+            )
+            ->setDefinition(
+                'address',
+                function (\Faker\Generator $generator) {
+                    return $generator->streetAddress()."\n".$generator->postcode().' '.$generator->city();
+                }
+            )
+            ->setDefinition(
+                'phone',
+                function (\Faker\Generator $generator) {
+                    return [$generator->phoneNumber()];
+                }
+            );
     }
 
     private function createPerson($lastname, $firstname, Church $church, $email = null, $role = [])
     {
-        $pommSession = $this->getContainer()->get('pomm')['germ'];
-        $personModel = $pommSession->getModel(PersonModel::class);
+        $personModel = $this->pommSession->getModel(PersonModel::class);
         if (! $personModel->findWhere('email = $*', [$email])->count()) {
             $person = new Person();
             $person->setFirstname($firstname)

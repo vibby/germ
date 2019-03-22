@@ -6,8 +6,10 @@ use Germ\Filter\Person\CriteriaTerms;
 use Germ\Person\RoleManager;
 use Symfony\Component\Security\Core\Role\Role;
 use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
 
-class PersonExtension extends \Twig_Extension
+class PersonExtension extends AbstractExtension
 {
     private $searchTerms;
     private $roleHierarchy;
@@ -26,10 +28,10 @@ class PersonExtension extends \Twig_Extension
     public function getFilters()
     {
         return [
-            new \Twig_SimpleFilter('colorizeRoles', [$this, 'colorizeRoles']),
-            new \Twig_SimpleFilter('colorizeRole', [$this, 'colorizeRole']),
-            new \Twig_SimpleFilter('nameRole', [$this->roleManager, 'string']),
-            new \Twig_SimpleFilter('highlightPerson', [$this->searchTerms, 'highlight'], ['is_safe' => ['html']]),
+            new TwigFilter('colorizeRoles', [$this, 'colorizeRoles']),
+            new TwigFilter('colorizeRole', [$this, 'colorizeRole']),
+            new TwigFilter('nameRole', [$this->roleManager, 'string']),
+            new TwigFilter('highlightPerson', [$this->searchTerms, 'highlight'], ['is_safe' => ['html']]),
         ];
     }
 

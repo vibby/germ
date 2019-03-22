@@ -1,4 +1,7 @@
 {
+    "cakephp/log": {
+        "version": "3.7.5"
+    },
     "doctrine/instantiator": {
         "version": "1.1.0"
     },
@@ -35,6 +38,9 @@
     "squizlabs/php_codesniffer": {
         "version": "2.9.2"
     },
+    "symfony/contracts": {
+        "version": "v1.0.2"
+    },
     "symfony/flex": {
         "version": "1.0",
         "recipe": {
@@ -43,6 +49,12 @@
             "version": "1.0",
             "ref": "e921bdbfe20cdefa3b82f379d1cd36df1bc8d115"
         }
+    },
+    "symfony/polyfill-iconv": {
+        "version": "v1.11.0"
+    },
+    "symfony/polyfill-intl-idn": {
+        "version": "v1.11.0"
     },
     "symfony/webpack-encore-pack": {
         "version": "1.0",

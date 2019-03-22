@@ -2,13 +2,16 @@
 
 namespace Germ\Twig;
 
-class StringifyExtension extends \Twig_Extension
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
+
+class StringifyExtension extends AbstractExtension
 {
     public function getFilters()
     {
-        return array(
-            new \Twig_SimpleFilter('stringify', array($this, 'stringify')),
-        );
+        return [
+            new TwigFilter('stringify', [$this, 'stringify']),
+        ];
     }
 
     public function stringify($value)
