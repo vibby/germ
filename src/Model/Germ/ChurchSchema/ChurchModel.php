@@ -3,14 +3,14 @@
 namespace Germ\Model\Germ\ChurchSchema;
 
 use Germ\Filter\FilterQueries;
-use PommProject\ModelManager\Model\Model;
-use PommProject\ModelManager\Model\Projection;
-use PommProject\ModelManager\Model\ModelTrait\WriteQueries;
-use PommProject\Foundation\Where;
 use Germ\Model\Germ\ChurchSchema\AutoStructure\Church as ChurchStructure;
+use PommProject\Foundation\Where;
+use PommProject\ModelManager\Model\Model;
+use PommProject\ModelManager\Model\ModelTrait\WriteQueries;
+use PommProject\ModelManager\Model\Projection;
 
 /**
- * ChurchModel
+ * ChurchModel.
  *
  * Model class for table church.
  *
@@ -22,15 +22,13 @@ class ChurchModel extends Model
     use FilterQueries;
 
     /**
-     * __construct()
+     * __construct().
      *
      * Model constructor
-     *
-     * @access public
      */
     public function __construct()
     {
-        $this->structure = new ChurchStructure;
+        $this->structure = new ChurchStructure();
         $this->flexible_entity_class = '\Germ\Model\Germ\ChurchSchema\Church';
     }
 
@@ -50,7 +48,7 @@ class ChurchModel extends Model
             'select :projection from :relation where true order by name',
             [
                 ':projection' => $projection->formatFieldsWithFieldAlias(),
-                ':relation'   => $this->getStructure()->getRelation(),
+                ':relation' => $this->getStructure()->getRelation(),
             ]
         ));
 
@@ -69,7 +67,7 @@ class ChurchModel extends Model
             'select :projection from :relation where true order by name',
             [
                 ':projection' => $projection->formatFieldsWithFieldAlias(),
-                ':relation'   => $this->getStructure()->getRelation(),
+                ':relation' => $this->getStructure()->getRelation(),
             ]
         ));
 
@@ -83,15 +81,14 @@ class ChurchModel extends Model
 
     public function findIdsFromSlugs(array $slugs)
     {
-
         $projection = new Projection(Church::class, ['id_church_church' => 'id_church_church']);
         $where = Where::createWhereIn('slug', $slugs);
         $churches = $this->query(strtr(
             'select :projection from :relation where :where',
             [
                 ':projection' => $projection->formatFieldsWithFieldAlias(),
-                ':relation'   => $this->getStructure()->getRelation(),
-                ':where'      => $where,
+                ':relation' => $this->getStructure()->getRelation(),
+                ':where' => $where,
             ]
         ), $where->getValues());
 
@@ -105,14 +102,14 @@ class ChurchModel extends Model
 
     public function findForListWhereSql(Where $where, $projection = null, $suffix = null)
     {
-        if (!$projection) {
+        if (! $projection) {
             $projection = $this->createProjection();
         }
         $projection->setField('members_count', '(SELECT COUNT(*) FROM person.person WHERE person.church_id = church.id_church_church)', 'int');
 
         return [
             $this->getFindWhereSql($where, $projection, $suffix),
-            $projection
+            $projection,
         ];
     }
 }

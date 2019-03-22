@@ -3,8 +3,8 @@
 namespace Germ\Twig;
 
 use Germ\Filter\Person\CriteriaTerms;
-use Symfony\Component\Security\Core\Role\Role;
 use Germ\Person\RoleManager;
+use Symfony\Component\Security\Core\Role\Role;
 use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
 
 class PersonExtension extends \Twig_Extension
@@ -25,12 +25,12 @@ class PersonExtension extends \Twig_Extension
 
     public function getFilters()
     {
-        return array(
-            new \Twig_SimpleFilter('colorizeRoles', array($this, 'colorizeRoles')),
-            new \Twig_SimpleFilter('colorizeRole', array($this, 'colorizeRole')),
-            new \Twig_SimpleFilter('nameRole', array($this->roleManager, 'string')),
-            new \Twig_SimpleFilter('highlightPerson', array($this->searchTerms, 'highlight'), ['is_safe' => ['html']]),
-        );
+        return [
+            new \Twig_SimpleFilter('colorizeRoles', [$this, 'colorizeRoles']),
+            new \Twig_SimpleFilter('colorizeRole', [$this, 'colorizeRole']),
+            new \Twig_SimpleFilter('nameRole', [$this->roleManager, 'string']),
+            new \Twig_SimpleFilter('highlightPerson', [$this->searchTerms, 'highlight'], ['is_safe' => ['html']]),
+        ];
     }
 
     public function colorizeRoles(array $roles)
@@ -38,11 +38,13 @@ class PersonExtension extends \Twig_Extension
         $color = null;
         foreach ($this->roleManager->getColored() as $coloredRole) {
             $hierarchyRoles = array_map(
-                function(Role $role) { return $role->getRole(); },
+                function (Role $role) {
+                    return $role->getRole();
+                },
                 $this->roleHierarchy->getReachableRoles([$coloredRole])
             );
             foreach ($roles as $role) {
-                if (in_array($role, $hierarchyRoles)) {
+                if (\in_array($role, $hierarchyRoles)) {
                     $color = $this->stringToColorCode($coloredRole->getRole());
                 }
             }
@@ -56,10 +58,12 @@ class PersonExtension extends \Twig_Extension
         $color = null;
         foreach ($this->roleManager->getColored() as $coloredRole) {
             $hierarchyRoles = array_map(
-                function(Role $role) {return $role->getRole();},
+                function (Role $role) {
+                    return $role->getRole();
+                },
                 $this->roleHierarchy->getReachableRoles([$coloredRole])
             );
-            if (in_array($role, $hierarchyRoles)) {
+            if (\in_array($role, $hierarchyRoles)) {
                 $color = $this->stringToColorCode($coloredRole->getRole());
             }
         }

@@ -6,10 +6,10 @@ use Germ\Filter\Church\Searcher;
 use Germ\Model\Germ\Church\ChurchFinder;
 use Germ\Model\Germ\Church\ChurchSaver;
 use Germ\Model\Germ\ChurchSchema\ChurchModel;
+use Germ\Type\ChurchType;
 use PommProject\Foundation\Pomm;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Germ\Type\ChurchType;
 
 class ChurchController extends Controller
 {
@@ -24,7 +24,7 @@ class ChurchController extends Controller
 
     public function listAction(Request $request, $page, Searcher $searcher, $search = null)
     {
-        if ($request->get('_format') != 'html') {
+        if ('html' != $request->get('_format')) {
             $output['churches'] = $this->finder->findAll();
         } else {
             if ($redirect = $searcher->handleRequest($request)) {
@@ -45,7 +45,7 @@ class ChurchController extends Controller
 
         $response = $this->render('Church/list.'.$request->get('_format').'.twig', $output);
 
-        if ($request->get('_format') != 'html') {
+        if ('html' != $request->get('_format')) {
             $response->headers->set(
                 'Content-Disposition',
                 sprintf('attachment; filename="churches.%s";"', $request->get('_format'))
@@ -62,7 +62,7 @@ class ChurchController extends Controller
     public function editAction(Request $request, $churchSlug)
     {
         $church = $this->getChurchOr404($churchSlug);
-        $churchForm = $this->get('form.factory')->create(ChurchType::class,$church);
+        $churchForm = $this->get('form.factory')->create(ChurchType::class, $church);
         $churchForm->handleRequest($request);
         if ($churchForm->isSubmitted() && $churchForm->isValid()) {
             $this->model->updateOne($church, array_keys($churchForm->getData()->extract()));
@@ -73,11 +73,11 @@ class ChurchController extends Controller
 
         return $this->render(
             'Church/edit.html.twig',
-            array(
+            [
                 'mode' => 'edit',
                 'form' => $churchForm->createView(),
                 'church' => $church,
-            )
+            ]
         );
     }
 
@@ -96,10 +96,10 @@ class ChurchController extends Controller
 
         return $this->render(
             'Church/edit.html.twig',
-            array(
+            [
                 'mode' => 'create',
                 'form' => $churchForm->createView(),
-            )
+            ]
         );
     }
 
@@ -115,7 +115,7 @@ class ChurchController extends Controller
     private function getChurchOr404($churchSlug)
     {
         $church = $this->finder->findOneBySlug($churchSlug);
-        if (!$church) {
+        if (! $church) {
             throw $this->createNotFoundException('The church does not exist');
         }
 

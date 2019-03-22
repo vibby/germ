@@ -10,26 +10,22 @@ namespace Germ\Model\Germ\ChurchSchema\AutoStructure;
 use PommProject\ModelManager\Model\RowStructure;
 
 /**
- * Church
+ * Church.
  *
  * Structure class for relation church.church.
- * 
+ *
  * Class and fields comments are inspected from table and fields comments.
  * Just add comments in your database and they will appear here.
+ *
  * @see http://www.postgresql.org/docs/9.0/static/sql-comment.html
- *
- *
- *
  * @see RowStructure
  */
 class Church extends RowStructure
 {
     /**
-     * __construct
+     * __construct.
      *
      * Structure definition.
-     *
-     * @access public
      */
     public function __construct()
     {

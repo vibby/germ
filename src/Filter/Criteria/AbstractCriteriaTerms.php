@@ -2,10 +2,10 @@
 
 namespace Germ\Filter\Criteria;
 
-use Symfony\Component\Form\Form;
 use PommProject\Foundation\Where;
 use PommProject\ModelManager\Model\Projection;
 use Symfony\Component\Form\Extension\Core\Type\SearchType;
+use Symfony\Component\Form\Form;
 
 abstract class AbstractCriteriaTerms extends AbstractCriteria
 {
@@ -49,26 +49,28 @@ abstract class AbstractCriteriaTerms extends AbstractCriteria
     {
         $terms = explode(' ', $this->data);
         preg_match('~\w+~', implode(' ', $terms), $matches);
-        if (!$matches) {
+        if (! $matches) {
             return $string;
         }
-        $re = '# '.implode('| ',$terms).'|^'.implode('|^',$terms).'#i';
+        $re = '# '.implode('| ', $terms).'|^'.implode('|^', $terms).'#i';
 
         return preg_replace($re, '<strong>$0</strong>', $string);
     }
 
     public function buildWhere()
     {
-        if (!$this->data) {
+        if (! $this->data) {
             return null;
         }
         $where = Where::create();
         foreach (explode(' ', $this->data) as $searchTerm) {
             foreach (static::getFields() as $fieldName) {
-                $where->orWhere(Where::createGroupCondition(
+                $where->orWhere(
+                    Where::createGroupCondition(
                     sprintf('LOWER(%s)', $fieldName),
                     'LIKE',
-                    [sprintf('%s%%', strtolower($searchTerm))])
+                    [sprintf('%s%%', strtolower($searchTerm))]
+                )
                 );
             }
         }
@@ -78,7 +80,7 @@ abstract class AbstractCriteriaTerms extends AbstractCriteria
 
     public function alterProjection(Projection &$projection)
     {
-        if (!$this->data) {
+        if (! $this->data) {
             return [];
         }
         $field = '';
@@ -103,7 +105,7 @@ abstract class AbstractCriteriaTerms extends AbstractCriteria
 
     public function alterOrderBy(&$orderBy)
     {
-        if (!$this->data) {
+        if (! $this->data) {
             return null;
         }
         array_unshift($orderBy, self::COUNT_FIELD_NAME.' DESC');

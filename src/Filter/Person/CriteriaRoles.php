@@ -3,12 +3,12 @@
 namespace Germ\Filter\Person;
 
 use Germ\Filter\Criteria\AbstractCriteria;
-use Symfony\Component\Form\Form;
+use Germ\Person\RoleManager;
 use PommProject\Foundation\Where;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
+use Symfony\Component\Form\Form;
 use Symfony\Component\Security\Core\Role\Role;
-use Germ\Person\RoleManager;
+use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
 
 class CriteriaRoles extends AbstractCriteria
 {
@@ -56,12 +56,14 @@ class CriteriaRoles extends AbstractCriteria
 
     public function buildWhere()
     {
-        if (!$this->data) {
+        if (! $this->data) {
             return null;
         }
 
         $where = Where::create();
-        $roles = array_map(function ($roleName) { return new Role($roleName); }, $this->data);
+        $roles = array_map(function ($roleName) {
+            return new Role($roleName);
+        }, $this->data);
         foreach ($this->roleHierarchy->getReachableRoles($roles) as $role) {
             $where->orWhere(Where::createGroupCondition('array_to_string(roles, \'||\')', 'ILIKE', [sprintf('%%%s%%', strtoupper($role->getRole()))]));
         }

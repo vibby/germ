@@ -2,15 +2,10 @@
 
 namespace Germ\Model\Germ\EventSchema;
 
-use Germ\Model\Germ\EventSchema\Event;
-use Germ\Model\Germ\EventSchema\EventModel;
-use Germ\Model\Germ\EventSchema\Assignation;
-use Germ\Model\Germ\EventSchema\AssignationModel;
-
 use PommProject\ModelManager\ModelLayer\ModelLayer;
 
 /**
- * EventModel
+ * EventModel.
  *
  * Model class for table event.
  *
@@ -40,6 +35,6 @@ class EventModelLayer extends ModelLayer
             $this->rollbackTransaction();
 
             throw $e;
-        }       
+        }
     }
 }

@@ -5,7 +5,7 @@ namespace Germ\Model\Germ\EventSchema;
 use PommProject\ModelManager\Model\FlexibleEntity;
 
 /**
- * Docket
+ * Docket.
  *
  * Flexible entity for relation
  * event.docket
@@ -19,7 +19,8 @@ class Docket extends FlexibleEntity
         return (string) $this->getAccountId();
     }
 
-    public function getId() {
+    public function getId()
+    {
         return $this->get('id_event_docket');
     }
 }

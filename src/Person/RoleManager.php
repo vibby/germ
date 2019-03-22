@@ -2,9 +2,9 @@
 
 namespace Germ\Person;
 
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Role\Role;
 use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class RoleManager
 {
@@ -30,14 +30,14 @@ class RoleManager
 
     public function getStrings(array $roles = null)
     {
-        if (!$roles) {
+        if (! $roles) {
             return $this->config['strings'];
         }
 
         return array_filter(
             $this->config['strings'],
-            function($key) use ($roles) {
-                return in_array($key, $roles);
+            function ($key) use ($roles) {
+                return \in_array($key, $roles);
             },
             ARRAY_FILTER_USE_KEY
         );
@@ -46,6 +46,7 @@ class RoleManager
     public function getTranslations(array $roles = null)
     {
         $translator = $this->translator;
+
         return array_map(
             function ($roleString) use ($translator) {
                 return $translator->trans($roleString);
@@ -56,21 +57,23 @@ class RoleManager
 
     public function getRoles(array $strings = null)
     {
-        if (!$strings) {
+        if (! $strings) {
             return array_flip($this->config['strings']);
         }
 
         return array_flip(array_filter(
             $this->config['strings'],
-            function($value) use ($strings) {
-                return in_array($value, $strings);
+            function ($value) use ($strings) {
+                return \in_array($value, $strings);
             }
         ));
     }
 
     public function getColored()
     {
-        return array_map(function ($roleName) { return new Role($roleName); }, $this->config['colored']);
+        return array_map(function ($roleName) {
+            return new Role($roleName);
+        }, $this->config['colored']);
     }
 
     public function getFilterChoices()

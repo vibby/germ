@@ -29,3 +29,6 @@ config/migrations/*data.php
 npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-pack ###
+
+.php_cs.cache
+

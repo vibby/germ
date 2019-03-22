@@ -2,17 +2,13 @@
 
 namespace Germ\Model\Germ\PersonSchema;
 
+use Germ\Model\Germ\PersonSchema\AutoStructure\Account as AccountStructure;
+use PommProject\Foundation\Where;
 use PommProject\ModelManager\Model\Model;
-use PommProject\ModelManager\Model\Projection;
 use PommProject\ModelManager\Model\ModelTrait\WriteQueries;
 
-use PommProject\Foundation\Where;
-
-use Germ\Model\Germ\PersonSchema\AutoStructure\Account as AccountStructure;
-use Germ\Model\Germ\PersonSchema\Account;
-
 /**
- * AccountModel
+ * AccountModel.
  *
  * Model class for table account.
  *
@@ -25,24 +21,23 @@ class AccountModel extends Model
     public $keyForId = 'id_person_account';
 
     /**
-     * __construct()
+     * __construct().
      *
      * Model constructor
-     *
-     * @access public
      */
     public function __construct()
     {
-        $this->structure = new AccountStructure;
+        $this->structure = new AccountStructure();
         $this->flexible_entity_class = '\Germ\Model\Germ\PersonSchema\Account';
     }
 
-    public function getAccounts(Array $role = [])
+    public function getAccounts(array $role = [])
     {
         $where = new Where();
         if ($role) {
             $where->andWhereIn('role', $role);
         }
+
         return $this->findWhere($where);
     }
 
@@ -73,10 +68,11 @@ SQL;
             ->setField('id_person_person', 'p.id_person_person', 'varchar')
             ;
 
-        $sql = strtr($sql,
+        $sql = strtr(
+            $sql,
             [
-                ':projection'      => $projection,
-                ':user_relation'   => $this->getStructure()->getRelation(),
+                ':projection' => $projection,
+                ':user_relation' => $this->getStructure()->getRelation(),
                 ':person_relation' => $this->getSession()
                     ->getModel('\Germ\Model\Germ\PersonSchema\PersonModel')
                     ->getStructure()

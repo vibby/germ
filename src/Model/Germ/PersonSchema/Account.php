@@ -5,7 +5,7 @@ namespace Germ\Model\Germ\PersonSchema;
 use Vibby\PommProjectFosUserBundle\Model\User;
 
 /**
- * Account
+ * Account.
  *
  * Flexible entity for relation
  * person.account
@@ -14,7 +14,7 @@ use Vibby\PommProjectFosUserBundle\Model\User;
  */
 class Account extends User
 {
-	public $keyForId = 'id_person_account';
+    public $keyForId = 'id_person_account';
 
     public function getId()
     {

@@ -41,17 +41,17 @@ class PersonFinder extends AbstractFinder
 
     public function alterWhere(Where $where)
     {
-        if (!$this->authorisationChecker->isGranted('ROLE_CHURCH_LIST')) {
+        if (! $this->authorisationChecker->isGranted('ROLE_CHURCH_LIST')) {
             $where->andWhere('church_id = $*', [$this->user['church_id']]);
         }
-        if (!$this->authorisationChecker->isGranted('ROLE_PERSON_DELETED')) {
+        if (! $this->authorisationChecker->isGranted('ROLE_PERSON_DELETED')) {
             $where->andWhere('is_deleted = $*', [0]);
         }
 
         return $where;
     }
 
-    public function findByRole(Array $role)
+    public function findByRole(array $role)
     {
         $where = new Where();
         $where->andWhereIn('role', $role);
@@ -62,7 +62,7 @@ class PersonFinder extends AbstractFinder
 
     public function findForListWhere(Where $where = null)
     {
-        if (!$where) {
+        if (! $where) {
             $where = new Where();
         }
         $where = $this->alterWhere($where);

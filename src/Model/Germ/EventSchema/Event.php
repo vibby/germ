@@ -2,11 +2,11 @@
 
 namespace Germ\Model\Germ\EventSchema;
 
-use PommProject\ModelManager\Model\FlexibleEntity;
 use PommProject\ModelManager\Exception\ModelException;
+use PommProject\ModelManager\Model\FlexibleEntity;
 
 /**
- * Event
+ * Event.
  *
  * Flexible entity for relation
  * event.event
@@ -39,15 +39,16 @@ class Event extends FlexibleEntity
     }
 
     /**
-     * __call
+     * __call.
      *
      * Allows dynamic methods getXxx, setXxx, hasXxx, addXxx or clearXxx.
      *
-     * @access  public
-     * @throws  ModelException if method does not exist.
-     * @param   mixed $method
-     * @param   mixed $arguments
-     * @return  mixed
+     * @param mixed $method
+     * @param mixed $arguments
+     *
+     * @throws ModelException if method does not exist
+     *
+     * @return mixed
      */
     public function __call($method, $arguments)
     {
@@ -56,22 +57,25 @@ class Event extends FlexibleEntity
             if (strtolower('docket_'.$docket['name']) === strtolower($attribute)) {
                 switch ($operation) {
                 case 'get':
-                    return isset ($docket['id_person_person']) ? $docket['id_person_person'] : null;
+                    return isset($docket['id_person_person']) ? $docket['id_person_person'] : null;
                 case 'set':
                     $accountId = $arguments[0];
                     if ($accountId) {
                         $this->assignations[$docket['id']] = [$accountId];
                     }
+
                     return true;
                 default:
-                    throw new ModelException(sprintf('No such method "%s:%s()"', get_class($this), $method));
+                    throw new ModelException(sprintf('No such method "%s:%s()"', \get_class($this), $method));
                 }
             }
         }
+
         return parent::__call($method, $arguments);
     }
 
-    public function getId() {
+    public function getId()
+    {
         return $this->get('id_event_event');
     }
 }

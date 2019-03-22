@@ -3,17 +3,14 @@
 namespace Germ\Model\Germ\ChurchSchema;
 
 use Germ\Filter\FilterQueries;
-use PommProject\ModelManager\Model\Model;
-use PommProject\ModelManager\Model\Projection;
-use PommProject\ModelManager\Model\ModelTrait\WriteQueries;
-
-use PommProject\Foundation\Where;
-
 use Germ\Model\Germ\ChurchSchema\AutoStructure\Census as CensusStructure;
-use Germ\Model\Germ\ChurchSchema\Census;
+use PommProject\Foundation\Where;
+use PommProject\ModelManager\Model\Model;
+use PommProject\ModelManager\Model\ModelTrait\WriteQueries;
+use PommProject\ModelManager\Model\Projection;
 
 /**
- * CensusModel
+ * CensusModel.
  *
  * Model class for table census.
  *
@@ -25,15 +22,13 @@ class CensusModel extends Model
     use FilterQueries;
 
     /**
-     * __construct()
+     * __construct().
      *
      * Model constructor
-     *
-     * @access public
      */
     public function __construct()
     {
-        $this->structure = new CensusStructure;
+        $this->structure = new CensusStructure();
         $this->flexible_entity_class = '\Germ\Model\Germ\ChurchSchema\Census';
     }
 
@@ -52,7 +47,7 @@ where
 :suffix
 SQL;
 
-        if (!$projection) {
+        if (! $projection) {
             $projection = new Projection(
                 $this->flexible_entity_class,
                 $this->structure->getDefinition() //$structure
@@ -62,16 +57,17 @@ SQL;
         $projection->setField('church_name', 'ch.name', 'varchar');
         $projection->setField('church_slug', 'ch.slug', 'varchar');
 
-        $sql = strtr($sql,
+        $sql = strtr(
+            $sql,
             [
-                ':projection'      => $projection,
+                ':projection' => $projection,
                 ':census_relation' => $this->getStructure()->getRelation(),
                 ':church_relation' => $this->getSession()
                     ->getModel(ChurchModel::class)
                     ->getStructure()
                     ->getRelation(),
                 ':condition' => $where,
-                ':suffix'    => $suffix,
+                ':suffix' => $suffix,
             ]
         );
 

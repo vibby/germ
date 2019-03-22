@@ -3,14 +3,14 @@
 namespace Germ\Model\Germ\PersonSchema;
 
 use Germ\Filter\FilterQueries;
+use Germ\Model\Germ\PersonSchema\AutoStructure\Person as PersonStructure;
 use PommProject\Foundation\Where;
 use PommProject\ModelManager\Model\Model;
 use PommProject\ModelManager\Model\ModelTrait\WriteQueries;
-use Germ\Model\Germ\PersonSchema\AutoStructure\Person as PersonStructure;
 use PommProject\ModelManager\Model\Projection;
 
 /**
- * PersonModel
+ * PersonModel.
  *
  * Model class for table person.
  *
@@ -22,15 +22,13 @@ class PersonModel extends Model
     use FilterQueries;
 
     /**
-     * __construct()
+     * __construct().
      *
      * Model constructor
-     *
-     * @access public
      */
     public function __construct()
     {
-        $this->structure = new PersonStructure;
+        $this->structure = new PersonStructure();
         $this->flexible_entity_class = '\Germ\Model\Germ\PersonSchema\Person';
     }
 
@@ -56,7 +54,7 @@ where
 :suffix
 SQL;
 
-        if (!$projection) {
+        if (! $projection) {
             $projection = new Projection(
                 $this->flexible_entity_class,
                 $this->structure->getDefinition() //$structure
@@ -74,16 +72,17 @@ SQL;
         $projection->unsetField('latlong');
         $projection->setField('latlong', 'p.latlong', 'point');
 
-        $sql = strtr($sql,
+        $sql = strtr(
+            $sql,
             [
-                ':projection'      => $projection,
+                ':projection' => $projection,
                 ':person_relation' => $this->getStructure()->getRelation(),
                 ':church_relation' => $this->getSession()
                     ->getModel('\Germ\Model\Germ\ChurchSchema\ChurchModel')
                     ->getStructure()
                     ->getRelation(),
                 ':condition' => $where,
-                ':suffix'    => $suffix,
+                ':suffix' => $suffix,
             ]
         );
 

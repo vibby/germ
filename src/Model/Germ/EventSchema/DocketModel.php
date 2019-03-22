@@ -2,17 +2,12 @@
 
 namespace Germ\Model\Germ\EventSchema;
 
+use Germ\Model\Germ\EventSchema\AutoStructure\Docket as DocketStructure;
 use PommProject\ModelManager\Model\Model;
-use PommProject\ModelManager\Model\Projection;
 use PommProject\ModelManager\Model\ModelTrait\WriteQueries;
 
-use PommProject\Foundation\Where;
-
-use Germ\Model\Germ\EventSchema\AutoStructure\Docket as DocketStructure;
-use Germ\Model\Germ\EventSchema\Docket;
-
 /**
- * DocketModel
+ * DocketModel.
  *
  * Model class for table docket.
  *
@@ -23,22 +18,20 @@ class DocketModel extends Model
     use WriteQueries;
 
     /**
-     * __construct()
+     * __construct().
      *
      * Model constructor
-     *
-     * @access public
      */
     public function __construct()
     {
-        $this->structure = new DocketStructure;
+        $this->structure = new DocketStructure();
         $this->flexible_entity_class = '\Germ\Model\Germ\EventSchema\Docket';
     }
 
     public function getDocketsAndAssignationsForEvent(Event $event)
     {
-        if (!isset($event['id_event_event'])) {
-            return $this->findWhere('event_type_id = $*',[$event['type_id']]);
+        if (! isset($event['id_event_event'])) {
+            return $this->findWhere('event_type_id = $*', [$event['type_id']]);
         }
 
         $assignationModel = $this
@@ -66,19 +59,19 @@ where
 SQL;
 
         $projection = $this->createProjection()
-            ->setField("person_name", "concat(p.lastname, ' ', p.firstname) as person_name", "varchar")
-            ->setField("person_id", "p.id_person_person as id_person_person", "varchar")
-            ->setField("person_roles", "p.roles as person_roles", "varchar")
+            ->setField('person_name', "concat(p.lastname, ' ', p.firstname) as person_name", 'varchar')
+            ->setField('person_id', 'p.id_person_person as id_person_person', 'varchar')
+            ->setField('person_roles', 'p.roles as person_roles', 'varchar')
             ;
 
         $sql = strtr(
             $sql,
             [
-                '{docket}'      => $this->structure->getRelation(),
+                '{docket}' => $this->structure->getRelation(),
                 '{assignation}' => $assignationModel->getStructure()->getRelation(),
-                '{person}'      => $personModel->getStructure()->getRelation(),
-                '{account}'     => $accountModel->getStructure()->getRelation(),
-                '{projection}'  => $projection->formatFields('d'),
+                '{person}' => $personModel->getStructure()->getRelation(),
+                '{account}' => $accountModel->getStructure()->getRelation(),
+                '{projection}' => $projection->formatFields('d'),
             ]
         );
 
