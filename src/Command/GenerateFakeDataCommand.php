@@ -217,4 +217,22 @@ class GenerateFakeDataCommand extends Command
             $this->output->writeln(sprintf('  - %s created with password «%s»', $person->getEmail(), 'test'));
         }
     }
+
+    private function defineEventTypeFaker()
+    {
+        $this->pommSession->getFaker('event.event_type')->getRowDefinition()
+            ->unsetDefinition('id_event_docket')
+            ->setFormatterType('church_id', 'randomElement', [$churchIds])
+            ->setFormatterType('date', 'dateTime')
+            ->setFormatterType('count', 'numberBetween', [40, 300]);
+    }
+
+    private function defineDocketFaker($churchIds)
+    {
+        $this->pommSession->getFaker('event.docket')->getRowDefinition()
+            ->unsetDefinition('id_event_docket')
+            ->setFormatterType('church_id', 'randomElement', [$churchIds])
+            ->setFormatterType('date', 'dateTime')
+            ->setFormatterType('count', 'numberBetween', [40, 300]);
+    }
 }

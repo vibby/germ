@@ -74,6 +74,10 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
+    Germ\EventSubscriber\HttpHeaderSubscriber:
+        tags:
+            - { name: kernel.event_subscriber }
+
     # search criterias
 
     Germ\Filter\Church\Searcher:

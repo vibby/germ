@@ -48,7 +48,7 @@ class ChurchController extends AbstractController
 
         $response = $this->render('Church/list.'.$request->get('_format').'.twig', $output);
 
-        if ('html' != $request->get('_format')) {
+        if (!in_array($request->get('_format'), ['html', 'json'])) {
             $response->headers->set(
                 'Content-Disposition',
                 sprintf('attachment; filename="churches.%s";"', $request->get('_format'))
@@ -75,7 +75,10 @@ class ChurchController extends AbstractController
         }
 
         return $this->render(
-            'Church/edit.html.twig',
+            sprintf(
+                'Church/edit.%s.twig',
+                $request->get('_format')
+            ),
             [
                 'mode' => 'edit',
                 'form' => $churchForm->createView(),

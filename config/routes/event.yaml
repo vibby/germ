@@ -4,18 +4,18 @@ germ_event_list:
 
 germ_event_create:
     path:     /create
-    controller: Germ\Controller\ChurchController::createAction
+    controller: Germ\Controller\EventController::createAction
 
 germ_event_edit:
     path:     /edit/{eventId}
-    controller: Germ\Controller\ChurchController::editAction
+    controller: Germ\Controller\EventController::editAction
 
 germ_event_show:
     path:     /{eventId}
-    controller: Germ\Controller\ChurchController::showAction
+    controller: Germ\Controller\EventController::showAction
     requirements:
         eventId:  \d
 
 germ_event_remove:
     path:     /sremove/{eventId}
-    controller: Germ\Controller\ChurchController::removeAction
+    controller: Germ\Controller\EventController::removeAction

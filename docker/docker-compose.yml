@@ -51,5 +51,12 @@ services:
     volumes:
       - ..:/var/www/germ
 
+  germ-adminer:
+    image: adminer:latest
+    container_name: germ-admniner
+    links:
+      - germ-postgres
+    ports:
+      - 8080:8080
 
 # FOR DNS problems, see here : https://development.robinwinslow.uk/2016/06/23/fix-docker-networking-dns/

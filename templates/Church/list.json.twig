@@ -1,0 +1,16 @@
+[
+	{% set started = false %}
+	{% for church in churches if church.latlong %}
+	{% if started %},{%  endif %}
+	{% set started = true %}
+	{
+		"uuid": "{{ church.id_church_church }}",
+		"name": "{{ church.name }}",
+		"slug": "{{ church.slug }}",
+		"coordinates": [
+			"{{ church.latlong.y }}",
+			"{{ church.latlong.x }}"
+		]
+	}
+	{% endfor %}
+]

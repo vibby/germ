@@ -5,7 +5,7 @@ germ_church_list:
         _format: html
         page: 1
     requirements:
-        _format:  html|csv|geojson
+        _format:  html|csv|geojson|json
 
 germ_church_filter:
     path:     /filter/{page}/{filters}
@@ -17,8 +17,12 @@ germ_church_filter:
         filters: ".*"
 
 germ_church_edit:
-    path:     /edit/{churchSlug}
+    path:     /edit/{churchSlug}.{_format}
     controller: Germ\Controller\ChurchController::editAction
+    defaults:
+        _format: html
+    requirements:
+        _format:  html|json
 
 germ_church_remove:
     path:     /remove/{churchSlug}

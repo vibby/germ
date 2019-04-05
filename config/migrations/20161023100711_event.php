@@ -30,11 +30,13 @@ class Event extends AbstractMigration
         $this->execute('CREATE SCHEMA "event"');
         $this->execute('CREATE TABLE "event"."location" (
             id_event_location uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+            church_id uuid NULL,
             name VARCHAR(64) NOT NULL,
             details JSON NULL
         );');
         $this->execute('CREATE TABLE "event"."event_type" (
             id_event_event_type uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+            church_id uuid NULL,
             name VARCHAR(32) NULL,
             recurence VARCHAR(32) NULL,
             event_layout JSON NULL
@@ -45,7 +47,7 @@ class Event extends AbstractMigration
             location_id uuid NULL,
             name VARCHAR(32) NOT NULL,
             date_from TIMESTAMP NOT NULL,
-            duration INTERVAL NOT NULL,
+            duration INTERVAL NOT NULL, 
             is_deleted BOOLEAN NULL,
             description TEXT NULL
         );');

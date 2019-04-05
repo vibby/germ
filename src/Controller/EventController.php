@@ -53,14 +53,12 @@ class EventController extends AbstractController
         $eventForm = $this->buildEventForm($event);
         $eventForm->handleRequest($request);
         if ($eventForm->isSubmitted() && $eventForm->isValid()) {
-            $eventModel = $this->pomm['germ']->getModel('Germ\Model\Germ\EventSchema\EventModel');
-            $propeties = $eventForm->getData()->extract();
-            unset($propeties['event_type_name']);
-            unset($propeties['event_type_layout']);
-            unset($propeties['location_name']);
-            //dump($propeties);die;
+            $properties = $eventForm->getData()->extract();
+            unset($properties['event_type_name']);
+            unset($properties['event_type_layout']);
+            unset($properties['location_name']);
             $eventModel = $this->pomm['germ']->getModelLayer('Germ\Model\Germ\EventSchema\EventModelLayer');
-            $eventModel->saveEvent($event, array_keys($propeties));
+            $eventModel->saveEvent($event, array_keys($properties));
             $request->getSession()->getFlashBag()->add('success', 'Event updated');
 
             return $this->redirectToRoute('germ_event_edit', ['eventId' => $event->getId()]);
