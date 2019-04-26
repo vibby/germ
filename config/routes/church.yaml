@@ -1,6 +1,6 @@
 germ_church_list:
     path:     /churches_{page}.{_format}
-    controller: Germ\Controller\ChurchController::listAction
+    controller: Germ\Legacy\Controller\ChurchController::listAction
     defaults:
         _format: html
         page: 1
@@ -9,7 +9,7 @@ germ_church_list:
 
 germ_church_filter:
     path:     /filter/{page}/{filters}
-    controller: Germ\Controller\ChurchController::listAction
+    controller: Germ\Legacy\Controller\ChurchController::listAction
     defaults:
         _format: html
         page: 1
@@ -18,7 +18,7 @@ germ_church_filter:
 
 germ_church_edit:
     path:     /edit/{churchSlug}.{_format}
-    controller: Germ\Controller\ChurchController::editAction
+    controller: Germ\Legacy\Controller\ChurchController::editAction
     defaults:
         _format: html
     requirements:
@@ -26,8 +26,8 @@ germ_church_edit:
 
 germ_church_remove:
     path:     /remove/{churchSlug}
-    controller: Germ\Controller\ChurchController::removeAction
+    controller: Germ\Legacy\Controller\ChurchController::removeAction
 
 germ_church_create:
     path:     /create
-    controller: Germ\Controller\ChurchController::createAction
+    controller: Germ\Legacy\Controller\ChurchController::createAction

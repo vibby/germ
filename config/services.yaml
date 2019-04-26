@@ -1,7 +1,7 @@
 
 
 parameters:
-    pomm_fos_user.user_model_class: Germ\Model\Germ\PersonSchema\AccountModel
+    pomm_fos_user.user_model_class: Germ\Legacy\Model\Germ\PersonSchema\AccountModel
 
 services:
 
@@ -12,12 +12,12 @@ services:
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
         public: false
 
-    Germ\:
-        resource: '../src/*'
+    Germ\Legacy\:
+        resource: '../src/Germ/Legacy/*'
         exclude: '../src/{Entity,Migrations,Tests,Kernel.php}'
 
-    Germ\Controller\:
-        resource: '../src/Controller'
+    Germ\Legacy\Controller\:
+        resource: '../src/Germ/Legacy/Controller'
         tags: ['controller.service_arguments']
 
     _instanceof:
@@ -25,9 +25,9 @@ services:
 #            tags:
 #                - { name: twig.extension }
 
-        "Germ\\Filter\\AbstractSearcher":
+        "Germ\\Legacy\\Filter\\AbstractSearcher":
             tags:
-                - { name: Germ\\Filter\\AbstractSearcher }
+                - { name: Germ\Legacy\\Filter\\AbstractSearcher }
 
 #        "Symfony\\Component\\Form\\AbstractType":
 #            tags:
@@ -46,73 +46,73 @@ services:
 
     # Specific
 
-    Germ\Security\UserManager:
+    Germ\Legacy\Security\UserManager:
         calls:
             - [setPommModel, ["@pomm_fos_user_bundle.model_manager"]]
 
     fos_user.util.canonical_fields_updater:
-        class: Germ\Security\CanonicalFieldsUpdater
+        class: Germ\Legacy\Security\CanonicalFieldsUpdater
         arguments:
             - "@fos_user.util.username_canonicalizer"
             - "@fos_user.util.email_canonicalizer"
 
-    Germ\Person\RoleManager:
+    Germ\Legacy\Person\RoleManager:
         calls:
             - [setConfig, ['%germ.roles%']]
 
-    Germ\Email\Mailer:
+    Germ\Legacy\Email\Mailer:
         calls:
             - [setEmailFrom, ["%germ.email.from%"]]
 
     # events subscribers
 
-    Germ\EventSubscriber\PommPaginatorSubscriber:
+    Germ\Legacy\EventSubscriber\PommPaginatorSubscriber:
         tags:
             - { name: knp_paginator.subscriber }
 
-    Germ\EventSubscriber\LocaleSubscriber:
+    Germ\Legacy\EventSubscriber\LocaleSubscriber:
         tags:
             - { name: kernel.event_subscriber }
 
-    Germ\EventSubscriber\HttpHeaderSubscriber:
+    Germ\Legacy\EventSubscriber\HttpHeaderSubscriber:
         tags:
             - { name: kernel.event_subscriber }
 
     # search criterias
 
-    Germ\Filter\Church\Searcher:
+    Germ\Legacy\Filter\Church\Searcher:
         tags:
-            - { name: "Germ\\Filter\\AbstractSearcher" }
+            - { name: "Germ\\Legacy\\Filter\\AbstractSearcher" }
 
-    Germ\Filter\Church\CriteriaTerms:
+    Germ\Legacy\Filter\Church\CriteriaTerms:
         tags:
-            - { name: "Germ\\Filter\\Church\\Searcher" }
+            - { name: "Germ\\Legacy\\Filter\\Church\\Searcher" }
 
-    Germ\Filter\Person\Searcher:
+    Germ\Legacy\Filter\Person\Searcher:
         tags:
-            - { name: "Germ\\Filter\\AbstractSearcher" }
+            - { name: "Germ\\Legacy\\Filter\\AbstractSearcher" }
 
-    Germ\Filter\Person\CriteriaTerms:
+    Germ\Legacy\Filter\Person\CriteriaTerms:
         tags:
-            - { name: "Germ\\Filter\\Person\\Searcher" }
+            - { name: "Germ\\Legacy\\Filter\\Person\\Searcher" }
 
-    Germ\Filter\Person\CriteriaStatus:
+    Germ\Legacy\Filter\Person\CriteriaStatus:
         tags:
-            - { name: "Germ\\Filter\\Person\\Searcher" }
+            - { name: "Germ\\Legacy\\Filter\\Person\\Searcher" }
 
-    Germ\Filter\Person\CriteriaRoles:
+    Germ\Legacy\Filter\Person\CriteriaRoles:
         tags:
-            - { name: "Germ\\Filter\\Person\\Searcher" }
+            - { name: "Germ\\Legacy\\Filter\\Person\\Searcher" }
 
-    Germ\Filter\Person\CriteriaChurch:
+    Germ\Legacy\Filter\Person\CriteriaChurch:
         tags:
-            - { name: "Germ\\Filter\\Person\\Searcher" }
+            - { name: "Germ\\Legacy\\Filter\\Person\\Searcher" }
 
-    Germ\Filter\Census\Searcher:
+    Germ\Legacy\Filter\Census\Searcher:
         tags:
-            - { name: "Germ\\Filter\\AbstractSearcher" }
+            - { name: "Germ\\Legacy\\Filter\\AbstractSearcher" }
 
-    Germ\Filter\Person\CriteriaChurch2:
-        class: Germ\Filter\Person\CriteriaChurch
+    Germ\Legacy\Filter\Person\CriteriaChurch2:
+        class: Germ\Legacy\Filter\Person\CriteriaChurch
         tags:
-            - { name: "Germ\\Filter\\Census\\Searcher" }
+            - { name: "Germ\\Legacy\\Filter\\Census\\Searcher" }
