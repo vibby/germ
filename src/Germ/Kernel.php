@@ -2,7 +2,7 @@
 
 namespace Germ;
 
-use Germ\Legacy\DependencyInjection\Compiler\FilterSearcherPass;
+use Germ\DependencyInjection\Compiler\FilterSearcherPass;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -37,6 +37,7 @@ class Kernel extends BaseKernel
 
     protected function build(ContainerBuilder $container)
     {
+        $container->registerForAutoconfiguration(CustomInterface::class)->addTag('app.custom_tag');
         $container->addCompilerPass(new FilterSearcherPass());
     }
 

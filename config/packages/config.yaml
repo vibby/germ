@@ -61,7 +61,7 @@ twig:
         timezone: Europe/Paris
     globals:
         locales: "%locales%"
-        menuBuilder: "@Germ\\Legacy\\Menu\\Builder"
+        menuBuilder: "@Germ\\Menu\\Builder"
 
 framework:
     #esi:             ~
@@ -124,7 +124,7 @@ fos_user:
         address:        noreply@germ.fr
         sender_name:    Germ
     service:
-        user_manager: Germ\Legacy\Security\UserManager
+        user_manager: Germ\Security\UserManager
 
 knp_paginator:
     page_range: 15                     # default page range used in pagination control

@@ -1,21 +1,21 @@
 germ_event_list:
     path:     /
-    controller: Germ\Legacy\Controller\EventController::listAction
+    controller: Germ\Controller\EventController::listAction
 
 germ_event_create:
     path:     /create
-    controller: Germ\Legacy\Controller\EventController::createAction
+    controller: Germ\Controller\EventController::createAction
 
 germ_event_edit:
     path:     /edit/{eventId}
-    controller: Germ\Legacy\Controller\EventController::editAction
+    controller: Germ\Controller\EventController::editAction
 
 germ_event_show:
     path:     /{eventId}
-    controller: Germ\Legacy\Controller\EventController::showAction
+    controller: Germ\Controller\EventController::showAction
     requirements:
         eventId:  \d
 
 germ_event_remove:
     path:     /sremove/{eventId}
-    controller: Germ\Legacy\Controller\EventController::removeAction
+    controller: Germ\Controller\EventController::removeAction
