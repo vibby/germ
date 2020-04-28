@@ -42,17 +42,17 @@
                     {% if is_granted('ROLE_CHURCH_LIST') %}
                         <td style="font-size: 1.6em;">
                             {% if is_granted('ROLE_CHURCH_EDIT') %}
-                            <a href="{{ path('germ_church_edit', {'churchSlug': census.church_slug}) }}"
-                               data-toggle="tooltip"
-                               data-placement="left"
-                               title="{% trans with {'%name%': census.church_name} %}Edit %name%{% endtrans %}">
-                                {% elseif is_granted('ROLE_CHURCH_SEE') %}
+                                <a href="{{ path('germ_church_edit', {'churchSlug': census.church_slug}) }}"
+                                   data-toggle="tooltip"
+                                   data-placement="left"
+                                   title="{% trans with {'%name%': census.church_name} %}Edit %name%{% endtrans %}">
+                            {% elseif is_granted('ROLE_CHURCH_SEE') %}
                                 <a href="{{ path('germ_church_show', {'churchSlug': census.church_slug}) }}">
-                                    {% endif %}
-                                    {{ census.church_name }}
-                                    {% if is_granted('ROLE_CHURCH_EDIT') or is_granted('ROLE_CHURCH_SEE') %}
+                            {% endif %}
+                                {{ census.church_name }}
+                            {% if is_granted('ROLE_CHURCH_EDIT') or is_granted('ROLE_CHURCH_SEE') %}
                                 </a>
-                                {% endif  %}
+                            {% endif  %}
                         </td>
                     {% endif  %}
                     <td>

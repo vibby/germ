@@ -1,0 +1,81 @@
+{% extends 'base.html.twig' %}
+
+{% block content_main %}
+    {% if is_granted('ROLE_SMS_CREATE') %}
+        <a class="btn btn-primary" href="{{ path('germ_sms_create') }}">
+            {% trans %}New sms{% endtrans %}
+        </a>
+    {% endif  %}
+    <a class="btn btn-default" href="{{ path('germ_sms_list', {_format: 'csv'}) }}">
+        {% trans %}Export CSV{% endtrans %}
+    </a>
+    <hr />
+    <h2>
+        {% transchoice paginatedSms.totalItemCount %}
+            {0} Not any sms|{1} 1 sms|]1,Inf[ %count% sms
+        {% endtranschoice %}
+    </h2>
+    {{ form(searchForm) }}
+    {{ knp_pagination_render(paginatedSms) }}
+    {% include 'Pagination/perPage.html.twig' with {'paginated': paginatedSms} %}
+    {% if paginatedSms.count %}
+        <table class="table table-striped table-hover">
+            <tr>
+                <th>{% trans %}Date{% endtrans %}</th>
+                <th>{% trans %}Content{% endtrans %}</th>
+                {% if is_granted('ROLE_CHURCH_EDIT') or is_granted('ROLE_CHURCH_SEE') %}
+                    <th>{% trans %}Church{% endtrans %}</th>
+                {% endif  %}
+                <th></th>
+            </tr>
+            {% for sms in paginatedSms.items %}
+                <tr>
+                    <td style="font-size: 1.6em;">
+                        {% if is_granted('ROLE_SMS_EDIT') %}
+                            <a href="{{ path('germ_sms_edit', {'date': sms.date|date('Y-m-d-H-i-s-u')}) }}" data-toggle="tooltip" data-placement="left" title="{% trans %}Edit{% endtrans %}">
+                        {% elseif is_granted('ROLE_SMS_SEE') %}
+                            <a href="{{ path('germ_sms_show', {'smsSlug': sms.date|date('Y-m-d-H-i-s-u')}) }}">
+                        {% endif %}
+                                {{ sms.date|date('Y-m-d') }}
+                        {% if is_granted('ROLE_SMS_EDIT') or is_granted('ROLE_SMS_SEE') %}
+                            </a>
+                        {% endif  %}
+                    </td>
+                    <td>
+                        {{ sms.content }}
+                    </td>
+                    {% if is_granted('ROLE_CHURCH_EDIT') or is_granted('ROLE_CHURCH_SEE') %}
+                        <td>
+                            {% if sms.church_name %}
+                                {% if is_granted('ROLE_CHURCH_EDIT') %}
+                                    <a href="{{ path('germ_church_edit', {'churchSlug': sms.church_slug}) }}"
+                                       data-toggle="tooltip"
+                                       data-placement="left"
+                                       title="{% trans with {'%name%': sms.church_name} %}Edit %name%{% endtrans %}">
+                                {% elseif is_granted('ROLE_CHURCH_SEE') %}
+                                    <a href="{{ path('germ_church_show', {'churchSlug': sms.church_slug}) }}">
+                                {% endif %}
+                                    {{ sms.church_name }}
+                                {% if is_granted('ROLE_CHURCH_EDIT') or is_granted('ROLE_CHURCH_SEE') %}
+                                    </a>
+                                {% endif  %}
+                            {% else  %}
+                                        -
+                            {% endif  %}
+                        </td>
+                    {% endif %}
+                    <td>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+    {{ knp_pagination_render(paginatedSms) }}
+    {% include 'Pagination/perPage.html.twig' with {'paginated': paginatedSms} %}
+{% endblock %}
+
+{% block main_width %}12{% endblock %}
+{% block right_width %}0{% endblock %}
+
+{% block content_right %}
+{% endblock %}

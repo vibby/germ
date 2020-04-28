@@ -1,0 +1,29 @@
+germ_sms_create:
+    path:     /create
+    controller: Germ\Controller\SmsController::createAction
+
+germ_sms_edit:
+    path:     /edit/{date}.{_format}
+    controller: Germ\Controller\SmsController::editAction
+    defaults:
+        _format: html
+
+germ_sms_list:
+    path:     /{page}.{_format}
+    controller: Germ\Controller\SmsController::ListAction
+    defaults:
+        _format: html
+        page: 1
+    requirements:
+        _format:  html|csv
+
+germ_person_filter:
+    path:     /filter/{page}/{filters}
+    controller: Germ\Controller\SmsController::listAction
+    defaults:
+        _format: html
+        page: 1
+    requirements:
+        filters: ".*"
+        _format:  html|csv
+

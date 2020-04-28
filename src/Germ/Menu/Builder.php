@@ -6,7 +6,6 @@ use Knp\Menu\FactoryInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class Builder implements ContainerAwareInterface
@@ -49,6 +48,11 @@ class Builder implements ContainerAwareInterface
         if ($this->authorizationChecker->isGranted('ROLE_EVENT_LIST')) {
             $menu->addChild('Events', [
                 'route' => 'germ_event_list',
+            ]);
+        }
+        if ($this->authorizationChecker->isGranted('ROLE_SMS_VIEW_DASHBOARD')) {
+            $menu->addChild('Sms', [
+                'route' => 'germ_sms_list',
             ]);
         }
         $menu->addChild('My account', [

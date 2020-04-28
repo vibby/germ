@@ -31,3 +31,9 @@ germ_census:
     prefix:   /{_locale}/census
     requirements:
         _locale: fr|en|de
+
+germ_sms:
+    resource: "routes/sms.yaml"
+    prefix:   /{_locale}/sms
+    requirements:
+        _locale: fr|en|de
