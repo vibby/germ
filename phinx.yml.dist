@@ -1,15 +1,15 @@
 paths:
-    migrations: %%PHINX_CONFIG_DIR%%/config/migrations
-    seeds: %%PHINX_CONFIG_DIR%%/config/seeds
+    migrations: "%%PHINX_CONFIG_DIR%%/config/migrations"
+    seeds: "%%PHINX_CONFIG_DIR%%/config/seeds"
 
 environments:
     default_migration_table: phinxlog
     default_database: dev
     dev:
         adapter: pgsql
-        host: localhost
+        host: germ-postgres
         name: germ
         user: germ
-        pass: ~
+        pass: SuP3RP455w0Rd
         port: 5432
         charset: utf8

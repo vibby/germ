@@ -3,6 +3,8 @@
 namespace Germ\Domain\Church;
 
 
+use PommProject\Foundation\Where;
+
 interface ChurchRepositoryInterface
 {
     public function findAll(): \Traversable;
@@ -11,7 +13,7 @@ interface ChurchRepositoryInterface
 
     public function choiceId(): array;
 
-    public function findIdsFromSlugs(): array;
+    public function findIdsFromSlugs(array $slugs): array;
 
-    public function findForListWhereSql(): array;
+    public function findForListWhereSql(Where $where, $projection = null, $suffix = null): array;
 }

@@ -33,6 +33,7 @@ composer install
 
 Créer la structure de la base de données
 ```
+cp phinx.yml.dist phinx.yml
 vendor/bin/phinx migrate
 ```
 
