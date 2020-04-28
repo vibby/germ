@@ -20,31 +20,36 @@ git clone git@github.com:vibby/germ.git
 cd germ/docker
 docker-compose up
 ```
-Entrer dans la machine docker
+
+Entrer dans la machine docker (au cas où)
 ```
 docker-compose exec germ-php-fpm bash
 ```
 
 Installer les dépendances avec composer
 ```
-composer install
+sudo docker-compose run germ-php-fpm composer install
 ```
 À l’issue de cette commande, les paramètres requis seront demandés par prompt
 
 Créer la structure de la base de données
 ```
 cp phinx.yml.dist phinx.yml
-vendor/bin/phinx migrate
+sudo docker-compose run germ-php-fpm vendor/bin/phinx migrate
 ```
 
 Pour le dévelopement, vous pouvez insérer des données de test
 ```
-bin/console germ:generate 
+sudo docker-compose run germ-php-fpm bin/console germ:generate 
 ```
 
 Installer les assets
 ```
-bin/console assets:install --symlink
+sudo docker-compose run germ-php-fpm bin/console assets:install --symlink
+```
+
+```
+sudo docker-compose run germ-nodejs npm run dev
 ```
 
 Il y a un souci entre deux dépendances pour bootstrap, voici comment le régler :

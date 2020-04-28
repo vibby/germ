@@ -36,6 +36,7 @@ services:
       - ..:/var/www/germ
       - ./php-fpm/php-ini-overrides.ini:/etc/php/7.1/fpm/conf.d/99-overrides.ini:ro
       - ./php-fpm/php-ini-overrides.ini:/etc/php/7.1/cli/conf.d/99-overrides.ini:ro
+    working_dir: /var/www/germ
     links:
       - germ-postgres
 
@@ -48,6 +49,7 @@ services:
   germ-nodejs:
     image: node:8.12.0-alpine
     container_name: germ-nodejs
+    working_dir: /var/www/germ
     volumes:
       - ..:/var/www/germ
 
